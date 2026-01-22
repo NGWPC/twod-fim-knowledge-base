@@ -5,7 +5,8 @@
 [[#ALT-A - For All Reaches|ALT-A - For All Reaches]]
 
 ## Alternatives
-### ALT-A - For All Reaches #current
+### ALT-A - For All Reaches
+#current
 ### ALT-B - For No Reach
 
 ## Linked Cases Summary Table

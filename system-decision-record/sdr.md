@@ -38,18 +38,14 @@ It enables:
 ### Cases
 Concrete situations encountered in the system (real observations, experiments, or failures). Cases are *not objectives*; they are scenarios that reveal evidence.
 
-Example: [[01_Cases/Case-001/Case-001 - Y Shape Confluence with 2 Level Stream Order Difference]]
-
 ### Decisions (SDR)
 Each SDR captures one decision and its alternatives. SDRs are a single source of truth that evolves with evidence.
 
 Key properties:
-- One decision = one claim
+- A decision must have a clear scope
 - Alternatives are explicit
 - Current selection is marked
 - Linked outcomes are derived from Cases
-
-Example: [[02_Decisions/DR-001 - KWSE Scenarios Should be Modeled]]
 
 ### Alternatives
 Alternatives are viable until evidence rejects them. Rejection does not delete an alternative; it remains as a candidate for future reconsideration.
@@ -57,12 +53,10 @@ Alternatives are viable until evidence rejects them. Rejection does not delete a
 ### Issues
 Issues record failures, hindrances, or roadblocks encountered during development. They are evidence, not blame, and should link to Cases, Experiments, and Decisions.
 
-Example: [[04_Issues/ISU-001 - Lower WSEL towards the end of the Reach]]
-
 ### Experiments
 Experiments are the controlled tests run on Cases to collect evidence.
 
-Example: [[03_Experiments/EXP-001 - KWSE Enforced FIM vs ND FIM]]
+
 
 ---
 
