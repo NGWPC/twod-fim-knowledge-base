@@ -1,5 +1,5 @@
 ## Description
-A benchmark FIM is needed to evaluate the model connectivity framework under matched simulation conditions.
+A benchmark FIM is needed to evaluate the model connectivity framework under matched simulation conditions. What should be considered a benchmark FIM?
 
 ## Current Selection
 [[#ALT-A - Custom 2D Model|ALT-A - Custom 2D Model]]
