@@ -1,0 +1,10 @@
+{
+  "types": {
+    "aliases": "aliases",
+    "cssclasses": "multitext",
+    "tags": "tags",
+    "hydrofabric_ids": "multitext",
+    "flow_variance": "multitext",
+    "stream_orders": "multitext"
+  }
+}

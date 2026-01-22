@@ -1,0 +1,81 @@
+/* =========================
+   GREEN TAGS
+   ========================= */
+
+/* Reading Mode - Light */
+.theme-light .tag[href="#approve"],
+.theme-light .tag[href="#Approve"],
+.theme-light .tag[href="#current"],
+.theme-light .tag[href="#success"] {
+  background-color: #e6f4ea;
+  color: #1e7f43;
+  border-radius: 6px;
+  padding: 2px 6px;
+  font-weight: 600;
+}
+
+/* Reading Mode - Dark */
+.theme-dark .tag[href="#approve"],
+.theme-dark .tag[href="#Approve"],
+.theme-dark .tag[href="#current"],
+.theme-dark .tag[href="#success"] {
+  background-color: #173a25;
+  color: #6be58a;
+  border-radius: 6px;
+  padding: 2px 6px;
+  font-weight: 600;
+}
+
+/* Live Preview / Editor - Light */
+.theme-light .cm-tag-approve,
+.theme-light .cm-tag-success {
+  color: #1e7f43 !important;
+  font-weight: 600;
+}
+
+/* Live Preview / Editor - Dark */
+.theme-dark .cm-tag-approve,
+.theme-dark .cm-tag-success {
+  color: #6be58a !important;
+  font-weight: 600;
+}
+
+/* =========================
+   RED TAGS
+   ========================= */
+
+/* Reading Mode - Light */
+.theme-light .tag[href="#reject"],
+.theme-light .tag[href="#Reject"],
+.theme-light .tag[href="#failure"] {
+  background-color: #feeceb;
+  color: #b42318;
+  border-radius: 6px;
+  padding: 2px 6px;
+  font-weight: 600;
+}
+
+/* Reading Mode - Dark */
+.theme-dark .tag[href="#reject"],
+.theme-dark .tag[href="#Reject"],
+.theme-dark .tag[href="#failure"] {
+  background-color: #3a1b1a;
+  color: #ff6b6b;
+  border-radius: 6px;
+  padding: 2px 6px;
+  font-weight: 600;
+}
+
+/* Live Preview / Editor - Light */
+.theme-light .cm-tag-reject,
+.theme-light .cm-tag-failure {
+  color: #b42318 !important;
+  font-weight: 600;
+}
+
+/* Live Preview / Editor - Dark */
+.theme-dark .cm-tag-reject,
+.theme-dark .cm-tag-failure {
+  color: #ff6b6b !important;
+  font-weight: 600;
+}
