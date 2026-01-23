@@ -1,6 +1,6 @@
-# System Decision Records (ADR-inspired)
+# System Decision Records
 
-This repository implements **System Decision Records (SDR)** — an extension of ADRs designed for complex scientific and engineering systems. SDRs preserve *reasoning*, not just results, and keep decisions traceable as evidence evolves.
+This repository implements **System Decision Records (SDR)** - an extension of ADR (Architectural Decision Records) designed for complex scientific and engineering systems. At its heart SDRs preserve *decision evolution and thinking* not just the decision result.
 
 ---
 
@@ -9,7 +9,7 @@ This repository implements **System Decision Records (SDR)** — an extension of
 Decisions are *contextual*, shaped by constraints, assumptions, and evidence that change over time. This system exists to preserve *why* decisions were made, *why alternatives were rejected*, and *when those decisions should be revisited*.
 
 Decision making through SDR should treat:
-- Uncertainty as normal (log assumptions when data is missing).
+- Uncertainty as normal (an alternative for a decision scope does not need to tested before being considered an alternative).
 - Rejection as conditional ("not now, unless new evidence arrives").
 - Failure as information (failures reveal model boundaries).
 - Change as expected (new cases can trigger revision).
@@ -49,6 +49,7 @@ Key properties:
 
 ### Alternatives
 Alternatives are viable until evidence rejects them. Rejection does not delete an alternative; it remains as a candidate for future reconsideration.
+A new alternative for a decision does not need to be tested to be considered an alternate, any reasonable idea can become an alternate and will be rejected through experiments if it is not viable.
 
 ### Issues
 Issues record failures, hindrances, or roadblocks encountered during development. They are evidence, not blame, and should link to Cases, Experiments, and Decisions.
@@ -63,7 +64,7 @@ Experiments are the controlled tests run on Cases to collect evidence.
 ## 4. How Decisions Work
 
 ### Single Source of Truth
-Each decision file is a living record. It is updated as new evidence arrives. Git captures history; the SDR reflects the current best decision.
+Each decision file is a living record. It is updated as new evidence arrives. Git will be used for capturing revision history; so the current SDR page must reflects the current state only.
 
 ### Alternatives and Elimination
 Alternatives remain viable until rejected by evidence. Decisions select the current alternative by process of elimination, not by assuming a single truth from the start.
@@ -82,7 +83,7 @@ Cases should link:
 Decisions should include:
 - Current selection
 - Alternatives (headings with anchors)
-- Dataview queries to pull approvals/rejections from Cases
+- Table linking to rejections
 
 ---
 
