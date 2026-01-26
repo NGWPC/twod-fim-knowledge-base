@@ -1,16 +1,25 @@
 ## Description
-
+What should be the strategy to create composite map, what pixel value should a composite map pixel adopt?
 
 ## Alternatives
-### ALT-A - For All Reaches
-#current
-### ALT-B - For No Reach
+### ALT-A - Downstream Map at Bottom, Upstreams at Top (Higher Stream Orders at Top )
 
+
+### ALT-B - Upstream Maps at Bottom, Downstream at Top 
+
+
+### ALT-C - Maps Clipped. Same Level Maps at No Particular Order
+
+### ALT-D - Pixelwise Max
+#current 
+
+
+---
 ## Linked Cases Summary Table
 
 | Alt | Case                                                                   | Link    | Reason                                                |
 | --- | ---------------------------------------------------------------------- | ------- | ----------------------------------------------------- |
-| B   | [[Case-001 - Y Shape Confluence with 2 Level Stream Order Difference]] | #Reject | [[ISU-001 - Lower WSEL towards the end of the Reach]] |
+
 
 ## Decision History
-- 2026-01-22: Initial decision based on Case-001 evidence
+- 

@@ -42,6 +42,17 @@ Backwater matter for reach 21908.  See difference in depth between #ND run and #
 > [!Error] Reject
 > [[02_Decisions/DR-001 - KWSE Scenarios Should be Modeled|DR-001 - KWSE Scenarios Should be Modeled]] > [[02_Decisions/DR-001 - KWSE Scenarios Should be Modeled#ALT-B - For No Reach|ALT-B - For No Reach]]
 
+## 2. [[EXP-002 - Run a Model with All Edges at Normal Depth]]
+
+### Issues
+#### 1. [[ISU-003 - Water Leaving the Domain At Non Outlet Locations]]
+Water leaving at these places when it shouldn't
+
+![[Fig-003.png]]
+
+> [!Error] Reject
+>[[DR-003 - Boundary Conditions along the Edge Cells]] > [[DR-003 - Boundary Conditions along the Edge Cells#ALT-A - Normal Depth at all Edges with Uniform Steep Slope]]
+
 
 ---
 ## Linked Decisions Summary Table
