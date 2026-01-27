@@ -1,6 +1,6 @@
 # System Decision Records
 
-This repository implements **System Decision Records (SDR)** - an extension of ADR (Architectural Decision Records) designed for complex scientific and engineering systems. At its heart SDRs preserve *decision evolution and reasoning* not just the decision result.
+This repository implements **System Decision Records (SDR)** - an extension of ADR (Architecture Decision Records) designed for complex scientific and engineering systems. At its heart SDRs preserve *decision evolution and reasoning* not just the decision result.
 
 ---
 
@@ -19,11 +19,13 @@ By keeping decisions grounded in evidence and traceable over time, SDR avoids re
 
 ## 2. Core Objects
 
+Core objects are the building blocks of the system.
+
 ### Cases
-Concrete situations encountered in the system (real scenarios). Cases are concrete not abstract, they must have a real example.
+Cases are concrete scenarios encountered in the system. A case is not a goal, requirement, or hypothesis; it is something that happened or was observed.
 
 ### Decisions (SDR)
-Each SDR captures one decision and its alternatives. SDRs are a single source of truth that evolves with evidence.
+Each SDR captures one decision and its alternatives. The SDR is the single source of truth and is updated as evidence evolves.
 
 Key properties:
 - A decision has a clear scope
@@ -32,7 +34,7 @@ Key properties:
 - Outcomes are derived from Cases
 
 ### Alternatives
-Alternatives remain viable until evidence rejects them. Rejection does not delete an alternative; it remains a candidate for reconsideration.
+Alternatives are different ways to address the same decision scope. They remain viable until evidence rejects them. Rejection does not delete an alternative; it remains a candidate for reconsideration.
 
 A new alternative does not need to be tested to be listed. Reasonable ideas are documented first, then rejected if experiments show they are not viable.
 
@@ -40,21 +42,22 @@ A new alternative does not need to be tested to be listed. Reasonable ideas are 
 Issues are failures, hindrances, or roadblocks encountered during development. They are evidence, not blame, and should link to Cases, Experiments, and Decisions.
 
 ### Experiments
-Experiments are controlled tests run on Cases to collect evidence.
+Experiments are controlled tests run on Cases to collect evidence. They should document methodology.
+
 
 ---
 
-## 4. How Decisions Work
+## 3. How Decisions Work
 
 ### Single Source of Truth
-Each decision file is a living record. It is updated as new evidence arrives. Git preserves revision history, so the SDR page should reflect the *current* state only.
+Each decision file is a living record. It is updated as new evidence arrives. Git preserves revision history, so the SDR page should reflect the current state only.
 
 ### Alternatives and Elimination
 Alternatives remain viable until rejected by evidence. Decisions select the current alternative by elimination, not by assuming a single truth from the start.
 
 ---
 
-## 5. Linking and Traceability
+## 4. Linking and Traceability
 
 ### In Cases
 Cases should link:
@@ -70,7 +73,7 @@ Decisions should include:
 
 ---
 
-## 6. Standard Workflow
+## 5. Standard Workflow
 
 1. Encounter a **Case**
 2. Run **Experiments**
@@ -81,9 +84,9 @@ Decisions should include:
 
 ---
 
-## 7. Tooling
+## 6. Tooling
 
-This repository is designed for Obsidian:
+This repository is designed for Obsidian with following in mind:
 - Bidirectional links
 - Graph view of reasoning
 - Dataview queries for dynamic summaries
