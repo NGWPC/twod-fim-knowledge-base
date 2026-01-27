@@ -50,9 +50,7 @@ def apply_rasterStyle(layers):
             continue
 
         # Apply style
-        layer.loadNamedStyle(
-            "./styles/fims_0to6_firststreet_darkened.qml"
-        )
+        layer.loadNamedStyle("/twodimfim-data/fims_0to6_firststreet_darkened.qml")
 
         # --- Rename layer ---
         path = source.split("|")[0]
@@ -63,8 +61,8 @@ def apply_rasterStyle(layers):
             base_name = os.path.splitext(os.path.basename(path))[0]
             layer.setName(f"{third_parent}_{base_name}")
 
-
         layer.triggerRepaint()
         qgis.utils.iface.layerTreeView().refreshLayerSymbology(layer.id())
+
 
 QgsProject.instance().layersAdded.connect(apply_rasterStyle)
