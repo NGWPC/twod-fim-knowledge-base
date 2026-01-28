@@ -3,6 +3,10 @@ name: Deploy Quartz GH Pages Site
 on:
   push:
     branches: ["main"]
+    paths:
+      - "system-decision-record/**"
+      - "quartz.config.ts"
+      - ".github/workflows/deploy.yaml"
   workflow_dispatch:
 
 permissions:
