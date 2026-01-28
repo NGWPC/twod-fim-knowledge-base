@@ -1,0 +1,104 @@
+name: Deploy Quartz GH Pages Site
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1) Checkout YOUR vault repo
+      - name: Checkout vault
+        uses: actions/checkout@v4
+        with:
+          path: vault
+          fetch-depth: 1
+
+      # 2) Checkout Quartz pinned
+      - name: Checkout Quartz (pinned)
+        uses: actions/checkout@v4
+        with:
+          repository: jackyzha0/quartz
+          ref: v4.5.2
+          path: quartz
+          fetch-depth: 1
+
+      # 2.5) Copy Quartz config from vault
+      - name: Copy Quartz config
+        shell: bash
+        run: |
+          if [ -f "vault/quartz.config.ts" ]; then
+            cp "vault/quartz.config.ts" "quartz/quartz.config.ts"
+          fi
+
+      # 3) Setup Node
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: quartz/package-lock.json
+
+      # 4) Install deps
+      - name: Install dependencies
+        working-directory: quartz
+        run: npm ci
+
+      # 5) Sync system-decision-record -> Quartz content (README used only as index)
+      - name: Sync content into Quartz
+        shell: bash
+        run: |
+          rm -rf quartz/content
+          mkdir -p quartz/content
+
+          rsync -av \
+            --delete \
+            --exclude ".obsidian" \
+            --exclude "README.md" \
+            vault/system-decision-record/ quartz/content/
+
+          # README.md -> index.md (only once)
+          if [ -f "vault/system-decision-record/README.md" ]; then
+            cp "vault/system-decision-record/README.md" "quartz/content/index.md"
+          elif [ ! -f "quartz/content/index.md" ]; then
+            echo "# Home" > quartz/content/index.md
+          fi
+
+      # 6) Build site
+      - name: Build Quartz site
+        working-directory: quartz
+        run: npx quartz build
+
+      # 7) Configure GitHub Pages
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      # 8) Upload the built site as the Pages artifact
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: quartz/public
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
