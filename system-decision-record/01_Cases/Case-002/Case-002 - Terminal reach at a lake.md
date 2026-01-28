@@ -5,7 +5,7 @@ title: Terminal reach at a lake
 date_observed: 2026-01-27
 coords: (1786548, 2606475) [EPSG:5070]
 flows:
-  - "0"
+  - "2680"
 tags:
   - case
   - waterbody
@@ -39,8 +39,8 @@ stream_orders:
 ---
 ## Linked Decisions Summary Table
 
-| Decision                                      | Alternative                                                        | Outcome | Evidence                                                                                                              |
-| --------------------------------------------- | ------------------------------------------------------------------ | ------- | --------------------------------------------------------------------------------------------------------------------- |
-| [[DR-001 - KWSE Scenarios Should be Modeled]] | [[DR-001 - KWSE Scenarios Should be Modeled#ALT-B - For No Reach]] | #Reject | [[#1. 04_Issues/ISU-001 - Lower WSEL towards the end of the Reach ISU-001 - Lower WSEL towards the end of the Reach]] |
+| Decision                                        | Alternative                                                                                                                                      | Outcome | Evidence |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ------- | -------- |
+| [[DR-005 - Terminal reach boundary conditions]] | [[DR-005 - Terminal reach boundary conditions#ALT-C - Outflow area from waterbody and admin boundaries "models"; Known Water-Surface Elevation]] | #Accept |          |
 
 
