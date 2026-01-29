@@ -17,7 +17,7 @@ Water would leave the domain at normal depth slope whenever it hit the edges.
 ### ALT-B - Normal Depth at all Edges with Tailored Slope
 Slope calculated for each edge cell.
 
-### ALT-C - Coarse Model Informed D/S Edge Cells get Reach Centerline Slope
+### ALT-C - D/S Model FIM Informed Edge Cells get Reach Centerline Slope
 #current
 ![[DR-003-Fig-001.png]]
 

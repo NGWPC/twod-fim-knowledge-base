@@ -4,7 +4,6 @@
 
 /* Reading Mode - Light */
 .theme-light .tag[href="#approve"],
-.theme-light .tag[href="#Approve"],
 .theme-light .tag[href="#current"],
 .theme-light .tag[href="#success"] {
   background-color: #e6f4ea;
@@ -16,7 +15,6 @@
 
 /* Reading Mode - Dark */
 .theme-dark .tag[href="#approve"],
-.theme-dark .tag[href="#Approve"],
 .theme-dark .tag[href="#current"],
 .theme-dark .tag[href="#success"] {
   background-color: #173a25;
@@ -46,7 +44,6 @@
 
 /* Reading Mode - Light */
 .theme-light .tag[href="#reject"],
-.theme-light .tag[href="#Reject"],
 .theme-light .tag[href="#failure"] {
   background-color: #feeceb;
   color: #b42318;
@@ -57,7 +54,6 @@
 
 /* Reading Mode - Dark */
 .theme-dark .tag[href="#reject"],
-.theme-dark .tag[href="#Reject"],
 .theme-dark .tag[href="#failure"] {
   background-color: #3a1b1a;
   color: #ff6b6b;
