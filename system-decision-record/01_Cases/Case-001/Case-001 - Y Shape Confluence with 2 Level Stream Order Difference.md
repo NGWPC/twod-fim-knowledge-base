@@ -11,6 +11,8 @@ tags:
   - case
   - confluence
   - stream-order
+  - "#coastal"
+  - "#flat"
 stream_orders:
   - "4"
   - "6"
@@ -32,6 +34,7 @@ Stream Orders:
 ## Experiments
 ### 1. [[03_Experiments/EXP-001 - KWSE Enforced FIM vs ND FIM|EXP-001 - KWSE Enforced FIM vs ND FIM]] on Reach 3463057
 
+Decision Register:  
 #### Issues
 
 ##### 1. [[04_Issues/ISU-001 - Lower WSEL towards the end of the Reach|ISU-001 - Lower WSEL towards the end of the Reach]]
@@ -40,7 +43,7 @@ Backwater matter for reach 21908.  See difference in depth between #ND run and #
 
 
 > [!Error] Reject
-> [[02_Decisions/DR-001 - KWSE Scenarios Should be Modeled|DR-001 - KWSE Scenarios Should be Modeled]] > [[02_Decisions/DR-001 - KWSE Scenarios Should be Modeled#ALT-B - For No Reach|ALT-B - For No Reach]]
+> [[DR-001 - Should KWSE Scenario be Modeled or Not?|DR-001 - Should KWSE Scenario be Modeled or Not?]] > [[DR-001 - Should KWSE Scenario be Modeled or Not?#ALT-B - For No Reach|ALT-B - For No Reach]]
 
 ## 2. [[EXP-002 - Run a Model with All Edges at Normal Depth]]
 
@@ -51,14 +54,14 @@ Water leaving at these places when it shouldn't
 ![[Fig-003.png]]
 
 > [!Error] Reject
->[[DR-003 - Boundary Conditions along the Edge Cells]] > [[DR-003 - Boundary Conditions along the Edge Cells#ALT-A - Normal Depth at all Edges with Uniform Steep Slope]]
+>[[DR-003 - Where and What Boundary Conditions to Apply Along the Edge Cells?]] > [[DR-003 - Where and What Boundary Conditions to Apply Along the Edge Cells?#ALT-A - Normal Depth at all Edges with Uniform Steep Slope]]
 
 
 ---
 ## Linked Decisions Summary Table
 
-| Decision                                      | Alternative                                                        | Outcome | Evidence                                                                                                              |
-| --------------------------------------------- | ------------------------------------------------------------------ | ------- | --------------------------------------------------------------------------------------------------------------------- |
-| [[DR-001 - KWSE Scenarios Should be Modeled]] | [[DR-001 - KWSE Scenarios Should be Modeled#ALT-B - For No Reach]] | #Reject | [[#1. 04_Issues/ISU-001 - Lower WSEL towards the end of the Reach ISU-001 - Lower WSEL towards the end of the Reach]] |
+| Decision                                             | Alternative                                                               | Outcome | Evidence                                                                                                              |
+| ---------------------------------------------------- | ------------------------------------------------------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------- |
+| [[DR-001 - Should KWSE Scenario be Modeled or Not?]] | [[DR-001 - Should KWSE Scenario be Modeled or Not?#ALT-B - For No Reach]] | #reject | [[#1. 04_Issues/ISU-001 - Lower WSEL towards the end of the Reach ISU-001 - Lower WSEL towards the end of the Reach]] |
 
 

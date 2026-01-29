@@ -3,5 +3,6 @@
   "useMarkdownLinks": false,
   "attachmentFolderPath": "./",
   "livePreview": true,
-  "alwaysUpdateLinks": true
+  "alwaysUpdateLinks": true,
+  "defaultViewMode": "preview"
 }
