@@ -6,8 +6,6 @@ Boundary Condition Choices Available:
 2. Normal Depth - Water escapes the domain at provided slope
 3. Freefall - Water falling off of a cliff with no resistance
 
-## Current Selection
-
 
 ## Alternatives
 ### ALT-A - Normal Depth at all Edges with Uniform Steep Slope
@@ -27,6 +25,7 @@ Slope calculated for each edge cell.
 
 | Alt | Case                                                                   | Link    | Reason                                                |
 | --- | ---------------------------------------------------------------------- | ------- | ----------------------------------------------------- |
+| A   | [[Case-001 - Y Shape Confluence with 2 Level Stream Order Difference]] | #reject | [[ISU-003 - Water Leaving the Domain At Non Outlet Locations]] |
 
 
 ## Decision History

@@ -23,12 +23,11 @@ stream_orders:
 ### 1. [[EXP-001 - KWSE Enforced FIM vs ND FIM]] on Reach 30683
 
 #### Decision Register:
-Current State: `git commit hash link`
 
 Changes:
 - In KWSE Run, the Edge Boundary  Conditions were used as STL.
 
-#### Dicussion
+#### Discussion
 Result for Normal Depth Run:
 ![[01_Cases/Case-002/Fig-002.png]]
 
@@ -43,7 +42,6 @@ Because this is a lake, which would have levelpool, our changes in methodology d
 ### 2. [[EXP-003 - Run a Model with Low Normal Depth Slope at Downstream FIM Informed Edge Cells]] on Reach 30683
 
 #### Decision Register:
-Current State: `git commit hash link`
 
 Changes:
 
@@ -65,8 +63,6 @@ Compared to a benchmark FIM, depths were higher in the downstream areas. This in
 ---
 ## Linked Decisions Summary Table
 
-| Decision                                                                                         | Alternative                                                                                                                                                               | Outcome | Evidence                                                              |
-| ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | --------------------------------------------------------------------- |
-| [[DR-005 - For Lake and Coastal Reaches What Downstream Boundary Conditions Should be Applied?]] | [[DR-005 - For Lake and Coastal Reaches What Downstream Boundary Conditions Should be Applied?#ALT-B - Only Low Normal Depth Slope\|ALT-B - Only Low Normal Depth Slope]] | #reject | [[#1. ISU-004 - Higher WSEL towards the downstream end of the Reach]] |
-
-
+| Decision                                                                                         | Alternative                                                                                                                                                               | Outcome | Evidence                                                          |
+| ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ----------------------------------------------------------------- |
+| [[DR-005 - For Lake and Coastal Reaches What Downstream Boundary Conditions Should be Applied?]] | [[DR-005 - For Lake and Coastal Reaches What Downstream Boundary Conditions Should be Applied?#ALT-B - Only Low Normal Depth Slope\|ALT-B - Only Low Normal Depth Slope]] | #reject | [[ISU-004 - Higher WSEL towards the downstream end of the Reach]] |

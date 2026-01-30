@@ -1,4 +1,5 @@
 ## Description
+Define how to derive the stage transfer line (STL) for lake and coastal reaches.
 
 ## Alternatives
 ### ALT-A - Intersection of Model Domain and Waterbody Polygon

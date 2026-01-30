@@ -1,4 +1,5 @@
 ## Description
+Test the impact of applying normal depth boundary conditions at all edge cells and compare to a benchmark FIM.
 
 ## Methodology
 1. Create a model with **correct** domain

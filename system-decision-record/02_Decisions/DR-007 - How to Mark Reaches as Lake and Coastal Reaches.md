@@ -1,4 +1,2 @@
 ## Description
-
-
-[[DR-007 - How to Mark Reaches as Lake and Coastal Reaches]]
+Define the criteria or workflow for classifying reaches as lake or coastal reaches.
