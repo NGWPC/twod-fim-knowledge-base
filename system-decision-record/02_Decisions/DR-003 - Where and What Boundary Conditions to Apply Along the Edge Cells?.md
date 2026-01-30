@@ -6,8 +6,6 @@ Boundary Condition Choices Available:
 2. Normal Depth - Water escapes the domain at provided slope
 3. Freefall - Water falling off of a cliff with no resistance
 
-## Current Selection
-
 
 ## Alternatives
 ### ALT-A - Normal Depth at all Edges with Uniform Steep Slope

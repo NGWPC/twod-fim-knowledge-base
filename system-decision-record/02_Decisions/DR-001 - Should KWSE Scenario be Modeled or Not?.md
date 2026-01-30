@@ -1,5 +1,5 @@
 ## Description
-
+Define whether the KWSE scenario should be modeled for all or any reaches.
 
 ## Alternatives
 ### ALT-A - For All Reaches

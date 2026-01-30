@@ -27,3 +27,5 @@ This has advantage that a lake or coastal reach doesn't get any special treatmen
 | B   | [[Case-002 - Lake Reach]] | #reject | [[ISU-004 - Higher WSEL towards the downstream end of the Reach]] |
 
 ## Decision History
+- 2026-01-27: Started with Alt C Selection
+- 2026-01-27: Rejected ALT-B based on ISU-004 evidence from Case-002.
