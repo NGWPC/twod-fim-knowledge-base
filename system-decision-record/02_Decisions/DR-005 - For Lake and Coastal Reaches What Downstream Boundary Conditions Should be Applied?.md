@@ -16,12 +16,14 @@ As slope approaches 0, Qout will approach 0.  Therefore this boundary condition 
 
 ### ALT-C - Both KWSE and Reach Normal Depth Slope
 #current
+
 Same as ALT-A, but uses a range of reasonable depths from downstream FIM.
+This has advantage that a lake or coastal reach doesn't get any special treatment
 
 ## Linked Cases Summary Table
 
-| Alt | Case                                    | Link    | Reason                                                                     |
-| --- | --------------------------------------- | ------- | -------------------------------------------------------------------------- |
-| C   | [[Case-002 - Lake Reach]] | #Accept | Most realistic outflow and gives more control over downstream water level. |
+| Alt | Case                      | Link    | Reason                                                            |
+| --- | ------------------------- | ------- | ----------------------------------------------------------------- |
+| B   | [[Case-002 - Lake Reach]] | #reject | [[ISU-004 - Higher WSEL towards the downstream end of the Reach]] |
 
 ## Decision History
