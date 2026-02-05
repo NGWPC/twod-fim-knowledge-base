@@ -12,8 +12,8 @@ Water needs to enter the model domain. What kind of geometry should be used to a
 ## Linked Cases Summary Table
 
 | Alt | Case | Link | Reason |
-| --- | ---- | ---- | ------ |
-|     |      |      |        |
+| --- | --- | --- | --- |
+| | | | |
 
 ## Decision History
 - 2026-02-02: Retroactively document current approach (ALT-B)

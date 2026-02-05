@@ -10,8 +10,8 @@ This DR is only relevant for some alternatives in  [[DR-013 - What Should be Geo
 ## Linked Cases Summary Table
 
 | Alt | Case | Link | Reason |
-| --- | ---- | ---- | ------ |
-|     |      |      |        |
+| --- | --- | --- | --- |
+| | | | |
 
 ## Decision History
 - 2026-02-02: Retroactively document current approach (ALT-A)

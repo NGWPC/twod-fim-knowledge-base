@@ -20,8 +20,8 @@ This will happen in network analysis step. Only higher stream order because ther
 ## Linked Cases Summary Table
 
 | Alt | Case | Link | Reason |
-| --- | ---- | ---- | ------ |
-|     |      |      |        |
+| --- | --- | --- | --- |
+| | | | |
 
 ## Decision History
 - 2026-02-02: Retroactively document current approach (ALT-A)

@@ -11,8 +11,8 @@ See [[DR-020 - What Lookup Table Should be Used for Land Cover Classes to Mannin
 ## Linked Cases Summary Table
 
 | Alt | Case | Link | Reason |
-| --- | ---- | ---- | ------ |
-|     |      |      |        |
+| --- | --- | --- | --- |
+| | | | |
 
 ## Decision History
 - 2026-02-02: Retroactively document current approach (ALT-A)

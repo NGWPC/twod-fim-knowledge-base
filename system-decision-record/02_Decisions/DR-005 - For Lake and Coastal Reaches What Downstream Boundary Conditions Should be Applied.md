@@ -22,9 +22,9 @@ This has advantage that a lake or coastal reach doesn't get any special treatmen
 
 ## Linked Cases Summary Table
 
-| Alt | Case                      | Link    | Reason                                                            |
-| --- | ------------------------- | ------- | ----------------------------------------------------------------- |
-| B   | [[Case-002 - Lake Reach]] | #reject | [[ISU-004 - Higher WSEL towards the downstream end of the Reach]] |
+| Alt | Case | Link | Reason |
+| --- | --- | --- | --- |
+| B | [[Case-002 - Lake Reach]] | #reject | [[ISU-004 - Higher WSEL towards the downstream end of the Reach]] |
 
 ## Decision History
 - 2026-01-27: Started with Alt C Selection

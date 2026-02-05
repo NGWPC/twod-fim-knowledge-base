@@ -27,7 +27,7 @@ stream_orders:
 ## Linked Decisions Summary Table
 
 | Decision | Alternative | Outcome | Evidence |
-| -------- | ----------- | ------- | -------- |
-|          |             |         |          |
+| --- | --- | --- | --- |
+| | | | |
 
 

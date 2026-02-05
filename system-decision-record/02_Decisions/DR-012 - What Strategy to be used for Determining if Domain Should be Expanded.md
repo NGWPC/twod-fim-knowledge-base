@@ -20,7 +20,7 @@ The domain should be expanded until there are no flooding cells on the edges oth
 ## Linked Cases Summary Table
 
 | Alt | Case | Link | Reason |
-| --- | ---- | ---- | ------ |
+| --- | --- | --- | --- |
 | | | | |
 
 ## Decision History

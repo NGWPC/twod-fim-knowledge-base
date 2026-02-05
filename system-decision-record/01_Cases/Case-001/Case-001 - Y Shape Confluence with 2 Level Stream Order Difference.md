@@ -60,8 +60,8 @@ Water leaving at these places when it shouldn't
 ---
 ## Linked Decisions Summary Table
 
-| Decision                                             | Alternative                                                                                                                       | Outcome | Evidence                                                          |
-| ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ------- | ----------------------------------------------------------------- |
-| [[DR-001 - Should KWSE Scenario be Modeled or Not?]] | [[DR-001 - Should KWSE Scenario be Modeled or Not?#ALT-B - For No Reach]]                                                         | #reject | [[ISU-001 - Lower WSEL towards the end of the Reach]]             |
+| Decision | Alternative | Outcome | Evidence |
+| --- | --- | --- | --- |
+| [[DR-001 - Should KWSE Scenario be Modeled or Not?]] | [[DR-001 - Should KWSE Scenario be Modeled or Not?#ALT-B - For No Reach]] | #reject | [[ISU-001 - Lower WSEL towards the end of the Reach]] |
 | [[DR-003 - Where and What Boundary Conditions to Apply Along the Edge Cells?]] | [[DR-003 - Where and What Boundary Conditions to Apply Along the Edge Cells?#ALT-A - Normal Depth at all Edges with Uniform Steep Slope]] | #reject | [[ISU-003 - Water Leaving the Domain At Non Outlet Locations]] |
 
