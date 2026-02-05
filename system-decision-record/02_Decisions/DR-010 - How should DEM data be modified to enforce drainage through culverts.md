@@ -26,9 +26,9 @@ https://fema-ffrd.github.io/overflow/user-guide/terrain-conditioning/breach/
 
 Custom code could be written to clip flowpath lines to some buffer around the road network.  A trapezoidal channel could then be imputed in the area around the intersection.
 
-| Alt | Case                          | Link    | Reason                                                      |
-| --- | ----------------------------- | ------- | ----------------------------------------------------------- |
-| A   | [[Case-003 - Small culverts]] | #reject | [[ISU-005 - Divergent flowpath]] |
+| Alt | Case | Link | Reason |
+| --- | --- | --- | --- |
+| A | [[Case-003 - Small culverts]] | #reject | [[ISU-005 - Divergent flowpath]] |
 
 ## Decision History
 - 2026-02-2: Initial draft created

@@ -15,9 +15,9 @@ In this approach the assumption is that a course model would have been already e
 
 ## Linked Cases Summary Table
 
-| Alt | Case                                                                         | Link    | Reason                               |
-| --- | ---------------------------------------------------------------------------- | ------- | ------------------------------------ |
-| A   | [[01_Cases/Case-004 - Model Domain Example/Case-004 - Model Domain Example]] | #reject | Alt A led to a truncated floodplain. |
+| Alt | Case | Link | Reason |
+| --- | --- | --- | --- |
+| A | [[01_Cases/Case-004 - Model Domain Example/Case-004 - Model Domain Example]] | #reject | Alt A led to a truncated floodplain. |
 
 
 ## Decision History

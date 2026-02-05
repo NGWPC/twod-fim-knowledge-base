@@ -10,7 +10,7 @@ This modeling approach is built around an assumption of 2D steady flow condition
 ## Linked Cases Summary Table
 
 | Alt | Case | Link | Reason |
-| --- | ---- | ---- | ------ |
-|     |      |      |        |
+| --- | --- | --- | --- |
+| | | | |
 
 ## Decision History

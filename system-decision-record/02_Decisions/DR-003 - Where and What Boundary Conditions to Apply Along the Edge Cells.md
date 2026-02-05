@@ -23,9 +23,9 @@ Slope calculated for each edge cell.
 
 ## Linked Cases Summary Table
 
-| Alt | Case                                                                   | Link    | Reason                                                |
-| --- | ---------------------------------------------------------------------- | ------- | ----------------------------------------------------- |
-| A   | [[Case-001 - Y Shape Confluence with 2 Level Stream Order Difference]] | #reject | [[ISU-003 - Water Leaving the Domain At Non Outlet Locations]] |
+| Alt | Case | Link | Reason |
+| --- | --- | --- | --- |
+| A | [[Case-001 - Y Shape Confluence with 2 Level Stream Order Difference]] | #reject | [[ISU-003 - Water Leaving the Domain At Non Outlet Locations]] |
 
 
 ## Decision History
