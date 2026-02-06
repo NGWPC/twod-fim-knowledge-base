@@ -28,7 +28,7 @@ Status meanings:
 | | | | |
 | [[DR-007 - How to Mark Reaches as Lake and Coastal Reaches]] | | Draft | |
 | | | | |
-| [[DR-008 - How to Get  STL for Lake and Coastal Reaches]] | [[DR-008 - How to Get  STL for Lake and Coastal Reaches#ALT-B - Intersection of Model Domain and Waterbody Polygon as a Line\|ALT-B - Intersection of Model Domain and Waterbody Polygon as a Line]] | Alternate Selected | |
+| [[DR-008 - What Should be an STL for Lake and Coastal Reaches]] | [[DR-008 - What Should be an STL for Lake and Coastal Reaches#ALT-B - Intersection of Model Domain and Waterbody Polygon as a Line\|ALT-B - Intersection of Model Domain and Waterbody Polygon as a Line]] | Alternate Selected | |
 | | | | |
 | [[DR-009 - Where to Apply Stage Transfer Condition]] | [[DR-009 - Where to Apply Stage Transfer Condition#ALT-B Stage Transfer Line (Closest D/S WSEL Contour)\|ALT-B Stage Transfer Line (Closest D/S WSEL Contour)]] | Alternate Selected | |
 | | | | |
