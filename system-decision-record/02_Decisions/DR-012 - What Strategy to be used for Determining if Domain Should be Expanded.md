@@ -23,10 +23,14 @@ The domain should be expanded until there are no flooding cells on the edges oth
 ### ALT-D - Informed by Stage-Transfer Lines
 
 Once a model has been run, draft stage transfer lines would be developed. The floodplain polygon would be split by these lines.  If any of the polygon between the stage transfer lines touches a domain edge, that edge should be expanded.
+
+### ALT-E - Informed by Smoothed Water-Surface Elevation
+
+The domain should be expanded until there are no flooding cells on the edges other than cells that have water-surface elevation lower than the water-surface elevation at the  `reach outlet` of the reach or water-surface elevation higher than the water-surface elevation at the `reach start`.
 ## Linked Cases Summary Table
 
 | Alt | Case | Link | Reason |
 | --- | --- | --- | --- |
-| B | [[Case-007 - Domain Expansion]] | #reject | [[EXP-005 - Run a Model with Domain Developed from Reach Divide]] |
+| B | [[Case-007 - Susquehanna at Binghamton, NY]] | #reject | [[EXP-005 - Run a Model with Domain Developed from Reach Divide]] |
 
 ## Decision History
