@@ -21,4 +21,5 @@ This can eliminate WSEL anomalies in flat areas
 This would mean our STL would be shorter for KWSE runs. Is this a problem? Can we seed our run with STR.
 The benefit of this is that the line is from a region where inflow BC effects are minimal.
 
+In following picture, green is ND run, and blue is DS model, pink is KWSE run
 ![[DR-024 - FIG-001.png]]
