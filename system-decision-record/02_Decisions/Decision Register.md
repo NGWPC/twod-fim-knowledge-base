@@ -36,7 +36,7 @@ Status meanings:
 | | | | |
 | [[DR-011 - How to Determine Initial Model Domain]] | | Proposed | |
 | | | | |
-| [[DR-012 - What Strategy to be used for Determining if Domain Should be Expanded]] | [[DR-012 - What Strategy to be used for Determining if Domain Should be Expanded#ALT-B - Informed by Elevation\|ALT-B - Informed by Elevation]] | Alternate Selected | |
+| [[DR-012 - What Strategy to be used for Determining if Domain Should be Expanded]] | [[DR-012 - What Strategy to be used for Determining if Domain Should be Expanded#ALT-G - Informed by Water-Surface Elevation with Regression Expansion Limit\|ALT-G - Informed by Water-Surface Elevation with Regression Expansion Limit]] | Alternate Selected | |
 | | | | |
 | [[DR-013 - What Should be Geometry and Location of Input  BC]] | [[DR-013 - What Should be Geometry and Location of Input  BC#ALT-A - At Perpendicular Line Some Distance Away on Highest Drainage Area `Upstream Reach`\|ALT-A - At Perpendicular Line Some Distance Away on Highest Drainage Area `Upstream Reach`]] | Alternate Selected | |
 | | | | |
