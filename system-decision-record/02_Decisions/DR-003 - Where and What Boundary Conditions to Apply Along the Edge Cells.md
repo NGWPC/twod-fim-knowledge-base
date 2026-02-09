@@ -17,9 +17,7 @@ Slope calculated for each edge cell.
 
 ### ALT-C - D/S Model FIM Informed Edge Cells get Reach Centerline Slope
 #current
-![[DR-003-Fig-001.png]]
-
-
+![[DR-003 - FIG-001.png]]
 
 ## Linked Cases Summary Table
 

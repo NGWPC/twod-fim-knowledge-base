@@ -25,7 +25,7 @@ Green reach is being modeled.
 ### ALT-E - A Point at the `Reach Start`
 
 Green reach is being modeled.
-![[02_Decisions/FIG-005.png]]
+![[DR-013 - FIG-006.png]]
 ### ALT-F - At Perpendicular Line at the `Reach Start`
 
 Green reach is being modeled.
