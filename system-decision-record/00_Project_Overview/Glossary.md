@@ -46,7 +46,10 @@ All blue reaches are `connected reaches` for green reach. Note that red reach is
 ![[00_Project_Overview/FIG-004.png]]
 
 #### Adjacent Reaches
-Union of `connected reaches` and `common outlet` reaches
+`connected reaches` and reaches draining into the same `reach outlet` for the reach of interest.
 
 All blue reaches are `adjacent reaches` for green reach
 ![[00_Project_Overview/FIG-005.png]]
+
+#### Stage Transfer Line (STL)
+A line that is within the domain of both upstream and downstream reach models and which is used to transfer WSEL from the downstream model to an upstream model.

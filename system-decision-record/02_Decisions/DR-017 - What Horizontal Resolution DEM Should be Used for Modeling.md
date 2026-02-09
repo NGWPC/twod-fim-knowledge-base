@@ -6,7 +6,7 @@ Topographic data is available at various source resolutions and can be resampled
 ### ALT-A - 10 meters
 #current
 
-
+### ALT-B 30 meters
 ## Linked Cases Summary Table
 
 | Alt | Case | Link | Reason |
