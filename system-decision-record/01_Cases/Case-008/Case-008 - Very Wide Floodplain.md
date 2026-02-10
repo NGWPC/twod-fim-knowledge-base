@@ -14,8 +14,8 @@ stream_orders:
 location: Rosedale, MS
 river_n: Mississippi
 ---
-![[01_Cases/Case-008/FIG-001.png]]
 
+![[01_Cases/Case-008/FIG-001.png]]
 ## Description
 
 This site was chosen because it has a very wide floodplain. In this area of the Mississippi River, the floodplain width ranged from 12-22 km.  Such a wide floodplain will likely present an edge case for several components of our methodology.

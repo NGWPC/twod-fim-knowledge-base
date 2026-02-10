@@ -20,11 +20,19 @@ river_names:
 ---
 
 ![[01_Cases/Case-007/FIG-001.png]]
-
+In the image above, the Susquehanna flows right to left.  The Chenango River flows north to south, confluencing with the Susquehanna near the eastern map edge.  Several other small tributaries enter the Susquehanna system at various points in this area.
 ## Description
 
-Significance of area (why we selected it)
-- Discharges from FEMA BLE in this area
+This area was selected for several reasons
+ - It sits at the confluence of two medium-sized rivers (Susquehanna and Chenango)
+ - It has a complex flow pattern where the Chenango River diverges west prior to its confluence with the Susquehanna
+ - It is a low-gradient river
+ - There are levee systems present
+ - There are a large number of homes at risk
+
+With complex dynamics, this is an area that may present numerous modeling challenges.  The high stakes of flooding in this location means modeling should be as accurate as possible.
+
+Discharges for rivers in this area were obtained from FEMA BLE data.
 
 | Reach | Drainage Area (sq mi) | Reach Slope | 10-yr Flow (cms) | 100-yr Flow (cms) | 500-yr Flow (cms) |
 | --- | --- | --- | --- | --- | --- |
