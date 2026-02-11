@@ -13,7 +13,7 @@ Water would leave the domain at normal depth slope whenever it hit the edges.
 
 | Case | Outcome | Reason |
 | --- | --- | --- |
-| [[Case-001 - Y Shape Confluence with 2 Level Stream Order Difference]] | #reject | [[ISU-003 - Water Leaving the Domain At Non Outlet Locations]] |
+| [[Case-001 - Y Shape Confluence with 2 Level Stream Order Difference Near Coast]] | #reject | [[ISU-003 - Water Leaving the Domain At Non Outlet Locations]] |
 
 ##
 ### ALT-B - Normal Depth at all Edges with Tailored Slope

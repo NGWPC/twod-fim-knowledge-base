@@ -9,7 +9,7 @@ Define whether the KWSE scenario should be modeled for all or any reaches.
 
 | Case | Outcome | Reason |
 | --- | --- | --- |
-| [[Case-001 - Y Shape Confluence with 2 Level Stream Order Difference]] | #reject | [[ISU-001 - Lower WSEL towards the end of the Reach]] |
+| [[Case-001 - Y Shape Confluence with 2 Level Stream Order Difference Near Coast]] | #reject | [[ISU-001 - Lower WSEL towards the end of the Reach]] |
 
 ## Decision History
 - 2026-01-22: Initial decision based on Case-001 evidence
