@@ -5,6 +5,11 @@ The decision on how to catch smaller domains and extend them is recorded in DR-0
 ## Alternatives
 ### ALT-A - Buffer on Reach Divide
 In this approach, the bounding box of the reach divide and upstream boundary condition is buffered and used for the model domain.
+
+| Case | Outcome | Reason |
+| --- | --- | --- |
+| [[01_Cases/Case-004 - Model Domain Example/Case-004 - Model Domain Example]] | #reject | Alt A led to a truncated floodplain. |
+
 ### ALT-B - Buffer on Centerline
 In this approach, the a bounding box is taken on some buffer around the stream centerline. The buffer distance could come from
  - a regression equation ([ex. Bieger et al., 2015](https://onlinelibrary.wiley.com/doi/abs/10.1111/jawr.12282)),
@@ -12,12 +17,6 @@ In this approach, the a bounding box is taken on some buffer around the stream c
  - a preliminary hydraulic calculation (ex. some assumption of channel depth combined with Manning's equation for a large flood).
 ### ALT-C - Coarse Model FIM
 In this approach the assumption is that a course model would have been already executed for the reach, which will give a maximum FIM and the domain in actual modeling can simply be BBOX of the coarse model FIM
-
-## Linked Cases Summary Table
-
-| Alt | Case | Link | Reason |
-| --- | --- | --- | --- |
-| A | [[01_Cases/Case-004 - Model Domain Example/Case-004 - Model Domain Example]] | #reject | Alt A led to a truncated floodplain. |
 
 
 ## Decision History

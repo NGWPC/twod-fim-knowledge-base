@@ -7,11 +7,6 @@ Topographic data is available at various source resolutions and can be resampled
 #current
 
 ### ALT-B 30 meters
-## Linked Cases Summary Table
-
-| Alt | Case | Link | Reason |
-| --- | --- | --- | --- |
-| | | | |
 
 ## Decision History
 - 2026-02-02: Retroactively document current approach (ALT-A)

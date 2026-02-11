@@ -26,11 +26,5 @@ stream_orders:
 Comparison to benchmark FIM from FEMA
 ![[01_Cases/Case-004/FIG-002.png]]
 
----
-## Linked Decisions Summary Table
-
-| Decision | Alternative | Outcome | Evidence |
-| --- | --- | --- | --- |
-| [[DR-011 - How to Determine Initial Model Domain]] | [[DR-011 - How to Determine Initial Model Domain#ALT-A - Buffer on Reach Divide]] | #reject | [[ISU-006 - FIM cutting off arbitrarily at edges]] |
-
-
+> [!Error] Reject
+> [[DR-011 - How to Determine Initial Model Domain]] > [[DR-011 - How to Determine Initial Model Domain#ALT-A - Buffer on Reach Divide|ALT-A - Buffer on Reach Divide]]

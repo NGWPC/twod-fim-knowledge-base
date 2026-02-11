@@ -53,11 +53,5 @@ Further downstream, culverts impound flows. In one case, they prevent water from
 [[FIG-007.png]]
 [[FIG-008.png]]
 
----
-## Linked Decisions Summary Table
-
-| Decision | Alternative | Outcome | Evidence |
-| --- | --- | --- | --- |
-| [[DR-010 - How should DEM data be modified to enforce drainage through culverts]] | [[DR-010 - How should DEM data be modified to enforce drainage through culverts#ALT-A - Do nothing]] | #reject | [[ISU-005 - Divergent flowpath]] |
-
-
+> [!Error] Reject
+> [[DR-010 - How should DEM data be modified to enforce drainage through culverts]] > [[DR-010 - How should DEM data be modified to enforce drainage through culverts#ALT-A - Do nothing|ALT-A - Do nothing]]

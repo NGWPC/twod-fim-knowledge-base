@@ -14,7 +14,7 @@ This is similar to ALT-B but here rather than WSEL contour (which can have anoma
 
 ![[DR-025 - FIG-002.png]]
 
-### ALT-D Same Reach Largest ND Run's First WSEL Contour After `Reach Outlet` 
+### ALT-D Same Reach Largest ND Run's WSEL Contour at `Reach Outlet` 
 This would mean our STL would be shorter for KWSE runs. Is this a problem? Can we seed our run with STR.
 The benefit of this is that the line is from a region where inflow BC effects are minimal.
 
