@@ -31,11 +31,6 @@ MANNINGS_LC_LOOKUP = {
 This repository lists an alternative dictionary, although the source is unclear: https://github.com/mabdazzam/mannings_roughness_generator/tree/main/lookups
 
 
-## Linked Cases Summary Table
-
-| Alt | Case | Link | Reason |
-| --- | --- | --- | --- |
-| | | | |
 
 ## Decision History
 - 2026-02-02: Retroactively document current approach (ALT-A)

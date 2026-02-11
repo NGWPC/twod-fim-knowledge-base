@@ -22,12 +22,3 @@ stream_orders:
 ## Experiments
 
 ### [[EXP-005 - Run a Model with Domain Developed from Reach Divide]] for reach 60868
-
----
-## Linked Decisions Summary Table
-
-| Decision | Alternative | Outcome | Evidence |
-| --- | --- | --- | --- |
-| | | | |
-
-

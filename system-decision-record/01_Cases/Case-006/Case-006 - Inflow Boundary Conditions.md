@@ -40,6 +40,9 @@ The image below shows the depth raster for that same event.
 
 [[ISU-008 - Water-surface Elevation Anomalies]] - The "bullseye" pattern around the inflow point could lead to model instability and unreliable results.  Furthermore, these water surface elevation artifacts could be visible in the final FIMs.  Given these results, we reject [[DR-013 - What Should be Geometry and Location of Input  BC#ALT-D - At Point Some Distance Away on the `Upstream Mainstem Reach`|DR-013 ALT-D]] and [[DR-013 - What Should be Geometry and Location of Input  BC#ALT-E - A Point at the `Reach Start`|DR-013 ALT-E]].
 
+> [!Error] Reject
+> [[DR-013 - What Should be Geometry and Location of Input  BC]] > [[DR-013 - What Should be Geometry and Location of Input  BC#ALT-D - At Point Some Distance Away on the `Upstream Mainstem Reach`|ALT-D - At Point Some Distance Away on the `Upstream Mainstem Reach`]]
+
 Examining the experiment of using a 100-meter wide line 25% upstream along the `upstream mainstem`, Some water surface artifacts are present, but they are much less pronounced.  
 
 ![[01_Cases/Case-006/FIG-003.png]]
@@ -57,14 +60,5 @@ These are a mild case of [[ISU-008 - Water-surface Elevation Anomalies]]. In mos
 
 Furthermore, in some areas (notably, steep terrain), the "warm up" area will be required to allow the floodplain to fully expand before the reach of interest.
 
----
-## Linked Decisions Summary Table
-
-| Decision | Alternative | Outcome | Evidence |
-| --- | --- | --- | --- |
-| [[DR-013 - What Should be Geometry and Location of Input  BC]] | [[DR-013 - What Should be Geometry and Location of Input  BC#ALT-D - At Point Some Distance Away on the `Upstream Mainstem Reach`\|ALT-D - At Point Some Distance Away on the `Upstream Mainstem Reach`]] | #reject | [[ISU-008 - Water-surface Elevation Anomalies]] |
-| [[DR-013 - What Should be Geometry and Location of Input  BC]] | [[DR-013 - What Should be Geometry and Location of Input  BC#ALT-E - A Point at the `Reach Start`\|ALT-E - A Point at the `Reach Start`]] | #reject | [[ISU-008 - Water-surface Elevation Anomalies]] |
-| | | | |
-
-
-
+> [!Error] Reject
+> [[DR-013 - What Should be Geometry and Location of Input  BC]] > [[DR-013 - What Should be Geometry and Location of Input  BC#ALT-E - A Point at the `Reach Start`|ALT-E - A Point at the `Reach Start`]]

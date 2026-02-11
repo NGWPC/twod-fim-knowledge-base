@@ -55,14 +55,3 @@ Compared to a benchmark FIM, depths were higher in the downstream areas. This in
 
 > [!Error] Reject
 >[[DR-005 - For Lake and Coastal Reaches What Downstream Boundary Conditions Should be Applied?]] > [[DR-005 - For Lake and Coastal Reaches What Downstream Boundary Conditions Should be Applied?#ALT-B - Only Low Normal Depth Slope|ALT-B - Only Low Normal Depth Slope]]
-
-
-
-
-
----
-## Linked Decisions Summary Table
-
-| Decision | Alternative | Outcome | Evidence |
-| --- | --- | --- | --- |
-| [[DR-005 - For Lake and Coastal Reaches What Downstream Boundary Conditions Should be Applied?]] | [[DR-005 - For Lake and Coastal Reaches What Downstream Boundary Conditions Should be Applied?#ALT-B - Only Low Normal Depth Slope\|ALT-B - Only Low Normal Depth Slope]] | #reject | [[ISU-004 - Higher WSEL towards the downstream end of the Reach]] |

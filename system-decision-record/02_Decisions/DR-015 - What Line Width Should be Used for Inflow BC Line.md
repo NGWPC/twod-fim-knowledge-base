@@ -6,11 +6,6 @@ This DR is only relevant for line based alternatives in  [[DR-013 - What Should 
 ### ALT-A - 100m Wide 
 #current
 
-## Linked Cases Summary Table
-
-| Alt | Case | Link | Reason |
-| --- | --- | --- | --- |
-| | | | |
 
 ## Decision History
 - 2026-02-02: Retroactively document current approach (ALT-A)

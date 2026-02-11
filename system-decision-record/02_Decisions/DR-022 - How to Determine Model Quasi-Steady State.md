@@ -7,10 +7,5 @@ This modeling approach is built around an assumption of 2D steady flow condition
 
 ### ALT-B Check WSEL Raster has Stabilized Between Different Time Steps
 
-## Linked Cases Summary Table
-
-| Alt | Case | Link | Reason |
-| --- | --- | --- | --- |
-| | | | |
 
 ## Decision History

@@ -22,20 +22,24 @@ Green reach is being modeled.
 
 Green reach is being modeled.
 ![[DR-013-FIG-004.png]]
+
+| Case | Outcome | Reason |
+| --- | --- | --- |
+| [[Case-006 - Inflow Boundary Conditions]] | #reject | [[ISU-008 - Water-surface Elevation Anomalies]] |
+
 ### ALT-E - A Point at the `Reach Start`
 
 Green reach is being modeled.
 ![[DR-013 - FIG-006.png]]
+
+| Case | Outcome | Reason |
+| --- | --- | --- |
+| [[Case-006 - Inflow Boundary Conditions]] | #reject | [[ISU-008 - Water-surface Elevation Anomalies]] |
+
 ### ALT-F - At Perpendicular Line at the `Reach Start`
 
 Green reach is being modeled.
 ![[DR-013-FIG-005.png]]
-## Linked Cases Summary Table
-
-| Alt | Case | Link | Reason |
-| --- | --- | --- | --- |
-| D | [[Case-006 - Inflow Boundary Conditions]] | #reject | [[ISU-008 - Water-surface Elevation Anomalies]] |
-| E | [[Case-006 - Inflow Boundary Conditions]] | #reject | [[ISU-008 - Water-surface Elevation Anomalies]] |
 
 ## Decision History
 - 2026-02-02: Retroactively document current approach (ALT-A)
