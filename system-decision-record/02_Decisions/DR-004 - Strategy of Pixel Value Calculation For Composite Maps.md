@@ -16,11 +16,6 @@ What should be the strategy to create composite map, what pixel value should a c
 
 
 ---
-## Linked Cases Summary Table
-
-| Alt | Case | Link | Reason |
-| --- | --- | --- | --- |
-
 
 ## Decision History
-- 
+-

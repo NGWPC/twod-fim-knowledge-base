@@ -11,6 +11,10 @@ Boundary Condition Choices Available:
 ### ALT-A - Normal Depth at all Edges with Uniform Steep Slope
 Water would leave the domain at normal depth slope whenever it hit the edges.
 
+| Case | Outcome | Reason |
+| --- | --- | --- |
+| [[Case-001 - Y Shape Confluence with 2 Level Stream Order Difference Near Coast]] | #reject | [[ISU-003 - Water Leaving the Domain At Non Outlet Locations]] |
+
 ##
 ### ALT-B - Normal Depth at all Edges with Tailored Slope
 Slope calculated for each edge cell.
@@ -18,12 +22,6 @@ Slope calculated for each edge cell.
 ### ALT-C - D/S Model FIM Informed Edge Cells get Reach Centerline Slope
 #current
 ![[DR-003 - FIG-001.png]]
-
-## Linked Cases Summary Table
-
-| Alt | Case | Link | Reason |
-| --- | --- | --- | --- |
-| A | [[Case-001 - Y Shape Confluence with 2 Level Stream Order Difference]] | #reject | [[ISU-003 - Water Leaving the Domain At Non Outlet Locations]] |
 
 
 ## Decision History

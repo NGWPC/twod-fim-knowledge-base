@@ -24,11 +24,6 @@ This approach was used by researchers at the University of Vermont.
 
 ![[DR-021 - FIG-001.png]]
 
-## Linked Cases Summary Table
-
-| Alt | Case | Link | Reason |
-| --- | --- | --- | --- |
-| | | | |
 
 ## Decision History
 - 2026-02-02: Retroactively document current approach (ALT-A)
