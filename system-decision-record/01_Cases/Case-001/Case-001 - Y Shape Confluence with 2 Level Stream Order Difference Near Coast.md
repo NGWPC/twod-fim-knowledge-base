@@ -17,10 +17,12 @@ tags:
 stream_orders:
   - "4"
   - "6"
-location:
+location: Haddam, CT
 river_names:
+  - Connecticut
+  - Salmon
 ---
-# Case-001 - Y Shape Confluence with 2 Level Stream Order Difference
+
 
 ![[01_Cases/Case-001/FIG-001.png]]
 
