@@ -14,17 +14,16 @@ Same as ALT-A, but uses a very low normal depth slope (ex. 10e-6).
 
 As slope approaches 0, Qout will approach 0.  Therefore this boundary condition will often behave similarly to a closed boundary.
 
+| Case                      | Link    | Reason                                                            |
+| ------------------------- | ------- | ----------------------------------------------------------------- |
+| [[Case-002 - Lake Reach]] | #reject | [[ISU-004 - Higher WSEL towards the downstream end of the Reach]] |
+
 ### ALT-C - Both KWSE and Reach Normal Depth Slope
 #current
 
 Same as ALT-A, but uses a range of reasonable depths from downstream FIM.
 This has advantage that a lake or coastal reach doesn't get any special treatment
 
-## Linked Cases Summary Table
-
-| Alt | Case | Link | Reason |
-| --- | --- | --- | --- |
-| B | [[Case-002 - Lake Reach]] | #reject | [[ISU-004 - Higher WSEL towards the downstream end of the Reach]] |
 
 ## Decision History
 - 2026-01-27: Started with Alt C Selection
