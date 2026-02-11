@@ -50,7 +50,7 @@ def apply_rasterStyle(layers):
             continue
 
         # Apply style
-        layer.loadNamedStyle("/twodimfim-data/fims_0to6_firststreet_darkened.qml")
+        layer.loadNamedStyle("/home/abdul.siddiqui/data/twod-data/fims_0to6_firststreet_darkened.qml")
 
         # --- Rename layer ---
         path = source.split("|")[0]
