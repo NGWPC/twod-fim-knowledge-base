@@ -8,6 +8,9 @@ A literature review of methods for bathymetry estimation is provided here: https
 ### ALT-A - No handling
 #current
 
+| Case                       | Outcome                                        | Reason                                                           |
+| -------------------------- | ---------------------------------------------- | ---------------------------------------------------------------- |
+| [[Case-015 - Large River]] | [#reject](app://obsidian.md/index.html#reject) | [[ISU-010 - Water-surface Elevations Higher than Benchmark FIM]] |
 ### ALT-B - Regression on bathymetric surveys
 
 A team of researchers at Purdue has continued research in the vein of [this paper](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2020WR029521). Their continued work uses surveyed bathymetric data from the USACE ehydro dataset to train a machine learning regressor that predicts bathymetric data at the reach scale.
