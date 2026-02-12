@@ -38,15 +38,15 @@ There were 8 reaches modeled along an unnamed desert wash near Hiko, Nevada. The
 The gage upstream of State Highway 374 was used to determine discharges for the mainstem. For the tributaries, the StreamStats and USGS Methods for Estimating Magnitude and Frequency of Floods in the Southwestern United States was utilized to develop discharges. StreamStats does not calculate peak flow estimates for this area, so instead, StreamStats was used to determine drainage area and mean elevation values for each tributary catchment. USGS WSP 2433 was then used to predict design discharges from these watershed characteristics. The document does not contain regression equations for the 500-year flood, so the 100-year flows were run through all model domains to test a large inundation and the connection between basins. Reach slopes were determined from the model terrain.
 
 | Reach | Drainage Area (sq mi) | Elev (ft)* | Reach Slope | 100-yr Flow (cms) | Source for Flows |
-| ----- | --------------------- | ---------- | ----------- | ----------------- | ---------------- |
-| 40133 | 17                    | N/A        | 0.03        | 71.2              | USGS Gage        |
-| 40117 | 56.9                  | 5559       | 0.02        | 86                | USGS WSP 2433    |
-| 40136 | 2.8                   | 6432       | 0.04        | 13.2              | USGS WSP 2433    |
-| 40137 | 1.68                  | 6001       | 0.04        | 12                | USGS WSP 2433    |
-| 40139 | 2.16                  | 6105       | 0.04        | 13.1              | USGS WSP 2433    |
-| 40121 | 4.77                  | 5378       | 0.025       | 26.2              | USGS WSP 2433    |
-| 40123 | 4.74                  | 5483       | 0.025       | 25                | USGS WSP 2433    |
-| 40124 | 3.12                  | 5389       | 0.025       | 21                | USGS WSP 2433    |
+| --- | --- | --- | --- | --- | --- |
+| 40133 | 17 | N/A | 0.03 | 71.2 | USGS Gage |
+| 40117 | 56.9 | 5559 | 0.02 | 86 | USGS WSP 2433 |
+| 40136 | 2.8 | 6432 | 0.04 | 13.2 | USGS WSP 2433 |
+| 40137 | 1.68 | 6001 | 0.04 | 12 | USGS WSP 2433 |
+| 40139 | 2.16 | 6105 | 0.04 | 13.1 | USGS WSP 2433 |
+| 40121 | 4.77 | 5378 | 0.025 | 26.2 | USGS WSP 2433 |
+| 40123 | 4.74 | 5483 | 0.025 | 25 | USGS WSP 2433 |
+| 40124 | 3.12 | 5389 | 0.025 | 21 | USGS WSP 2433 |
 ![[01_Cases/Case-012/FIG-002.png]]
 
 While the composite FIM looks reasonable in this location, it must be noted that several reaches spill out into adjacent reaches in this location.  In the image below, for example, flows from 40137 spill into the adjacent 40136.

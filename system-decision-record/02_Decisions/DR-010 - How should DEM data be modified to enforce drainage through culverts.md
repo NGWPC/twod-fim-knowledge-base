@@ -8,9 +8,9 @@ This alternative proposes using DEM data directly from USGS without modifying it
 
 Despite its simplicity, this approach is not always the most conservative approach.  As shown in [[ISU-005 - Divergent flowpath]], unburned culverts can divert flows into divergent flowpaths, leading to underestimation of downstream flood inundation extents.
 
-| Case                             | Outcome | Reason                                                           |
-| -------------------------------- | ------- | ---------------------------------------------------------------- |
-| [[Case-003 - Small culverts]]    | #reject | [[ISU-005 - Divergent flowpath]]                                 |
+| Case | Outcome | Reason |
+| --- | --- | --- |
+| [[Case-003 - Small culverts]] | #reject | [[ISU-005 - Divergent flowpath]] |
 | [[Case-011 - Large Urban River]] | #reject | [[ISU-010 - Water-surface Elevations Higher than Benchmark FIM]] |
 
 ### ALT-B - AGREEDEM

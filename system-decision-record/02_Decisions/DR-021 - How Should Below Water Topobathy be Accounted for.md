@@ -8,8 +8,8 @@ A literature review of methods for bathymetry estimation is provided here: https
 ### ALT-A - No handling
 #current
 
-| Case                       | Outcome                                        | Reason                                                           |
-| -------------------------- | ---------------------------------------------- | ---------------------------------------------------------------- |
+| Case | Outcome | Reason |
+| --- | --- | --- |
 | [[Case-015 - Large River]] | [#reject](app://obsidian.md/index.html#reject) | [[ISU-010 - Water-surface Elevations Higher than Benchmark FIM]] |
 ### ALT-B - Regression on bathymetric surveys
 
