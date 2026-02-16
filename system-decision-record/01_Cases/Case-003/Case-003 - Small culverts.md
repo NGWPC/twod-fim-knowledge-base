@@ -3,7 +3,8 @@ type: case
 case_id: Case-003
 title: Small Culverts
 date_observed: 2026-01-27
-coords: (1796329.9, 2607407.4) [EPSG:5070]
+coordinates_5070: 1796329.9, 2607407.4
+coordinates_4326: 44.505228,-73.140441
 flows:
   - "36.75"
 tags:
@@ -12,6 +13,9 @@ tags:
   - structures
 stream_orders:
   - "1"
+river_names:
+  - Unnamed Tributary
+location: Winooski, VT
 ---
 ## Description
 
@@ -34,24 +38,24 @@ In the upstream area, FIM from the 2D model differs from the 100-year FEMA maps.
 
 2D Model
 
-[[01_Cases/Case-003/FIG-002.png]]
+![[01_Cases/Case-003/FIG-002.png]]
 
-FEMA 100-year floodplain (blue)
+vs FEMA 100-year floodplain.
 [[01_Cases/Case-003/FIG-001.png]]
 ![[FIG-009.png]]
 
-Image of the model DEM in this area
-[[01_Cases/Case-003/FIG-003.png]]
+Image of the model DEM in this area 
+![[01_Cases/Case-003/FIG-003.png]]
 
-And a higher-resolution copy from the source USGS terrain
-[[01_Cases/Case-003/FIG-004.png]]
+The following color palette was used for elevation (meters)
+![[01_Cases/Case-003/FIG-010.png]]
 
 Further downstream, culverts impound flows. In one case, they prevent water from entering the downstream end of the model.
 
-[[FIG-005.png]]
-[[FIG-006.png]]
-[[FIG-007.png]]
-[[FIG-008.png]]
+![[01_Cases/Case-003/FIG-005.png]]
+![[01_Cases/Case-003/FIG-006.png]]
+![[01_Cases/Case-003/FIG-007.png]]
+![[01_Cases/Case-003/FIG-008.png]]
 
 > [!Error] Reject
 > [[DR-010 - How should DEM data be modified to enforce drainage through culverts]] > [[DR-010 - How should DEM data be modified to enforce drainage through culverts#ALT-A - Do nothing|ALT-A - Do nothing]]

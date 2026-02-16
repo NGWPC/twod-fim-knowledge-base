@@ -3,7 +3,8 @@ type: case
 case_id: Case-006
 title: Inflow Boundary Conditions
 date_observed: 2026-02-04
-coords: (1903629, 2354784) [EPSG:5070]
+coordinates_5070: 1903629, 2354784
+coordinates_4326: 42.105287,-72.608837
 flows:
   - "13500"
 tags:
@@ -12,14 +13,17 @@ tags:
   - connecticut
 stream_orders:
   - "6"
+river_names:
+  - Connecticut
+location: Springfield, MA
 ---
 ![[01_Cases/Case-006/FIG-001.png]]
 
 ## Description
 
-- Reach 3463421 modeled
-- Connecticut River at Springfield, MA
-- Discharges developed from USGS 01172000
+This case looks at a mid-sized river, which should be useful for a variety of examples.  Specifically, this area (reach 3463421) was selected to test the impacts of different upstream boundary condition configurations.
+
+Discharges developed from USGS 01172000
 
 ## Experiments
 

@@ -8,6 +8,11 @@ This alternative proposes using DEM data directly from USGS without modifying it
 
 Despite its simplicity, this approach is not always the most conservative approach.  As shown in [[ISU-005 - Divergent flowpath]], unburned culverts can divert flows into divergent flowpaths, leading to underestimation of downstream flood inundation extents.
 
+| Case | Outcome | Reason |
+| --- | --- | --- |
+| [[Case-003 - Small culverts]] | #reject | [[ISU-005 - Divergent flowpath]] |
+| [[Case-011 - Large Urban River]] | #reject | [[ISU-010 - Water-surface Elevations Higher than Benchmark FIM]] |
+
 ### ALT-B - AGREEDEM
 
 The AGREEDEM workflow could be applied here to burn trapezoidal channels into the area around stream centerlines and enforce drainage through culverts.
@@ -26,9 +31,7 @@ https://fema-ffrd.github.io/overflow/user-guide/terrain-conditioning/breach/
 
 Custom code could be written to clip flowpath lines to some buffer around the road network.  A trapezoidal channel could then be imputed in the area around the intersection.
 
-| Alt | Case | Link | Reason |
-| --- | --- | --- | --- |
-| A | [[Case-003 - Small culverts]] | #reject | [[ISU-005 - Divergent flowpath]] |
+
 
 ## Decision History
 - 2026-02-2: Initial draft created

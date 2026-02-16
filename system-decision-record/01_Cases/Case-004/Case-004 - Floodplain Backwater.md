@@ -3,7 +3,8 @@ type: case
 case_id: Case-004
 title: Model Domain Example
 date_observed: 2026-01-27
-coords: (1798555, 2602987) [EPSG:5070]
+coordinates_4326: 44.48438,-73.14014
+coordinates_5070: 1798555, 2602987
 flows:
   - "2344"
 tags:
@@ -11,10 +12,13 @@ tags:
   - domain
 stream_orders:
   - "4"
+river_names:
+  - Winooski
+location: Burlington, VT
 ---
 ## Description
 
- - This case examines a situation where the approach of using the reach divide for the model domain led to FIM underestimation.
+ This site was selected because in the southern edge of the map, the Winooski River floodplain spills into a large overbank area.  This floodplain is relatively far from the stream centerline, adn thus, gets clipped off by some automated domain creation methods.
 
 ![[01_Cases/Case-004/FIG-001.png]]
 
@@ -25,6 +29,8 @@ stream_orders:
 ### [[EXP-005 - Run a Model with Domain Developed from Reach Divide]] for reach 30728
 Comparison to benchmark FIM from FEMA
 ![[01_Cases/Case-004/FIG-002.png]]
+
+Using the divide for model domain development here led to [[ISU-006 - FIM cutting off arbitrarily at edges]]
 
 > [!Error] Reject
 > [[DR-011 - How to Determine Initial Model Domain]] > [[DR-011 - How to Determine Initial Model Domain#ALT-A - Buffer on Reach Divide|ALT-A - Buffer on Reach Divide]]

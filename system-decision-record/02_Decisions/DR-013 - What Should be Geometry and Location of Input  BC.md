@@ -25,7 +25,7 @@ Green reach is being modeled.
 
 | Case | Outcome | Reason |
 | --- | --- | --- |
-| [[Case-006 - Inflow Boundary Conditions]] | #reject | [[ISU-008 - Water-surface Elevation Anomalies]] |
+| [[Case-006 - Mid-sized River]] | #reject | [[ISU-008 - Water-surface Elevation Anomalies]] |
 
 ### ALT-E - A Point at the `Reach Start`
 
@@ -34,7 +34,7 @@ Green reach is being modeled.
 
 | Case | Outcome | Reason |
 | --- | --- | --- |
-| [[Case-006 - Inflow Boundary Conditions]] | #reject | [[ISU-008 - Water-surface Elevation Anomalies]] |
+| [[Case-006 - Mid-sized River]] | #reject | [[ISU-008 - Water-surface Elevation Anomalies]] |
 
 ### ALT-F - At Perpendicular Line at the `Reach Start`
 

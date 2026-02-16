@@ -53,3 +53,10 @@ All blue reaches are `adjacent reaches` for green reach
 
 #### Stage Transfer Line (STL)
 A line that is within the domain of both upstream and downstream reach models and which is used to transfer WSEL from the downstream model to an upstream model.
+
+#### FIM Transition Zone
+The `Transition Zone` for a reach is the area between the `Stage Transfer Line` and the outflow line.  
+
+The yellow area in the image below shows the `Transition Zone` for this reach.
+![[00_Project_Overview/FIG-007.png]]
+
