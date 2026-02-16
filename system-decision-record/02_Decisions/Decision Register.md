@@ -18,7 +18,7 @@ Status meanings:
 | | | | | |
 | [[DR-002 - What is the Definition of Benchmark FIM for Model Connectivity Testing]] | [[DR-002 - What is the Definition of Benchmark FIM for Model Connectivity Testing#ALT-A - Custom 2D Model\|ALT-A - Custom 2D Model]] | Alternate Selected | | |
 | | | | | |
-| [[DR-003 - Where and What Boundary Conditions to Apply Along the Edge Cells]] | [[DR-003 - Where and What Boundary Conditions to Apply Along the Edge Cells#ALT-C - D/S Model FIM Informed Edge Cells get Reach Centerline Slope\|ALT-C - D/S Model FIM Informed Edge Cells get Reach Centerline Slope]] | Alternate Selected | | |
+| [[DR-003 - Where and What Boundary Conditions to Apply Along the Edge Cells]] | [[DR-003 - Where and What Boundary Conditions to Apply Along the Edge Cells#ALT-D - D/S Model FIM Informed Edge Cells get Freefall; Terminal Reach Edge Cells get Reach Centerline Slope.\|ALT-D - D/S Model FIM Informed Edge Cells get Freefall; Terminal Reach Edge Cells get Reach Centerline Slope.]] | Alternate Selected | 02-16-2026 | |
 | | | | | |
 | [[DR-004 - Strategy of Pixel Value Calculation For Composite Maps]] | [[DR-004 - Strategy of Pixel Value Calculation For Composite Maps#ALT-D - Pixelwise Max\|ALT-D - Pixelwise Max]] | Alternate Selected | | |
 | | | | | |
