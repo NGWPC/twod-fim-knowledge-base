@@ -31,5 +31,5 @@ In this approach the assumption is that a course model would have been already e
 A bounding box on the inflow line, the downstream Stage Transfer Line (when available), and the buffered centerline from ALT-B is used for the model domain.
 
 ## Decision History
-- 2026-02-2: Initial draft created
+- 2026-02-02: Initial draft created
 - 2026-02-12: ALT-D selected for practicality reasons. This is a tentative decision with more research needed.

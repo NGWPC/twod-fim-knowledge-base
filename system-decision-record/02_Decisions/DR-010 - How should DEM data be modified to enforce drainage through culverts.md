@@ -33,4 +33,4 @@ Custom code could be written to clip flowpath lines to some buffer around the ro
 
 
 ## Decision History
-- 2026-02-2: Initial draft created and ALT-A selected as default
+- 2026-02-02: Initial draft created and ALT-A selected as default

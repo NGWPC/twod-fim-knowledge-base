@@ -28,5 +28,5 @@ In following picture, green is ND run, and blue is DS model, pink is KWSE run
 
 ## Decision History
 
-- 2025-02-09: First selection of ALT-A based on judgement
-- 2025-01-09: Switched to ALT-B because of failures of ALT-A
+- 2025-01-09: First selection of ALT-A based on judgement
+- 2025-02-09: Switched to ALT-B because of failures of ALT-A
