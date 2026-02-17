@@ -62,7 +62,7 @@ Status meanings:
 | | | | | |
 | [[DR-024 - What Should be Thresholds for Merging Short Reaches]] | [[DR-024 - What Should be Thresholds for Merging Short Reaches#ALT-A - 5% Drainage Area Difference, Upto 3 miles, Stream Order 3 or up\|ALT-A - 5% Drainage Area Difference, Upto 3 miles, Stream Order 3 or up]] | Alternate Selected | 2026-02-07 | |
 | | | | | |
-| [[DR-025 - What Should be an STL for a Reach]] | [[DR-025 - What Should be an STL for a Reach#ALT-B - WSEL Contour From D/S FIM at `Reach Outlet`\|ALT-B - WSEL Contour From D/S FIM at `Reach Outlet`]] | Alternate Selected | 2026-02-05 | |
+| [[DR-025 - What Should be the Geometry of STL]] | [[DR-025 - What Should be the Geometry of STL#ALT-B - WSEL Contour From D/S FIM at `Reach Outlet`\|ALT-B - WSEL Contour From D/S FIM at `Reach Outlet`]] | Alternate Selected | 2026-02-05 | |
 | | | | | |
 | [[DR-026 - Should There be 1 STL per Reach or 1 STL per Reach per RUN]] | [[DR-026 - Should There be 1 STL per Reach or 1 STL per Reach per RUN#ALT-A - 1 STL Per Reach From Largest Model Run\|ALT-A - 1 STL Per Reach From Largest Model Run]] | Alternate Selected | 2026-02-05 | |
 | | | | | |

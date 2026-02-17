@@ -4,8 +4,9 @@ This DR is only relevant for line based alternatives in  [[DR-013 - What Should 
 ## Alternatives
 
 ### ALT-A - 100m Wide 
-#current
+#current 
 
+Set inflow line width to 100 m as a standard default so line-based inflow geometry remains consistent across applicable reaches.
 
 ## Decision History
 - 2026-02-02: Retroactively document current approach (ALT-A)

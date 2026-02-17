@@ -1,11 +1,15 @@
 ## Description
-Define whether the KWSE scenario should be modeled for all or any reaches.
+Define whether KWSE scenarios should be modeled for all reaches or only selected reaches.
 
+This decision establishes whether downstream-stage-aware scenarios are always represented in the library rather than treated as optional special cases.
 ## Alternatives
 ### ALT-A - For All Reaches
-
 #current
+
+Model KWSE scenarios for all reaches so downstream-stage sensitivity is represented consistently across the national library.
+
 ### ALT-B - For No Reach
+This option reduces library size and modeling effort significantly, but it assumes downstream-stage variability can be ignored in all reaches.
 
 | Case | Outcome | Reason |
 | --- | --- | --- |
