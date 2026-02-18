@@ -290,7 +290,7 @@ Terrain conditioning related uncertainties are still unresolved but they are bei
 
 **How should DEM data be modified to enforce drainage through culverts?** (Appendix D, Decision #10) compared no-conditioning and multiple conditioning workflows (AGREEDEM, stream burning, breaching, and custom methods), but the current recorded baseline remains *ALT-A - Do nothing*. Case #3 and Case #11 nevertheless showed flow divergence around culvert and water pooling behind  culvert when culvert crossings were unresolved in the DEM, so this remains an explicit quality limitation in our workflow.
 
-![Divergent flowpath due to unresolved crossings](Case-003_FIG-002.png)
+![[Pasted image 20260218122432.png]]
 *Figure TBD. Flow diverged around culvert midway at Reach 30704 due to unburden culverts in DEM in Case #3.*
 
 Similarly, **How should below water topobathy be accounted for?** (Appendix D, Decision #21) currently remains at *ALT-A - No handling*, despite testing that clearly showed sensitivity of FIM to topobathy in Case #15. This is another known limitation carried forward into prototype planning.
