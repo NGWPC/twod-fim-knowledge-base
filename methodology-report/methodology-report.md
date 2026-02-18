@@ -220,7 +220,8 @@ Terminology used in this report follows definitions provided in 'Appendix B - Gl
 The figures in this report use a consistent symbology. This is defined once here to avoid repeating legends in every figure.
 
 ![[Pasted image 20260218123042.png]]
-Figure 7.
+Figure 7. All figures in this report follow this symbology unless noted otherwise.
+
 ### Pilot Cases
 Pilot locations were selected to stress the methodology and different design decisions across contrasting hydraulic and physiographic conditions rather than to maximize geographic count. The set includes small rural systems, steep headwaters, urban/structure-influenced corridors, very wide floodplains, arid channels, different shape confluences or river networks, and lake/coastal terminal settings. The baseline methodology as well targeted deviation experiments were then executed against these cases to discover and isolate failures modes such as WSEL mismatch at tie-ins, edge leakage, inflow artifacts, etc. This is inline with SDR workflow described above.
 
