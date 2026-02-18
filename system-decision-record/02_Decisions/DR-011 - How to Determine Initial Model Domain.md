@@ -7,11 +7,11 @@ The decision on how to catch smaller domains and extend them is recorded separat
 ### ALT-A - Buffer on Reach Divide
 Build initial domain by buffering reach divide geometry from hydrofabric.
 
-| Case                                | Outcome | Reason                                             |
-| ----------------------------------- | ------- | -------------------------------------------------- |
-| [[Case-004 - Floodplain Backwater]] | #reject | Alt A led to a truncated floodplain.               |
-| [[Case-015 - Large River]]          | #reject | [[ISU-006 - FIM cutting off arbitrarily at edges]] |
-| [[Case-015 - Large River]]          | #reject | [[ISU-009 - Model Domain is Excessively Large]]    |
+| Case | Outcome | Reason |
+| --- | --- | --- |
+| [[Case-004 - Floodplain Backwater]] | #reject | Alt A led to a truncated floodplain. |
+| [[Case-015 - Large River]] | #reject | [[ISU-006 - FIM cutting off arbitrarily at edges]] |
+| [[Case-015 - Large River]] | #reject | [[ISU-009 - Model Domain is Excessively Large]] |
 
 ### ALT-B - Buffer on Centerline
 
@@ -27,6 +27,10 @@ In this approach, the a bounding box is taken on some buffer around the stream c
 In this approach the assumption is that a course model would have been already executed for the reach, which will give a maximum FIM and the domain in actual modeling can simply be BBOX of the coarse model FIM.
 
 ### ALT-D - Bounding Box of Inflow BC, d/s `STL`, and Buffered Centerline
+#current
+A bounding box on the inflow line, the downstream Stage Transfer Line (when available), and the buffered centerline from ALT-B is used for the model domain.
+
+### ALT-E - Bounding Box of Inflow BC, d/s `STL`, and Buffered Centerline, Where Buffer Lengths = STL Length
 #current
 A bounding box on the inflow line, the downstream Stage Transfer Line (when available), and the buffered centerline from ALT-B is used for the model domain.
 

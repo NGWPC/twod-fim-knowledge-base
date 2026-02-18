@@ -5,7 +5,7 @@ This decision decide if Stage transfer should take place at model domain bbox, a
 
 ## Alternatives
 
-### ALT-A - At Model Domain Edge Cells that Inetersects D/S Reach FIM
+### ALT-A - At Model Domain Edge Cells that Intersects D/S Reach FIM
 At the intersection of model domain bbox and D/S Reach FIM. This has benefit that there will be no transition zone. 
 This would cause sudden floodplain width increase if there is a big flow increase from upstream to downstream. (See picture in description. We still need to back it by evidence.)
 
