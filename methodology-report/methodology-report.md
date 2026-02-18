@@ -227,7 +227,7 @@ Pilot locations were selected to stress the methodology and different design dec
 
 Figure 8 depicts location of all cases. Table 3 provides case number, location, and title for these cases. Appendix C provides full details for each case.
 
-*![[Pasted image 20260216133325.png]]Figure 8. Locations of pilot study cases. For full detail about each case refer to Appendix C.
+![[pilot_cases_locations.png]]Figure 8. Locations of pilot study cases. For full detail about each case refer to Appendix C.
 
 **Table 3. Case Index**
 
@@ -300,7 +300,7 @@ Terrain conditioning related uncertainties are still unresolved but they are bei
 
 **How should DEM data be modified to enforce drainage through culverts?** (Appendix D, Decision #10) compared no-conditioning and multiple conditioning workflows (AGREEDEM, stream burning, breaching, and custom methods), but the current recorded baseline remains *ALT-A - Do nothing*. Case #3 and Case #11 nevertheless showed flow divergence around culvert and water pooling behind  culvert when culvert crossings were unresolved in the DEM, so this remains an explicit quality limitation in our workflow.
 
-![[Pasted image 20260218122432.png]]
+![[culvert-issue.png]]
 *Figure TBD. Flow diverged around culvert midway at Reach 30704 due to unburden culverts in DEM in Case #3.*
 
 Similarly, **How should below water topobathy be accounted for?** (Appendix D, Decision #21) currently remains at *ALT-A - No handling*, despite testing that clearly showed sensitivity of FIM to topobathy in Case #15. This is another known limitation carried forward into prototype planning.
