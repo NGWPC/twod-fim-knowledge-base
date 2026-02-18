@@ -165,16 +165,27 @@ Based on this survey, LISFLOOD-FP, TRITON, and SFINCS remain active candidates. 
 While final model selection has not been completed, a model was needed for pilot modeling.  In our initial model review, it appeared that only LISFLOOD-FP would have sufficient boundary condition control for our method to work, and we pursued pilot modeling in LISFLOOD-FP. Since then, we have learned more about SFINCS and TRITON, and we determined that they would meet our needs. Furthermore, we learned of the active development that is going on in the SFINCS ecosystem. This makes SFINCS a promising candidate, and in the future we plan to explore SFINCS further. TRITON, as of now, is the least preferred option due to its more limited feature set than the other two models.
 
 ### Model Development WebApp
-To move from the conceptual framework to a testable methodology, this phase required some lose tooling that could fast track building many reach models for testing and provide somewhat consistency in model development. For this purpose, a draft StreamLit Python App was created to automate model development. This app was used throughout the testing and iteration process.
-
-The pilot app was intentionally loose and focused on repeatable preprocessing and setup steps such as generating reach domains, inflow and outflow boundary geometries, stage transfer lines (STLs), and aligned terrain/roughness rasters. It also templated run configurations for discharge and downstream-stage combinations so cases could be regenerated quickly as decision rules changed. During methodology development, design assumptions were still moving; a thin, modular toolchain allowed fast iteration without spending too much time early on coding solutions. It also made comparisons across test cases more defensible because geometry and preprocessing logic were applied consistently.
-
-Published large-scale automation efforts (for example, HydroMT-SFINCS workflows in NHESS) support this direction and provide external precedent that 2D setup can be automated when ruleset is explicit and reproducible.
-
-\<narrative on functionality of the web app either here or in appendix>
+To move from the conceptual framework to a testable methodology, this phase required some lose tooling that could fast track building many reach models for testing and provide somewhat consistency in model development. For this purpose, a draft Streamlit Python App was created to automate model development. This app was used throughout the testing and iteration process.
 
 ![[Pasted image 20260218122954.png]]
 *Figure 6. Pilot WebApp developed to automate model construction and review.*
+
+During methodology development, design assumptions were still moving; a thin, modular toolchain allowed fast iteration without spending too much time early on coding solutions. Getting this tool out of a scripting environment also allowed the team to engage hydraulic engineers to assist in model development and validation. It also made comparisons across test cases more defensible because geometry and preprocessing logic were applied consistently.
+
+The WebApp had several core features
+ - Import hydrofabric data for a specific reach (centerline, divide, adjacent reaches, etc)
+ - Create a grid-aligned model domain
+ - Download USGS 3DEP data
+ - Download MRLC LULC data and convert to Manning's roughness
+ - Write LISFLOOD-FP model files
+ - Track all model and run metadata
+ - Transfer water surface elevations between models
+ - Generate stage transfer lines
+ - Execute LISFLOOD-FP models in a lightweight, containerized environment
+
+While code was kept intentionally lightweight and flexible during this pilot study, this work give the project team a headstart in automation. Many core functions, such as hydrofabric subsetting, data downloads, grid development, and model post-processing can be directly copied to the next stage of this project and may only require modest revisions to optimize performance. The model metadata schema has a few lessons learned, but will only require minor modifications for the next stage. A Docker container for LISFLOOD-FP is ready for use when running models asynchronously in the cloud.
+
+While the intention of this WebApp was to aid in methodology development, we see it having continued value for the rest of this project. Two tooling gaps identified during the Ripple1d project were the ability to review models and rerun models after making modifications. In Ripple1D, QGIS map templates were used to aid in model review. However, syncing the large datasets supporting these maps between the cloud and a client machine was cumbersome. Furthermore, QGIS is unable to view data from certain file formats (e.g., text, json, etc). By developing this WebApp, we layed the groundwork for a model review platform that can display all relevant model data without large downloads from a convenient, web-based portal. Beyond model review, the WebApp allows the forecasting community a channel to modify models, update run parameters, and request new map generation.  If model issues are detected after the bulk of production occurs, erroneous models can be corrected in the app, re-run, and have their FIM libraries updated.
 
 ### System Decision Records (SDR)
 During initial pilot development, the WebApp made it possible to run many more cases quickly, and the main bottleneck shifted from model setup to decision governance: avoiding cycles on repeated questions and keeping rationale tied to evidence as edge cases accumulated.
