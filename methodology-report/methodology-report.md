@@ -175,7 +175,7 @@ Published large-scale automation efforts (for example, HydroMT-SFINCS workflows 
 
 \<narrative on functionality of the web app either here or in appendix>
 
-![Pilot tooling landing page / workflow overview](image7.png)
+![[Pasted image 20260218122954.png]]
 *Figure 6. Pilot WebApp developed to automate model construction and review.*
 
 ### System Decision Records (SDR)
@@ -210,7 +210,7 @@ Terminology used in this report follows definitions provided in 'Appendix B - Gl
 ### Symbology
 The figures in this report use a consistent symbology. This is defined once here to avoid repeating legends in every figure.
 
-\<picture of symbology, might be as a table>
+![[Pasted image 20260218123042.png]]
 Figure 7.
 ### Pilot Cases
 Pilot locations were selected to stress the methodology and different design decisions across contrasting hydraulic and physiographic conditions rather than to maximize geographic count. The set includes small rural systems, steep headwaters, urban/structure-influenced corridors, very wide floodplains, arid channels, different shape confluences or river networks, and lake/coastal terminal settings. The baseline methodology as well targeted deviation experiments were then executed against these cases to discover and isolate failures modes such as WSEL mismatch at tie-ins, edge leakage, inflow artifacts, etc. This is inline with SDR workflow described above.
@@ -221,23 +221,23 @@ Figure 8 depicts location of all cases. Table 3 provides case number, location, 
 
 **Table 3. Case Index**
 
-| Case Number | Location        | Title                                                   |
-| ----------- | --------------- | ------------------------------------------------------- |
-| Case #1     | Haddam, CT      | Y Shape Confluence with 2 Level Stream Order Difference |
-| Case #2     | Burlington, VT  | Lake Reach                                              |
-| Case #3     | Winooski, VT    | Small Culverts                                          |
-| Case #4     | Burlington, VT  | Model Domain Example                                    |
-| Case #5     | Richmond, VT    | Model Domain Example 2                                  |
-| Case #6     | Springfield, MA | Inflow Boundary Conditions                              |
-| Case #7     | Binghamton, NY  | Complex Semi-urban Confluence Along Low-Gradient River  |
-| Case #8     | Rosedale, MS    | Very Wide Floodplain                                    |
-| Case #9     | Brinson, GA     | Rural Unconfined Farm Fields                            |
-| Case #10    | Quartz, CO      | Steep confined Mountainous Terrain                      |
-| Case #11    | Trenton, NJ     | Large Urban River                                       |
-| Case #12    | Hiko, NV        | Desert Wash                                             |
-| Case #13    | Lake Murray, SC | Large Inland Waterbody                                  |
-| Case #14    | Plum Island, MA | Coastal Area                                            |
-| Case #15    | Evansville, IN  | Large River                                             |
+| Case Number | Location | Title |
+| --- | --- | --- |
+| Case #1 | Haddam, CT | Y Shape Confluence with 2 Level Stream Order Difference |
+| Case #2 | Burlington, VT | Lake Reach |
+| Case #3 | Winooski, VT | Small Culverts |
+| Case #4 | Burlington, VT | Model Domain Example |
+| Case #5 | Richmond, VT | Model Domain Example 2 |
+| Case #6 | Springfield, MA | Inflow Boundary Conditions |
+| Case #7 | Binghamton, NY | Complex Semi-urban Confluence Along Low-Gradient River |
+| Case #8 | Rosedale, MS | Very Wide Floodplain |
+| Case #9 | Brinson, GA | Rural Unconfined Farm Fields |
+| Case #10 | Quartz, CO | Steep confined Mountainous Terrain |
+| Case #11 | Trenton, NJ | Large Urban River |
+| Case #12 | Hiko, NV | Desert Wash |
+| Case #13 | Lake Murray, SC | Large Inland Waterbody |
+| Case #14 | Plum Island, MA | Coastal Area |
+| Case #15 | Evansville, IN | Large River |
 
 ### Core Method Decisions and Evidence
 This subsection explains the decision logic behind the current methodology baseline. It follows the same implementation sequence used during model development. For each decision, it summarizes the design question, the alternatives considered, how evidence from testing changed the decision over time, and which alternative is currently selected. Here, an alternative means one candidate option within a decision.
@@ -327,7 +327,7 @@ During the middle phase of methodology development, the team recognized that the
 **Table TBD. Decision Register (Current Methods)**
 
 | Title | Number | Current Alternative |
-| ----- | ------ | ------------------- |
+| --- | --- | --- |
 | What Should be Geometry and Location of Input BC | Decision #13 | ALT-A - At Perpendicular Line Some Distance Away on Highest Drainage Area `Upstream Reach` |
 | What Should be Geometry and Location of Input BC for `Headwater Reaches` | Decision #14 | ALT-B - At Points Distributed Along the Reach |
 | What Line Width Should be Used for Inflow BC Line | Decision #15 | ALT-A - 100m Wide |
@@ -641,15 +641,15 @@ This case was selected to test model-domain construction where overbank floodpla
 ![Case #5 representative figure](C5.png)
 *Figure C5. Representative view for Case #5.*
 
-| Fact                    | Value                |
-| ----------------------- | -------------------- |
-| Case Number             | Case #5               |
-| Location                | Richmond, VT         |
-| Date Observed           | 2026-01-27           |
-| Coordinates (EPSG:5070) | 1811265, 2594919     |
+| Fact | Value |
+| --- | --- |
+| Case Number | Case #5 |
+| Location | Richmond, VT |
+| Date Observed | 2026-01-27 |
+| Coordinates (EPSG:5070) | 1811265, 2594919 |
 | Coordinates (EPSG:4326) | 44.402896,-73.035427 |
-| Flows (cms)                   | 52.8                 |
-| Stream Orders           | 1                    |
+| Flows (cms) | 52.8 |
+| Stream Orders | 1 |
 
 **Description**
 This case was selected to examine headwater tributary confluence behavior where water can pool near a common outlet, affecting automated domain-expansion logic.
@@ -695,15 +695,15 @@ This case was selected to stress methodology in a complex low-gradient semi-urba
 ![Case #8 representative figure](C8.png)
 *Figure C8. Representative view for Case #8.*
 
-| Fact                    | Value              |
-| ----------------------- | ------------------ |
-| Case Number             | Case #8             |
-| Location                | Rosedale, MS       |
-| Date Observed           | 2026-02-09         |
-| Coordinates (EPSG:5070) | 449756,1201331     |
+| Fact | Value |
+| --- | --- |
+| Case Number | Case #8 |
+| Location | Rosedale, MS |
+| Date Observed | 2026-02-09 |
+| Coordinates (EPSG:5070) | 449756,1201331 |
 | Coordinates (EPSG:4326) | 33.74552,-91.13034 |
-| Flows (cms)             | N/A                |
-| Stream Orders           | 10                 |
+| Flows (cms) | N/A |
+| Stream Orders | 10 |
 
 **Description**
 This case was selected to test very wide-floodplain behavior along the Mississippi River, where floodplain widths of roughly 12–22 km challenge domain and boundary rules.
@@ -713,15 +713,15 @@ This case was selected to test very wide-floodplain behavior along the Mississip
 ![Case #9 representative figure](C9.png)
 *Figure C9. Representative view for Case #9.*
 
-| Fact                    | Value              |
-| ----------------------- | ------------------ |
-| Case Number             | Case #9             |
-| Location                | Brinson, GA        |
-| Date Observed           | 2026-02-11         |
-| Coordinates (EPSG:5070) | 1070234,936890     |
+| Fact | Value |
+| --- | --- |
+| Case Number | Case #9 |
+| Location | Brinson, GA |
+| Date Observed | 2026-02-11 |
+| Coordinates (EPSG:5070) | 1070234,936890 |
 | Coordinates (EPSG:4326) | 30.93866,-84.74584 |
-| Flows (cms)             | N/A                |
-| Stream Orders           | 3, 1               |
+| Flows (cms) | N/A |
+| Stream Orders | 3, 1 |
 
 **Description**
 This case was selected to evaluate methodology performance in small, rural, unconfined agricultural channels.
@@ -731,15 +731,15 @@ This case was selected to evaluate methodology performance in small, rural, unco
 ![Case #10 representative figure](C10.png)
 *Figure C10. Representative view for Case #10.*
 
-| Fact                    | Value               |
-| ----------------------- | ------------------- |
-| Case Number             | Case #10             |
-| Location                | Quartz, CO          |
-| Date Observed           | 2026-02-11          |
-| Coordinates (EPSG:5070) | -915338,1776607     |
+| Fact | Value |
+| --- | --- |
+| Case Number | Case #10 |
+| Location | Quartz, CO |
+| Date Observed | 2026-02-11 |
+| Coordinates (EPSG:5070) | -915338,1776607 |
 | Coordinates (EPSG:4326) | 38.56847,-106.61573 |
-| Flows (cms)             | N/A                 |
-| Stream Orders           | 4, 1                |
+| Flows (cms) | N/A |
+| Stream Orders | 4, 1 |
 
 **Description**
 This case was selected to evaluate steep, confined mountainous terrain with multiple tributary inflows.
@@ -749,15 +749,15 @@ This case was selected to evaluate steep, confined mountainous terrain with mult
 ![Case #11 representative figure](C11.png)
 *Figure C11. Representative view for Case #11.*
 
-| Fact                    | Value                |
-| ----------------------- | -------------------- |
-| Case Number             | Case #11              |
-| Location                | Trenton, NJ          |
-| Date Observed           | 2026-02-11           |
-| Coordinates (EPSG:5070) | 1776154.1,2110466.2  |
+| Fact | Value |
+| --- | --- |
+| Case Number | Case #11 |
+| Location | Trenton, NJ |
+| Date Observed | 2026-02-11 |
+| Coordinates (EPSG:5070) | 1776154.1,2110466.2 |
 | Coordinates (EPSG:4326) | 40.215714,-74.770855 |
-| Flows (cms)             | N/A                  |
-| Stream Orders           | 6, 3                 |
+| Flows (cms) | N/A |
+| Stream Orders | 6, 3 |
 
 **Description**
 This case was selected as a large urban-river testbed to assess structure-influenced hydraulics and culvert/bridge handling strategies.
@@ -767,15 +767,15 @@ This case was selected as a large urban-river testbed to assess structure-influe
 ![Case #12 representative figure](C12.png)
 *Figure C12. Representative view for Case #12.*
 
-| Fact                    | Value               |
-| ----------------------- | ------------------- |
-| Case Number             | Case #12             |
-| Location                | Hiko, NV            |
-| Date Observed           | 2026-02-12          |
-| Coordinates (EPSG:5070) | -1681776,1777038    |
+| Fact | Value |
+| --- | --- |
+| Case Number | Case #12 |
+| Location | Hiko, NV |
+| Date Observed | 2026-02-12 |
+| Coordinates (EPSG:5070) | -1681776,1777038 |
 | Coordinates (EPSG:4326) | 37.49279,-115.34133 |
-| Flows (cms)             | N/A                 |
-| Stream Orders           | 3, 2, 1             |
+| Flows (cms) | N/A |
+| Stream Orders | 3, 2, 1 |
 
 **Description**
 This case was selected to evaluate desert-wash behavior, where nonstandard morphology and adjacent-reach interactions can challenge hydrofabric-based domain logic.
@@ -785,15 +785,15 @@ This case was selected to evaluate desert-wash behavior, where nonstandard morph
 ![Case #13 representative figure](C13.png)
 *Figure C13. Representative view for Case #13.*
 
-| Fact                    | Value              |
-| ----------------------- | ------------------ |
-| Case Number             | Case #13            |
-| Location                | Lake Murray, SC    |
-| Date Observed           | 2026-02-12         |
-| Coordinates (EPSG:5070) | 1334048,1325182    |
+| Fact | Value |
+| --- | --- |
+| Case Number | Case #13 |
+| Location | Lake Murray, SC |
+| Date Observed | 2026-02-12 |
+| Coordinates (EPSG:5070) | 1334048,1325182 |
 | Coordinates (EPSG:4326) | 34.06732,-81.37340 |
-| Flows (cms)             | N/A                |
-| Stream Orders           | 1, 2, 5, 6         |
+| Flows (cms) | N/A |
+| Stream Orders | 1, 2, 5, 6 |
 
 **Description**
 This case was selected to develop and test methodology for large inland waterbody settings such as lakes and reservoirs.
@@ -803,15 +803,15 @@ This case was selected to develop and test methodology for large inland waterbod
 ![Case #14 representative figure](C14.png)
 *Figure C14. Representative view for Case #14.*
 
-| Fact                    | Value              |
-| ----------------------- | ------------------ |
-| Case Number             | Case #14            |
-| Location                | Plum Island, MA    |
-| Date Observed           | 2026-02-12         |
-| Coordinates (EPSG:5070) | 2025825,2462203    |
+| Fact | Value |
+| --- | --- |
+| Case Number | Case #14 |
+| Location | Plum Island, MA |
+| Date Observed | 2026-02-12 |
+| Coordinates (EPSG:5070) | 2025825,2462203 |
 | Coordinates (EPSG:4326) | 42.72671,-70.81783 |
-| Flows (cms)             | N/A                |
-| Stream Orders           | 1, 2, 3            |
+| Flows (cms) | N/A |
+| Stream Orders | 1, 2, 3 |
 
 **Description**
 This case was selected to develop and test methodology for coastal boundary settings.
@@ -821,15 +821,15 @@ This case was selected to develop and test methodology for coastal boundary sett
 ![Case #15 representative figure](C15.png)
 *Figure C15. Representative view for Case #15.*
 
-| Fact                    | Value              |
-| ----------------------- | ------------------ |
-| Case Number             | Case #15            |
-| Location                | Evansville, IN     |
-| Date Observed           | 2026-02-12         |
-| Coordinates (EPSG:5070) | 716490,1679388     |
+| Fact | Value |
+| --- | --- |
+| Case Number | Case #15 |
+| Location | Evansville, IN |
+| Date Observed | 2026-02-12 |
+| Coordinates (EPSG:5070) | 716490,1679388 |
 | Coordinates (EPSG:4326) | 37.87805,-87.75769 |
-| Flows (cms)             | N/A                |
-| Stream Orders           | 7                  |
+| Flows (cms) | N/A |
+| Stream Orders | 7 |
 
 **Description**
 This case was selected as a large-river testbed with a wide floodplain and available surveyed bathymetry to evaluate domain rules and stage behavior.
