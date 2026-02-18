@@ -27,6 +27,15 @@ location: Burlington, VT
 ## Experiments
 
 ### [[EXP-005 - Run a Model with Domain Developed from Reach Divide]] for reach 30728
+
+#### Decision Register:   e043d37
+
+Notes:
+ - Decision register was novel at this time. Register commit is approximate.
+
+The reach divide was buffered 100 meters to yield the following domain.  The reach divide is shown in the black shaded area.
+![[01_Cases/Case-004/FIG-003.png]]
+
 Comparison to benchmark FIM from FEMA
 ![[01_Cases/Case-004/FIG-002.png]]
 
