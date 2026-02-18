@@ -367,40 +367,181 @@ During the middle phase of methodology development, the team recognized that the
 | How to Mark Reaches as Lake and Coastal Reaches | Decision #7 | — |
 
 ## Proposed Automation Workflow
-This workflow is under development and will be refined as decisions are finalized. It is designed to translate the methodology into a repeatable national-scale pipeline.
-
-![Proposed production framework](image44.jpeg)
-*Figure TBD. Proposed production framework for automated 2D FIM libraries.*
-
-### Coarse Modeling
-Coarse simulations are used to estimate maximum flood extents and to derive a hydraulic reach network that reflects actual inundation sources. Coarse outputs also seed initial stage surfaces for lake/coastal reaches and help identify areas where the simple reach-based framework is likely to fail.
-
-![Coarse modeling workflow](image45.jpeg)
-*Figure TBD. Coarse modeling workflow used to inform reach network and STL placement.*
-
-### Initial Model Creation
-For each reach, the pipeline generates inflow geometry, a model domain, a stage transfer line, and initial raster inputs. DEM and roughness rasters are prepared at 10 m resolution, and conditioning rules are applied where culverts or obstructions are likely. Domain expansion rules ensure that flood extents are not truncated at model edges.
-
-![Initial model creation workflow](image46.jpeg)
-*Figure TBD. Initial model creation workflow.*
-
-### Simulation Execution
-Simulation files are generated automatically for each discharge and downstream stage combination. Runs proceed downstream-to-upstream to propagate stage transfer. Quasi-steady state is evaluated using a consistent criterion. Outputs are converted into FIM rasters and stored as per-reach libraries for later mosaicking.
 
 
-### Data Model
-From an operational standpoint, the library structure should remain consistent with Flows2FIM conventions: a directory per reach, subdirectories per downstream stage (WSE) level, and discharge‑indexed rasters (plus a domain mask). Maintaining this structure ensures libraries remain composable in near real time and simplifies cloud storage and retrieval.
+### Process Overview
 
-[talk about data model]
+![](workflow-image1.jpeg)
+Figure 1. Overview of the proposed automation workflow.
 
-![Simulation execution workflow](image47.jpeg)
-*Figure TBD. Simulation execution workflow.*
+Our proposed production workflow defines a standardized repeatable process for generating flood models and FIM libraries. The workflow is documented through a series of diagrams that describe each processing step, from data acquisition and preprocessing through model execution and product generation. A more hands on step-by-step example is also provided in the next section.
 
-## Step-by-Step Example
-[Placeholder: worked example with embedded QGIS maps and model inputs/outputs.]
+The production workflow is initialized by querying network database for a list of `terminal reaches`. These are reaches that drain to a) a coast, b) an area outside the administrative boundaries of the US, or c) a large inland water body. Starting with a single reach, a model is developed, and a library of FIM is generated for a variety of downstream conditions and reach discharges. These processing steps are detailed in the following subsections. Once a single reach is completed, the process then repeats for the next set of upstream reaches or another terminal reach.
 
-### Comparison with 2D Map for the Area
-[Placeholder: side-by-side comparison and discussion of differences.]
+### Create Reach Model
+The goal of the Create Reach Model step is to develop a **reusable** LISFLOOD-FP model that will be able to simulate any flood condition of interest. This is accomplished by making an initial estimate of a model domain, running the largest expected flood through it, and expanding the domain if necessary.
+
+![](workflow-image2.jpeg)
+Figure 2. Detailed overview of reach model development.
+
+#### Generate Geometries
+
+![](workflow-image3.jpeg)
+Figure 3. Detailed overview of the geometry generation process.
+
+The Generate Geometries step makes an initial guess at an appropriate model domain and creates vector datasets required to simulate a flood in that area. Specifically, these vectors are a) an inflow line, b) an outflow line, and c) a stage transfer line. This step relies on the hydrofabric flowpaths layer, model outputs from downstream models created by this framework, and a layer delineating areas where it is acceptable for terminal reaches to have outflows. That last layer will be compiled from several datasets, such as a coastal waters dataset (e.g., Natural Earth, TIGER, etc), a US administrative boundaries dataset (e.g., Natural Earth, TIGER, etc), and a dataset of the extents of large waterbodies in the US (e.g., NHDPlus Waterbodies).
+
+Using the hydrofabric flowpaths layer, the centerline for the reach of interest is extracted. This reach is buffered by a multiplier on bankfull width, which can be developed from regression equations. Next, the centerline of the largest-drainage-area upstream reach is extracted from the hydrofabric. A line with length equal to bankfull width is placed 25% up the length of the upstream centerline perpendicular to the line. This line becomes the inflow boundary condition. When the reach is a terminal reach, the bounding box of the buffered centerline and the inflow line is taken, with an optional additional buffer, and used for the model domain. When a downstream reach stage transfer line is available, this geometry is added to the bounding box prior to the optional buffer.
+
+To develop an outflow boundary condition line, an acceptable outflow area is designated, and anywhere that area overlaps an edge of the model domain is set as an outflow boundary condition line. When the reach is a terminal reach, the acceptable outflow area is determined from the composite layer described in the first paragraph of this section. When a reach has a downstream model available, the downstream model's largest FIM extents are used for the acceptable outflow area.
+
+#### Download Source Data
+
+Next, gridded data for the model domain is obtained. In order to ensure that all gridded datasets line up both within model and between models, the model domain bounds are snapped to the nearest multiple of the model resolution with snapping always favoring a larger domain. For example, if a domain had a minimum x value of 147 meters, the minimum x value would be snapped to 140 meters. Conversely, if a domain had a maximum x value of 147 meters, the maximum x value would be snapped to 150 meters.
+
+Topographic data can come from a source such as USGS 3DEP. The topographic data may optionally be post-processed to burn in features such as culverts through embankments or bathymetric data. Roughness data can be derived from landcover data using various approaches, including the conversion table in earlier sections of this report.
+
+#### Create Model Files and Data Folders
+
+The Create Model Files and Data Folders is exclusively a bookkeeping step. Here, all developed data is compiled in a consistent directory structure. This structure has been built out in initial tooling, but the exact setup is not critical to the proposed automation workflow. Additional information, such as model run parameters, may also be derived and logged here.
+
+#### Setup and Execute Run for Largest Event
+
+The largest flood is used to test whether the initial model domain will be large enough for all expected floods. This run is created by setting inflow into the reach to the highest expected discharge and outflow boundary condition to the highest expected KWSE (where available). Once the boundary conditions have been established, the model is run until quasi-steady state conditions are reached.
+
+After quasi-steady state conditions are reached, wetted domain edge cells are reviewed to see if the model domain should be expanded. If any wetted cells have a water surface elevation higher than the water surface elevation at the reach end of the reach centerline and lower than the water surface elevation at the reach start of the reach centerline, a domain expansion triggers. If no cells meet this condition, the model is accepted as-is.
+
+#### Expand Domain
+
+When domain expansion is triggered, any edge that had cells triggering the expansion is bumped out. The domain is bumped out a distance of 50% of the model width or height for east/west or north/south edges, respectively. If a model domain would be expanded to more than 50 times the bankfull width in any dimension, expansion is stopped, and the model is accepted as-is.
+
+### Execute Runs
+
+![](workflow-image4.jpeg)
+Figure 4. Detailed overview of run execution steps.
+
+With a LISFLOOD-FP model for a reach developed, simulations may now be executed to generate the reach FIM library. Run execution follows the same workflow shown in Figure 4. For terminal reaches, simulations for all discharges of interest are executed with a normal depth boundary condition. For non-terminal reaches, various combinations of downstream flow conditions and at-reach discharge are modeled. The exact details of discharge-downstream condition combination development is intentionally nonspecific, and can be tailored to yield various levels of discharge fidelity, transition smoothness, and computational cost.
+
+### Generate STL from Largest Run for Each Reach
+
+For reaches that have had their largest event modeled, a process will post-process model results to develop an appropriate line along which to transfer water surface elevations to any upstream models. Currently, the process to develop such stage transfer lines it to take the water surface elevation grid from the model and apply a smoothing filter. Water-surface elevation grids are generally smooth, but can have attributes such as cupping and islanding that impact further steps. Once the smooth elevation grid is generated, a contour line at a point 95% up the stream centerline is taken. This contour line is clipped to a buffer on the inundated area polygon and saved for later use.
+
+### Step-by-Step Example
+
+The section will walk through the application of proposed automation workflow described in the previous section for a subset of reaches in a hands on way. Five reaches were taken from the flowpaths layer of the draft NextGen Hydrofabric. Three reaches (30831, 30869, and 30912) fall along the mainstem of the Winooski River in Vermont. These reaches have a maximum drainage area of 2,504 square kilometers and an average slope of 0.166%. A fourth reach (30868) follows Johnnie Brook, a small tributary with drainage area 70 square kilometers and a slope of 3.78%. The final reach (30913) follows Snipe Island Brook, another tributary with drainage area 50 square kilometers and slope 4.19%.
+
+A 100-year flood was run through each modeled reach. Discharges were obtained from [USGS SIR 2025-5088](https://pubs.usgs.gov/publication/sir20255088/full) using the drainage area-only equation (eq. 26). Slopes were taken from the hydrofabric flowpath slope attribute. Bankfull width estimates were developed from [Bieger et al., 2015](https://onlinelibrary.wiley.com/doi/abs/10.1111/jawr.12282).
+
+![](workflow-image5.jpeg)
+Figure 5. Step-by-Step example site location in Vermont.
+
+The next subsections will describe application of the workflow on individual reaches.
+#### Reach 30831
+
+![](workflow-image6.jpeg)
+Figure 6. Location of reach 30831
+
+Starting with the most downstream reach, 30831, we apply the production workflow. Since coasts, waterbodies, and administrative boundaries layer has not yet been created and this reach is not a true terminal reach, a custom acceptable outflow area was hand-drawn to match the valley bottom at the downstream end of the reach. A normal depth boundary condition with slope equal to the reach centerline slope was applied along the outflow line. Figures 7 through 10 document the various stages of the reach model development, and figure 11 shows the final FIM for the 100-year event. Figure 12 shows an example of the smoothed water surface elevation contours generated from this model's FIM as well as the stage transfer line that will then be applied to upstream models.
+
+![](workflow-image7.jpeg)
+Figure 7. Generated geometries for reach 30831
+
+![](workflow-image8.jpeg)
+Figure 8. MRLC Land cover data for reach 30831
+
+![](workflow-image9.jpeg)
+Figure 9. Manning's n roughness for reach 30831
+
+![](workflow-image10.jpeg)
+Figure 10. Digital elevation model for reach 30831
+
+![](workflow-image11.jpeg)
+Figure 11. 100-year FIM for reach 30831
+
+![](workflow-image12.jpeg)
+Figure 12. Stage transfer line generation for reach 30831
+
+#### Reach 30869
+
+Reach 30869 is the next mainstem reach up from 30831. Figure 13 shows the results of geometry generation for this reach. Note that the reach geometry now includes the stage transfer line from Figure 12 in the initial domain determination. Figure 14 shows the FIM generated for the 100-year event at this reach.
+
+![](workflow-image13.jpeg)
+Figure 3. Generated geometries for reach 30869
+
+![](workflow-image14.jpeg)
+Figure 14. 100-year FIM for reach 30869
+
+#### Reach 30868
+Reach 30868 is the smaller reach discharging to 30831. Figure 15 shows the results of geometry generation for this reach. Note that the reach geometry has two discrete outflow lines. Both lines receive the same freefall boundary condition. Figure 16 shows the FIM generated for the 100-year event at this reach.
+
+![](workflow-image15.jpeg)
+Figure 15. Generated geometries for reach 30868
+
+![](workflow-image16.jpeg)
+Figure 16. 100-year FIM for reach 30868
+
+#### Reach 30912
+
+Reach 30912 is the next mainstem reach up from 30869. Figure 17 shows the results of geometry generation for this reach. Figure 18 shows the FIM generated for the 100-year event at this reach.
+
+![](workflow-image17.jpeg)
+Figure 17. Generated geometries for reach 30912
+
+![](workflow-image18.jpeg)
+Figure 18. 100-year FIM for reach 30912
+
+#### Reach 30913
+Reach 30913 is the smaller reach discharging to 30869. Figure 19 shows the results of geometry generation for this reach, and Figure 20 shows the FIM generated for the 100-year event at this reach. After running the 100-year event at this reach, domain expansion was triggered for both the east and west edges due to water pooling upstream of the highway embankment and against the domain edges. Figure 21 shows the final FIM for this reach after expanding the domain and re-running the model.
+
+![](workflow-image19.jpeg)
+Figure 19. Generated geometries for reach 30913
+
+![](workflow-image20.jpeg)
+Figure 20. Initial FIM for reach 30913
+
+![](workflow-image21.jpeg)
+Figure 21. Final FIM for reach 30913
+
+#### Merged FIM From Individual Reaches
+Figure 22 shows a mock-up of what a FIM might look like if Flows2FIM was used to create a mosaiced 100-year FIM in this area. Each cell represents the pixelwise maximum depth from all models overlapping that area. No strange jumps in depth or water surface elevation are apparent.
+
+![](workflow-image22.jpeg)
+Figure 22. Merged 100-year FIM for the demo area.
+
+## Comparison to a Composite Model
+To benchmark the accuracy of this Conceptual Modeling Framework as well as Proposed Automation Workflow, we compared the merged FIM developed in Step-by-Step Example subsection and shown in Figure 22 to a comparative FIM developed by a single composite model for this whole area. The geometries for this composite model is shown in Figure 23. For this model, the domain was developed by taking the bounding box of all reach-based model domains. The outflow line from model 30831 was used with a normal depth boundary condition equal to reach centerline slope. Upstream boundary conditions from reaches 30868, 30912, and 30913 were used as inflow lines. Discharges in the initial reach-based model were derived such that the outflow at reach 30831 is equal to the sum of inflows in reaches 30868, 30912, and 30913. The composite model was run until quasi-steady state conditions were reached. The resulting FIM is shown in Figure 24.
+
+![](workflow-image23.jpeg)
+Figure 23. Generated geometries for reach 30913
+
+![](workflow-image24.jpeg)
+Figure 24. 100-year FIM for the composite model
+  
+A difference raster was created between the merged 100-year FIM from reach-based models and the composite single-model reference FIM. The results of that difference are shown in Figure 25 with negative values indicating that the reach-based FIM had higher depths and water-surface elevations. A histogram of depth differences is shown in Figure 26, and an empirical cumulative density function is shown in Figure 27. The models agreed extremely well. More than 90% of inundated cells disagreed less than 0.05 meters.
+
+![](workflow-image25.jpeg)
+Figure 25. Depth differences between the merged 100-year FIM from reach-based models and the composite single-model reference FIM.
+
+![](workflow-image26.png)
+Figure 26. Histogram of depth differences across all cells.
+
+![](workflow-image27.png)
+Figure 27. Empirical cumulative density function of depth differences across all cells.
+
+While the models had nearly identical predictions, there were some areas with negligible differences. Figure 28 shows an area where water pools along the model domain of reach 30912 leading to deeper depths (blue area) in the composite model than the reach-based models. In a production scenario, there would be another reach-based model to predict inundation in this area, so the difference would not be present.
+
+![](workflow-image28.png)
+Figure 28. Area with FIM cuting off at domain edge (blue area) and hydraulic model artifacts (orange).
+
+ Some areas showed elevated depths in the reach based models (orange areas in Figures 28 and 29). We attribute these differences to slight variability in how the model resolved hydraulic computations as opposed to a symptom of the modeling workflow. 
+
+![](workflow-image29.png)
+Figure 29. Area with hydraulic model artifacts (orange).
+
+A small area in Figure 30 shows deeper depths in the composite model FIM than the reach-based merged FIM. We suspect that this overflow area would fill to a similar depth as the composite model if the reach-based model were run for a longer period. That said, determining adequate stopping conditions is still a persistent challenge for automation of this work.
+
+![](workflow-image30.png)
+Figure 30. Area where models did not stabilize at the same depth (blue).
 
 ## Limitations and Challenges
 Even with the current decisions, several issues remain recurring or require special handling. These limitations inform both the current methodology and the open decisions to be resolved during the prototype phase.
