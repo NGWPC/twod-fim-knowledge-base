@@ -273,7 +273,7 @@ Edge and outlet behavior were evaluated separately for regular versus terminal s
 
 
 ![[DR-003 - FIG-001.png]]
-*Figure 5-5. ALT-C and ALT-D in Decision #3 suggests only edge cells that intersects with downstream FIM should get open boundary, shown in neon green in this image.
+*Figure 5-5. ALT-C and ALT-D in Decision #3 suggests only edge cells that intersects with downstream FIM should get open boundary, shown in neon green in this image.*
 
 
 ![Water leaving domain at non-outlet locations](Case-001_Fig-003.png)
@@ -585,10 +585,10 @@ The project roadmap in Table 9-1 includes both currently planned and suggested p
 
 | Phase | Duration | Primary Focus | Key Outputs |
 | --- | --- | --- | --- |
-| Phase 1 (current) | 4 months | Methodology development | - Draft methodology<br>- Pilot case studies<br>- Comparison with benchmark |
+| Phase 1 (current) | 4 months | Methodology development | Draft methodology; Pilot case studies; Comparison with benchmark |
 | Review Phase (planned) | | Methodology review | |
-| Phase 2 (planned) | 4 months | Software development | - Prototype methodology<br>- Draft software |
-| Phase 3 (planned) | 3 months | Automation hardening | -  Prototype Software<br>-  Prototype Data/libraries |
+| Phase 2 (planned) | 4 months | Software development | Prototype methodology; Draft software |
+| Phase 3 (planned) | 3 months | Automation hardening | Prototype software; Prototype data/libraries |
 | Review Phase (suggested) | | Broader community review | |
 | Phase 4 (suggested) | | Cost optimization | - Updated software |
 | Phase 5 (suggested) | | Outstanding methodology challenges | - Updated methodology |
