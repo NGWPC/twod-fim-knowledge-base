@@ -9,6 +9,8 @@ Key outcomes indicate that a reach‑based 2D library approach is feasible and i
 
 This report documents the conceptual framework, evidence-driven methodology evolution through SDR, a proposed automation workflow, benchmark comparison results, known limitations, and appendices of pilot cases and decision pages. Following review, Phase 2 will refine methodology and develop draft software.
 
+\newpage
+
 ## 2. Introduction
 National Oceanic and Atmospheric Administration's (NOAA) Office of Water Prediction (OWP) currently produces nationwide flood inundation maps using HAND (Height Above Nearest Drainage) method and, where available, HEC‑RAS 1D based libraries from Ripple1D (NGWPC, n.d.-a). These approaches provide broad coverage and operational reliability, however limitations including physics derived accuracy, reproducibility, and flexibility to handle diverse hydraulic settings are well documented. Bathtub or level‑pool methods such as HAND treat flooding as a static surface and do not represent flow routing, backwater, or structure‑influenced hydraulics. These methods can produce large biases in inundation area (e.g., >200% error) and recent work calls for avoiding them in decision‑relevant flood‑management practice (Sanders et al., 2024). Recent incorporation of Ripple1D libraries improves physical realism by leveraging 1D hydraulic models and cross‑sectional data from existing studies, but reliance on **prebuilt legacy models** brings their irregularities such as sparse and discontinuous coverage, inconsistent development methodologies, terrain/data mismatches, and outdated inputs (i.e., unknown or superseded data sources) into OWP's operational flood inundation mapping. As a result, Ripple1D can improve local fidelity but adds complexity and coverage gaps.
 
@@ -33,6 +35,8 @@ The figures in this report use a consistent symbology. This is defined once here
 ![symbology](legend.png)
 Figure 2-2. All figures in this report follow this symbology unless noted otherwise.
 
+\newpage
+
 ## 3. Related Work and Context
 This project sits at the intersection of three mature research threads: library‑based inundation mapping, large‑scale 2D hydrodynamics, and automated model setup. The literature below provides the closest precedents and highlights where our approach diverges.
 
@@ -54,6 +58,8 @@ The raster‑based formulation in Bates and De Roo (2000) introduced a simplifie
 ---
 
 Taken together, prior work demonstrates the feasibility of precomputed libraries, large‑scale 2D simulation, and automated model setup, but the specific synthesis of reach‑based 2D modeling with downstream stage transfer and Flows2FIM‑compatible libraries is not yet well represented in the literature and is the central contribution of this methodology.
+
+\newpage
 
 ## 4. Conceptual Reach-Based Modeling Framework
 This section describes the conceptual reach-based modeling framework for segmented, reach‑based 2D FIM libraries that, when assembled, create outputs with skill approximate to FIMs developed using a continuous network‑scale model.
@@ -94,6 +100,8 @@ Figures 4-3 and 4-4 show how pre‑generated libraries are used to generate FIMs
 The framework is intentionally implementation agnostic; any hydraulic model or automation tooling can be used to generate individual FIMs as long as the outputs adhere to the library interface described above.
 
 The framework is also flexible about internal model details. For example, digital elevation model (DEM) conditioning or sub‑grid parameterization can be applied within an individual reach model without changing how the broader system functions. This creates a path for regional experts (e.g., RFCs) to improve reach models in their areas while remaining interoperable with the national library. This aligns with the NextGen vision where better performing models can replace existing models throughout the network, however, realizing this at scale will require governance, quality assurance/quality control (QA/QC), and cloud‑infrastructure design, which is beyond the scope of the current work.
+
+\newpage
 
 ## 5. Methodology Development
 The primary goal of Phase 1 was to define a defensible, automatable methodology for reach-based 2D FIM library development. This Phase 1 effort was not intended to produce large-scale libraries or automation pipeline. Instead, it was intended to establish a coherent technical foundation that could be implemented, tested, reviewed, and refined before broader deployment.
@@ -366,6 +374,8 @@ During the middle phase of methodology development, the team recognized that the
 | How do Deal with Flat Reaches | Decision #27 | ALT-A - Do Nothing |
 | How to Mark Reaches as Lake and Coastal Reaches | Decision #7 | — |
 
+\newpage
+
 ## 6. Proposed Automation Workflow
 
 ### 6.1. Process Overview
@@ -501,6 +511,8 @@ Figure 6-23 shows a mock-up of what a FIM might look like if Flows2FIM was used 
 ![](workflow-image22.jpeg)
 Figure 6-23. Merged 100-year FIM for the demo area.
 
+\newpage
+
 ## 7. Comparison to a Composite Model
 To benchmark the accuracy of the proposed conceptual reach-based modeling framework as well as proposed automation workflow, we compared the merged FIM developed in Step-by-Step Example subsection and shown in Figure 6-23 to a comparative FIM developed by a single composite model for this whole area.
 
@@ -534,6 +546,8 @@ A small area in Figure 7-7 shows deeper depths in the composite model FIM than t
 
 ![](workflow-image30.png)
 Figure 7-7. Area where models did not stabilize at the same depth (blue).
+
+\newpage
 
 ## 8. Limitations and Challenges
 Beyond the current decisions, several issues remain recurring or require special handling. These limitations inform both the current methodology and the open decisions to be resolved during the prototype phase.
@@ -570,6 +584,8 @@ Some areas respond more to flood volume than peak discharge (e.g., lakes, reserv
 
 Taken together, these limitations do not negate the approach. They clarify where automation needs guardrails and targeted exceptions so the system remains fit for rapid, decision‑support mapping.
 
+\newpage
+
 ## 9. Discussion and Next Steps
 This report proposes a defensible, automatable methodology grounded in pilot evidence and a structured decision process that led to this methodology. The proposed automation workflow makes a case for implementation feasibility. Comparison with a benchmark composite-model FIM showed strong agreement (>90% of inundated cells within 0.05 m WSEL difference).
 
@@ -593,6 +609,8 @@ The project roadmap in Table 9-1 includes both currently planned and suggested p
 | Phase 4 (suggested) | | Cost optimization | - Updated software |
 | Phase 5 (suggested) | | Outstanding methodology challenges | - Updated methodology |
 | Phase 6 (suggested) | | Production | - Nationwide FIM libraries |
+
+\newpage
 
 ## 10. References
 Bates, P. D., and A. P. J. De Roo (2000), A simple raster‑based model for flood inundation simulation, *Journal of Hydrology*, 236, 54–77, https://doi.org/10.1016/S0022-1694(00)00278-X.
@@ -627,7 +645,11 @@ Wing, O. E. J., et al. (2019), A flood inundation forecast of Hurricane Harvey u
 
 Zhao, T., Q. Shao, and Y. Zhang (2017), Deriving flood-mediated connectivity between river channels and floodplains: Data-driven approaches, *Scientific Reports*, 7, 43239, https://doi.org/10.1038/srep43239.
 
+\newpage
+
 ## Appendices
+
+\newpage
 
 ### Appendix A. Glossary
 
@@ -700,11 +722,17 @@ The reach with the largest drainage area of all *upstream reaches* for a reach o
 #### Upstream Reach
 A reach that drain to a reach of interest.
 
+\newpage
+
 ### Appendix B. Model Development WebApp
+
+\newpage
 
 ### Appendix C. Pilot Cases
 All figures in this appendix follow the same symbology convention described in Figure 2-2, unless overridden by Figure caption.
 Coordinate systems are reported using European Petroleum Survey Group (EPSG) codes 5070 and 4326. 'N/A' means not applicable.
+
+\newpage
 
 #### Case #1 - Y Shape Confluence with 2 Level Stream Order Difference
 
@@ -724,6 +752,8 @@ Coordinate systems are reported using European Petroleum Survey Group (EPSG) cod
 **Description**
 This case was selected to evaluate confluence behavior where stream-order mismatch and low-gradient backwater make downstream stage handling sensitive.
 
+\newpage
+
 #### Case #2 - Lake Reach
 
 ![Case #2 representative figure](C2.png)
@@ -741,6 +771,8 @@ This case was selected to evaluate confluence behavior where stream-order mismat
 
 **Description**
 This case represents a terminal reach discharging into Lake Champlain and was selected to evaluate boundary-condition behavior in lake-connected settings.
+
+\newpage
 
 #### Case #3 - Small Culverts
 
@@ -760,6 +792,8 @@ This case represents a terminal reach discharging into Lake Champlain and was se
 **Description**
 This case was selected to evaluate terrain-conditioning needs where unresolved small culverts can cause divergent flow paths and upstream impoundment.
 
+\newpage
+
 #### Case #4 - Model Domain Example
 
 ![Case #4 representative figure](C4.png)
@@ -777,6 +811,8 @@ This case was selected to evaluate terrain-conditioning needs where unresolved s
 
 **Description**
 This case was selected to test model-domain construction where overbank floodplain extent lies far from the channel and can be clipped by narrow domain rules.
+
+\newpage
 
 #### Case #5 - Model Domain Example 2
 
@@ -796,6 +832,8 @@ This case was selected to test model-domain construction where overbank floodpla
 **Description**
 This case was selected to examine headwater tributary confluence behavior where water can pool near a common outlet, affecting automated domain-expansion logic.
 
+\newpage
+
 #### Case #6 - Inflow Boundary Conditions
 
 ![Case #6 representative figure](C6.png)
@@ -813,6 +851,8 @@ This case was selected to examine headwater tributary confluence behavior where 
 
 **Description**
 This mid-sized river case was selected to test upstream inflow-boundary geometry and placement effects on WSEL artifacts; discharges were based on USGS 01172000.
+
+\newpage
 
 #### Case #7 - Complex Semi-urban Confluence Along Low-Gradient River
 
@@ -832,6 +872,8 @@ This mid-sized river case was selected to test upstream inflow-boundary geometry
 **Description**
 This case was selected to stress methodology in a complex low-gradient semi-urban confluence with multiple tributaries and levee influences.
 
+\newpage
+
 #### Case #8 - Very Wide Floodplain
 
 ![Case #8 representative figure](C8.png)
@@ -849,6 +891,8 @@ This case was selected to stress methodology in a complex low-gradient semi-urba
 
 **Description**
 This case was selected to test very wide-floodplain behavior along the Mississippi River, where floodplain widths of roughly 12–22 km challenge domain and boundary rules.
+
+\newpage
 
 #### Case #9 - Rural Unconfined Farm Fields
 
@@ -868,6 +912,8 @@ This case was selected to test very wide-floodplain behavior along the Mississip
 **Description**
 This case was selected to evaluate methodology performance in small, rural, unconfined agricultural channels.
 
+\newpage
+
 #### Case #10 - Steep confined Mountainous Terrain
 
 ![Case #10 representative figure](C10.png)
@@ -885,6 +931,8 @@ This case was selected to evaluate methodology performance in small, rural, unco
 
 **Description**
 This case was selected to evaluate steep, confined mountainous terrain with multiple tributary inflows.
+
+\newpage
 
 #### Case #11 - Large Urban River
 
@@ -904,6 +952,8 @@ This case was selected to evaluate steep, confined mountainous terrain with mult
 **Description**
 This case was selected as a large urban-river testbed to assess structure-influenced hydraulics and culvert/bridge handling strategies.
 
+\newpage
+
 #### Case #12 - Desert Wash
 
 ![Case #12 representative figure](C12.png)
@@ -921,6 +971,8 @@ This case was selected as a large urban-river testbed to assess structure-influe
 
 **Description**
 This case was selected to evaluate desert-wash behavior, where nonstandard morphology and adjacent-reach interactions can challenge hydrofabric-based domain logic.
+
+\newpage
 
 #### Case #13 - Large Inland Waterbody
 
@@ -940,6 +992,8 @@ This case was selected to evaluate desert-wash behavior, where nonstandard morph
 **Description**
 This case was selected to develop and test methodology for large inland waterbody settings such as lakes and reservoirs.
 
+\newpage
+
 #### Case #14 - Coastal Area
 
 ![Case #14 representative figure](C14.png)
@@ -957,6 +1011,8 @@ This case was selected to develop and test methodology for large inland waterbod
 
 **Description**
 This case was selected to develop and test methodology for coastal boundary settings.
+
+\newpage
 
 #### Case #15 - Large River
 
@@ -976,7 +1032,11 @@ This case was selected to develop and test methodology for coastal boundary sett
 **Description**
 This case was selected as a large-river testbed with a wide floodplain and available surveyed bathymetry to evaluate domain rules and stage behavior.
 
+\newpage
+
 ### Appendix D. Decision Pages
+
+\newpage
 
 #### Decision #1 - Should KWSE Scenario be Modeled or Not
 
@@ -992,6 +1052,8 @@ Model KWSE scenarios for all reaches so downstream-stage sensitivity is represen
 **ALT-B - For No Reach**
 This option reduces library size and modeling effort significantly, but it assumes downstream-stage variability can be ignored in all reaches.
 
+\newpage
+
 #### Decision #2 - What is the Definition of Benchmark FIM for Model Connectivity Testing
 
 **Description**
@@ -1000,6 +1062,8 @@ A benchmark FIM is needed to evaluate the model connectivity framework. This dec
 **Alternatives**
 **ALT-A - Composite 2D Model with Same Input Data** `current`
 Use a composite 2D model configured for the test area that is developed using same source input data and forcing. The model should also be developed using same 2D hydraulic software
+
+\newpage
 
 #### Decision #3 - Where and What Boundary Conditions to Apply Along the Edge Cells
 
@@ -1024,6 +1088,8 @@ Apply reach centerline slope normal depth boundary condition only along edge cel
 **ALT-D - D/S Model FIM Informed Edge Cells get Freefall** `current`
 This is similar to ALT-A but only the edge cells that are intersecting with D/S reach FIM gets a freefall boundary condition. A freefall is needed because we want water to escape without resistance and not elevate WSEL in the *transition zone*. ALT-C suggestion of centerline slope with normal depth is a crude approximation of flow conditions, and is often based on a slope value with limited accuracy.  If the slope is flatter, it can lead to water being pooled in the transition zone.
 
+\newpage
+
 #### Decision #4 - Strategy of Pixel Value Calculation For Composite Maps
 
 **Description**
@@ -1042,6 +1108,8 @@ This option clips maps prior to compositing so each reach contributes only withi
 **ALT-D - Pixelwise Max** `current`
 Resolve overlaps by assigning the maximum depth value per pixel so compositing is deterministic and independent of draw order.
 
+\newpage
+
 #### Decision #5 - For Lake and Coastal Reaches What Downstream Boundary Conditions Should be Applied
 
 **Description**
@@ -1056,6 +1124,8 @@ Same as ALT-A, but uses a very low normal depth slope (ex. 10e-6). As slope appr
 
 **ALT-C - Both KWSE and Reach Normal Depth Slope** `current`
 This alternative suggest to use a range of reasonable depths from downstream waterbody. This has advantage that a lake or coastal reach doesn't get any special treatment in code development.
+
+\newpage
 
 #### Decision #6 - For Lake and Coastal Reaches Where and What Boundary Conditions to Apply Along the Edge Cells
 
@@ -1078,12 +1148,16 @@ All edge cells get closed boundary and water has no place to escape. This altern
 **ALT-E - D/S Water Body Informed Edge Cells get Steep Slope** `current`
 This is similar to ALT-A but only at edge cells that are intersecting with D/S Water Body get freefall boundary condition. A freefall is needed because we want water to escape without resistance and not elevate WSEL in the *transition zone*. ALT-C suggestion of centerline slope with normal depth is a crude approximation of flow conditions, and is often based on a slope value with limited accuracy. If the slope is flatter, it can lead to water being pooled in the transition zone..
 
+\newpage
+
 #### Decision #7 - How to Mark Reaches as Lake and Coastal Reaches
 
 **Description**
 Define the criteria or workflow for classifying reaches as lake or coastal reaches in the network analysis phase.
 
 **Alternatives**
+
+\newpage
 
 #### Decision #8 - What Should be an STL for Lake and Coastal Reaches
 
@@ -1099,6 +1173,8 @@ This alternative converts the water body polygon into a polyline and then perfor
 
 
 - ALT-B selected based on judgement
+
+\newpage
 
 #### Decision #9 - Where to Apply Stage Transfer Condition
 
@@ -1117,6 +1193,8 @@ Apply stage transfer at the *reach outlet* as a Line, called *STL*. See DR-025 -
 Apply stage transfer across the whole region rather than a single line.
 
 This is making model unstable because of large number of pixels with forced WSEL.
+
+\newpage
 
 #### Decision #10 - How should DEM data be modified to enforce drainage through culverts
 
@@ -1145,6 +1223,8 @@ https://fema-ffrd.github.io/overflow/user-guide/terrain-conditioning/breach/
 **ALT-E - Custom terrain modification**
 Custom code could be written to clip flowpath lines to some buffer around the road network.  A trapezoidal channel could then be imputed in the area around the intersection.
 
+\newpage
+
 #### Decision #11 - How to Determine Initial Model Domain
 
 **Description**
@@ -1167,6 +1247,8 @@ In this approach the assumption is that a course model would have been already e
 
 **ALT-D - Bounding Box of Inflow BC, d/s *STL*, and Buffered Centerline** `current`
 A bounding box on the inflow line, the downstream Stage Transfer Line (when available), and the buffered centerline from ALT-B is used for the model domain.
+
+\newpage
 
 #### Decision #12 - What Strategy to be used for Determining if Domain Should be Expanded
 
@@ -1205,6 +1287,8 @@ If the domain would expand more than 50 times bankfull width from the initial do
 
 *Bieger, Katrin, Hendrik Rathjens, Peter M. Allen, and Jeffrey G. Arnold, 2015. Development and Evaluation of Bankfull Hydraulic Geometry Relationships for the Physiographic Regions of the United States. Journal of the American Water Resources Association (JAWRA) 51(3): 842-858. DOI: [10.1111/jawr.12282](https://doi.org/10.1111/jawr.12282 "Link to external resource: 10.1111/jawr.12282")*
 
+\newpage
+
 #### Decision #13 - What Should be Geometry and Location of Input  BC
 
 **Description**
@@ -1241,6 +1325,8 @@ This option is similar to ALT-E but uses line instead of point.
 
 Green reach is being modeled.
 
+\newpage
+
 #### Decision #14 - What Should be Geometry and Location of Input  BC for *Headwater Reaches*
 
 **Description**
@@ -1257,6 +1343,8 @@ Apply distributed point inflows along the headwater reach to reduce concentratio
 **ALT-C - At a Point on *Reach Start*** `current`
 This alternative suggest simplest approach of one point at headwater *reach start*.
 
+\newpage
+
 #### Decision #15 - What Line Width Should be Used for Inflow BC Line
 
 **Description**
@@ -1265,6 +1353,8 @@ This DR is only relevant for line based alternatives in  DR-013 - What Should be
 **Alternatives**
 **ALT-A - 100m Wide** `current`
 Set inflow line width to 100 m as a standard default so line-based inflow geometry remains consistent across applicable reaches.
+
+\newpage
 
 #### Decision #16 - What Upstream Offset Distance Should be Used for Inflow BC Line Placement
 
@@ -1278,6 +1368,8 @@ Place line inflow at one-quarter of upstream-reach length so boundary effects at
 **ALT-B - 100 meters**
 The fixed offset is simple to operationalize, but it may be less adaptive than relative-length offsets across very short or very long upstream reaches.
 
+\newpage
+
 #### Decision #17 - What Horizontal Resolution DEM Should be Used for Modeling
 
 **Description**
@@ -1290,6 +1382,8 @@ Use 10 m DEM resolution to preserve floodplain/channel-adjacent detail needed fo
 **ALT-B 30 meters**
 This alternative suggests 30 m terrain resolution to lower compute and storage cost while accepting lower topographic detail in mapped results.
 
+\newpage
+
 #### Decision #18 - What Source DEM Should be Used for Modeling
 
 **Description**
@@ -1300,6 +1394,8 @@ Topographic data is needed for model creation. What source should be used for to
 USGS 3DEP is the first choice because of its authoritativeness as well as availability.
 
 Source: https://prd-tnm.s3.amazonaws.com/StagedProducts/Elevation/13/TIFF/USGS_Seamless_DEM_13.vrt
+
+\newpage
 
 #### Decision #19 - What Source Surface Roughness Data Should be Used for Modeling
 
@@ -1313,6 +1409,8 @@ See DR-020 - What Lookup Table Should be Used for Land Cover Classes to Manning'
 Use NLCD Land Cover dataset derived Manning's n rasters. NLCD land-cover dataset is the most authoritative and widely used land-cover dataset for the United States.
 
 Source: https://www.mrlc.gov/geoserver/mrlc_download/wms
+
+\newpage
 
 #### Decision #20 - What Lookup Table Should be Used for Land Cover Classes to Manning's n Relationship
 
@@ -1345,6 +1443,8 @@ MANNINGS_LC_LOOKUP = {
 **ALT-B - 'mannings_roughness_generator' Dictionary**
 A QGIS plugin 'mannings_roughness_generator'  lists an alternative dictionary, although the source is unclear: https://github.com/mabdazzam/mannings_roughness_generator/tree/main/lookups
 
+\newpage
+
 #### Decision #21 - How Should Below Water Topobathy be Accounted for
 
 **Description**
@@ -1368,6 +1468,8 @@ Manning's equation could then be used to determine how much area below LiDAR wou
 
 This approach was used by researchers at the University of Vermont.
 
+\newpage
+
 #### Decision #22 - How to Determine Model Quasi-Steady State
 
 **Description**
@@ -1379,6 +1481,8 @@ Determine quasi-steady behavior using repeated checks that inflow and outflow ar
 
 **ALT-B Check WSEL Raster has Stabilized Between Different Time Steps** `current`
 Determine quasi-steady behavior using stabilization of WSEL rasters between different time intervals as the primary termination signal.
+
+\newpage
 
 #### Decision #23 - How to Deal with Short Reaches
 
@@ -1402,6 +1506,8 @@ This alternative suggest coarse model FIM informed analysis to determine which r
 
 ---
 
+\newpage
+
 #### Decision #24 - What Should be Thresholds for Merging Short Reaches
 
 **Description**
@@ -1409,6 +1515,8 @@ This decision defines thresholds for alternatives in DR-023 - How to Deal with S
 
 **Alternatives**
 **ALT-A - 5% Drainage Area Difference, Upto 3 miles, Stream Order 3 or up** `current`
+
+\newpage
 
 #### Decision #25 - What Should be the Geometry of STL
 
@@ -1436,6 +1544,8 @@ The motivation of this approach is that this contour line will be from downstrea
 
 In following picture, green is ND run, and blue is DS model, pink is KWSE run
 
+\newpage
+
 #### Decision #26 - Should There be 1 STL per Reach or 1 STL per Reach per RUN
 
 **Description**
@@ -1449,6 +1559,8 @@ Temp image showing that 1 STL for all runs mean the shape of STL is not perpendi
 
 **ALT-B - STL Derived Separately during each run**
 Regenerate STL for each run so STL geometry adapts to run specific FIM, at the cost of indexing and automation complexity.
+
+\newpage
 
 #### Decision #27 - How do Deal with Flat Reaches
 
