@@ -47,27 +47,27 @@ The raster‑based formulation in Bates and De Roo (2000) introduced a simplifie
 Taken together, prior work demonstrates the feasibility of precomputed libraries, large‑scale 2D simulation, and automated model setup, but the specific synthesis of reach‑based 2D modeling with downstream stage transfer and Flows2FIM‑compatible libraries is not yet well represented in the literature and is the central contribution of this methodology.
 
 ## Conceptual Modeling Framework
-This section describes the conceptual modeling framework for segmented, reach‑based 2D FIM libraries that, when assembled, approximate a continuous network‑scale model. The framework provides the bedrock for the remaining work.
+This section describes the conceptual modeling framework for segmented, reach‑based 2D FIM libraries that, when assembled, create outputs with skill approximate to FIMs developed using a continuous network‑scale model.
 
-As touched upon in earlier sections, the framework mirrors the Ripple1D library approach but uses 2D hydrodynamic models per reach. At a high level, the workflow is:
+As noted above, the framework mirrors the Ripple1D library approach but uses 2D hydrodynamic models per reach. At a high level, the workflow is:
 
 1. Build an individual 2D model for each reach using the NWM hydrofabric.
 2. Apply boundary conditions for each model run using a discharge range at the upstream boundary and a downstream stage derived from the downstream reach simulation.
 3. Simulate combinations of discharge and downstream stage to build a per reach FIM library.
 4. Mosaic per reach FIMs downstream to upstream using Flows2FIM to match both at reach discharge and downstream stage within a defined tolerance.
 
-The framework assumes that, for riverine (fluvial) flooding, the response to streamflow is largely confined to the local reach. Under that assumption, a sufficiently dense library spanning range of upstream flows and downstream stage conditions should yield a close enough FIM for most expected NWM forecast scenarios without requiring forecast event specific simulations.
+The framework is focused on riverine (fluvial) flooding, where reach‑scale hydraulics dominate and boundary conditions can be represented by discharge and downstream stage. A key assumption for riverine flooding is that the response to streamflow is largely confined to the local reach. Under that assumption, a sufficiently dense library spanning the range of upstream flows and downstream stage conditions should yield a close enough FIM for most expected NWM forecast scenarios without requiring forecast event specific simulations. Lake and coastal settings are only touched in the context of boundary‑condition handling for specific reaches; full treatment of those domains and other non‑fluvial processes is outside the current scope.
 
-Each library entry is treated as quasi‑steady for a given discharge and downstream stage. In practice, this means the maps represent steady snapshots of inundation rather than the full time evolution of a flood wave, which aligns with the library‑lookup paradigm.
-
-The framework is focused on fluvial flooding, where reach‑scale hydraulics dominate and boundary conditions can be represented by discharge and downstream stage. Lake and coastal settings are only touched in the context of boundary‑condition handling for specific reaches; full treatment of those domains and other non‑fluvial processes is outside the current scope.
 
 Under this framework, each reach model consists of a rectangular domain, an inflow boundary, a stage transfer line (STL), and an outflow boundary. The downstream reach water‑surface elevation (WSEL) provides downstream boundary condition to the upstream reach at the STL, enforcing a water‑surface tie‑in to propagate backwater effects. In the “simple case” this structure covers most reaches. Special cases such as lake/coastal reaches, large floodplains, or hydraulically coupled reaches require modifications described later in this report.
 
 ![Example geometry for a single reach-based model showing inflow, outflow, and stage transfer lines](image2.png)
 *Figure 2. Example geometry for a single reach-based model showing inflow, outflow, and stage transfer lines.*
 
-Operationally, this library framework relies on a simple architecture that mirrors Flows2FIM: (1) **pre‑computed FIM libraries** of rasters indexed by reach, discharge, and downstream stage; (2) a **rating‑curve database** that relates discharge and downstream WSEL to the library indices; and
+
+Each library entry is treated as quasi‑steady for a given discharge and downstream stage. In practice, this means the maps represent steady snapshots of inundation rather than the full time evolution of a flood wave, which aligns with the library‑lookup paradigm.
+
+Operationally, this library framework relies on a simple architecture that mirrors Flows2FIM: (1) pre‑computed FIM libraries of rasters indexed by reach, discharge, and downstream stage; and (2) a rating‑curve database that relates discharge and downstream WSEL to the library indices.
 
 During operations, Flows2FIM assembles these maps by traversing the river network downstream‑to‑upstream and selecting the closest library entry for each reach based on discharge and downstream conditions. This is a lightweight extraction and mosaicking step that runs in seconds without new hydraulic modeling. The separation keeps heavy computation offline and makes operational assembly tractable.
 
