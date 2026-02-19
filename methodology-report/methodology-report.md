@@ -18,8 +18,7 @@ Acknowledging the aforementioned limitations, these methods were selected in par
 
 This report proposes a 2D hydrodynamic reach‑based library approach to address these gaps. The approach builds reach‑level models from scratch through an automated pipeline while preserving the Ripple1D and Flows2FIM operational pattern: pre‑generate per‑reach FIM libraries and mosaic them downstream‑to‑upstream in near real time using nowcast or forecast discharges (NGWPC, n.d.-a; NGWPC, n.d.-b). The key difference is how the libraries are derived—the computational engine is 2D hydrodynamics rather than 1D, and model construction is automated rather than repurposed from legacy studies (See Fig. 1 for visual explanation). Because 2D modeling is computationally intensive, the workflow shifts heavy computation (i.e. model simulations) to a pre‑processing step, so forecast‑time FIM development is limited to the rapid assembly step of creating a lightweight selection‑and‑mosaic index rather than a new simulation.
 
-![Reach-based hydrodynamic modeling for the National Water Model using 1D and 2D approaches](image1.png)
-*Figure 2-1. Reach‑based hydrodynamic modeling for the National Water Model river network using Ripple1D and 2D approaches. Ripple1D relies on existing 1D models and conflates their cross sections onto target reaches to build reach‑based models. The new 2D methodology does not rely on existing models; it creates a new 2D model for each reach domain, illustrated by the different colored grids in the rightmost panel.*
+![Figure 2-1. Reach‑based hydrodynamic modeling for the National Water Model river network using Ripple1D and 2D approaches. Ripple1D relies on existing 1D models and conflates their cross sections onto target reaches to build reach‑based models. The new 2D methodology does not rely on existing models; it creates a new 2D model for each reach domain, illustrated by the different colored grids in the rightmost panel.](image1.png)
 
 This report lays out a pilot‑informed, initial, scalable methodology and explains how it was developed, where the most consequential decisions sit, and where uncertainty remains. It documents those decisions and open questions through a System Decision Records (SDR) process, and defines the conceptual framework, automation logic, and operational interfaces needed to implement the approach. Once approved, the methodology will be refined and tested in a prototype area before scaling further.
 
@@ -32,8 +31,7 @@ Terminology used in this report follows definitions provided in 'Appendix A - Gl
 ### 2.3. Maps and Figures
 The figures in this report use a consistent symbology. This is defined once here to avoid repeating legends in every figure. All maps have north arrow upside. Deviations from these norms are noted explicitly.
 
-![symbology](legend.png)
-Figure 2-2. All figures in this report follow this symbology unless noted otherwise.
+![Figure 2-2. All figures in this report follow this symbology unless noted otherwise.](legend.png)
 
 \newpage
 
@@ -75,8 +73,7 @@ The framework is focused on riverine (fluvial) flooding, where reach‑scale hyd
 
 Under this framework, each reach model consists of a rectangular domain, an inflow boundary, a stage transfer line (STL), and an outflow boundary. The downstream reach water‑surface elevation (WSEL) provides downstream boundary condition to the upstream reach at the STL, enforcing a water‑surface tie‑in to propagate backwater effects. In the “simple case” this structure covers most reaches. Special cases such as lake/coastal reaches, large floodplains, or hydraulically coupled reaches require modifications described later in this report.
 
-![Example geometry for a single reach-based model showing inflow, outflow, and stage transfer lines](image2.png)
-*Figure 4-1. Example geometry for a single reach-based model showing inflow, outflow, and stage transfer lines.*
+![Figure 4-1. Example geometry for a single reach-based model showing inflow, outflow, and stage transfer lines.](image2.png)
 
 
 Each library entry is treated as quasi‑steady for a given discharge and downstream stage. In practice, this means the maps represent steady snapshots of inundation rather than the full time evolution of a flood wave, which aligns with the library‑lookup paradigm.
@@ -85,17 +82,14 @@ Operationally, this library framework relies on a simple architecture that mirro
 
 During operations, Flows2FIM assembles these maps by traversing the river network downstream‑to‑upstream and selecting the closest library entry for each reach based on discharge and downstream conditions. This is a lightweight extraction and mosaicking step that runs in seconds without new hydraulic modeling. The separation keeps heavy computation offline and makes operational assembly tractable.
 
-![Overview of discretizing a river system into reach-based 2D hydrodynamic models](image3.png)
-*Figure 4-2. Overview of discretizing a river system into reach based 2D hydrodynamic models. The outer images show development of individual models and their geometries; the central image depicts how these models come together to form a mosaicked FIM for the full network.*
+![Figure 4-2. Overview of discretizing a river system into reach based 2D hydrodynamic models. The outer images show development of individual models and their geometries; the central image depicts how these models come together to form a mosaicked FIM for the full network.](image3.png)
 
 
 Figures 4-3 and 4-4 show how pre‑generated libraries are used to generate FIMs for diverse flow scenarios.
 
-![Example composite FIM for a low-magnitude flood along all reaches](image4.png)
-*Figure 4-3. Example composite FIM for a low‑magnitude flood along all reaches.*
+![Figure 4-3. Example composite FIM for a low‑magnitude flood along all reaches.](image4.png)
 
-![Example composite FIM for high-magnitude mainstem and low-magnitude tributary conditions](image5.png)
-*Figure 4-4. Example composite FIM for a high‑magnitude event along the mainstem and a low‑magnitude event along a tributary.*
+![Figure 4-4. Example composite FIM for a high‑magnitude event along the mainstem and a low‑magnitude event along a tributary.](image5.png)
 
 The framework is intentionally implementation agnostic; any hydraulic model or automation tooling can be used to generate individual FIMs as long as the outputs adhere to the library interface described above.
 
@@ -183,8 +177,7 @@ While final model selection has not been completed, a model was needed for pilot
 ### 5.3. Model Development WebApp
 To move from the conceptual framework to a testable methodology, this phase required some lose tooling that could fast track building many reach models for testing and provide somewhat consistency in model development. For this purpose, a lightweight  Python App was created using Streamlit to automate model development. This app was used throughout the testing and iteration process.
 
-![[Pasted image 20260218122954.png]]
-*Figure 5-1. Pilot WebApp developed to automate model construction and review.*
+![Figure 5-1. Pilot WebApp developed to automate model construction and review.](<Pasted image 20260218122954.png>)
 
 During methodology development, design assumptions were still moving; a thin, modular toolchain allowed fast iteration without spending too much time early on coding solutions. Getting this tool out of a scripting environment also allowed the team to engage hydraulic engineers to assist in model development and validation.
 
@@ -234,8 +227,7 @@ Pilot locations were selected to stress test the methodology and evaluate design
 
 Figure 5-2 depicts location of all cases. Table 5-3 provides case number, location, and title for these cases. Appendix C provides full details for each case.
 
-![pilot_cases_locations](pilot_cases_locations.jpeg)
-Figure 5-2. Locations of pilot study cases. For full detail about each case refer to Appendix C.
+![Figure 5-2. Locations of pilot study cases. For full detail about each case refer to Appendix C.](pilot_cases_locations.jpeg)
 
 **Table 5-3. Case Index**
 
@@ -265,11 +257,9 @@ To create a methodology of automated model development a set of decisions is nee
 
 For inflow placement in non-headwater reaches, the central question is **What geometry type and location criteria should be used for the input boundary condition (BC)?** (see Appendix D, Decision #13 for full details). In practice, this decision compared line-based inflow placement on upstream reaches against point-based placements at or near the reach start. Testing on Case #6 (Appendix C) showed that point-focused alternatives produced stronger local WSEL artifacts, while line-based placement reduced those effects with no side-effects. The selected solution here is *ALT-A - At Perpendicular Line Some Distance Away on Highest Drainage Area Upstream Reach*. The images below show the difference in the WSEL's contour lines when using points vs lines for input discharge. 
 
-![WSEL artifacts from point inflow](Case-006_FIG-002.png)
-*Figure 5-3. WSEL artifacts if we introduce inflow at a point  in Case #6. White lines in this picture are WSEL Contours.*
+![Figure 5-3. WSEL artifacts if we introduce inflow at a point  in Case #6. White lines in this picture are WSEL Contours.](Case-006_FIG-002.png)
 
-![Reduced artifacts with line inflow](Case-006_FIG-003.png)
-*Figure 5-4. Reduced inflow artifacts when inflow geometry was a line in Case #6.*
+![Figure 5-4. Reduced inflow artifacts when inflow geometry was a line in Case #6.](Case-006_FIG-003.png)
 
 *Headwater Reaches* required separate handling from regular reaches, this decision was tracked through **What geometry type and location criteria should be used for the input BC at *Headwater Reaches*?** (Appendix D, Decision #14). This was mainly a choice between line-at-start and point-based options, with distributed points retained as the current practical compromise. The selected baseline is *ALT-C - At a Point on Reach Start*.
 
@@ -280,23 +270,19 @@ Downstream coupling introduced a second decision cluster. **Where to apply stage
 Edge and outlet behavior were evaluated separately for regular versus terminal settings. For standard reaches, **Where and what boundary conditions to apply along the edge cells?** (Appendix D, Decision #3) moved from broad all-edge openings toward selective downstream-informed edge opening. Case #1 showed that permissive edge handling could produce non-outlet water loss, which drove selection to *ALT-D - D/S Model FIM Informed Edge Cells get Freefall*.
 
 
-![[DR-003 - FIG-001.png]]
-*Figure 5-5. ALT-C and ALT-D in Decision #3 suggests only edge cells that intersects with downstream FIM should get open boundary, shown in neon green in this image.*
+![Figure 5-5. ALT-C and ALT-D in Decision #3 suggests only edge cells that intersects with downstream FIM should get open boundary, shown in neon green in this image.](<DR-003 - FIG-001.png>)
 
 
-![Water leaving domain at non-outlet locations](Case-001_Fig-003.png)
-*Figure 5-6. Decision #3, Example from ALT-A (not selected) tested applying a freefall boundary condition at all edges. This approach caused water to escape the model domain at upstream reaches (reverse flow) in Case #1, which is undesired.*
+![Figure 5-6. Decision #3, Example from ALT-A (not selected) tested applying a freefall boundary condition at all edges. This approach caused water to escape the model domain at upstream reaches (reverse flow) in Case #1, which is undesired.](Case-001_Fig-003.png)
 
 For lake and coastal reaches, the related decisions are **What should be an STL for lake and coastal reaches?** (Appendix D, Decision #8), selected alternative is *ALT-B - Intersection of Model Domain and Water Body Polygon Boundary* and **For lake and coastal reaches, where and what boundary conditions to apply along edge cells?** (Appendix D, Decision #6), selected alternative is *ALT-E - D/S Water Body Informed Edge Cells get Steep Slope*. Here, the alternatives ranged from broad all-edge open to selective downstream water body informed open boundary determination.
 
-![[placeholder.png]] 
-*Figure 5-7. ALT-B of Decision #8 suggests a Stage Tranfer Line (STL) for a reach draining into a water body should be the edge of water body polygon. The WSEL values at this transfer line then can come from water body stage.*
+![Figure 5-7. ALT-B of Decision #8 suggests a Stage Tranfer Line (STL) for a reach draining into a water body should be the edge of water body polygon. The WSEL values at this transfer line then can come from water body stage.](placeholder.png)
 
 #### 5.6.2. Initial Domain Development Decision
 After geometry and boundary frameworks are established, the next question is **What should be the initial model domain?** (Appendix D, Decision #11). The alternatives represented divide-based, centerline-based, and coarse-model-informed domain generation patterns. In early iterations, divide based setups were attractive for automation simplicity, but repeated testing (notably Case #4, Case #8, and Case #15) exposed floodplain truncation when domains remained too close to hydrofabric divides. The selected alternative now is *ALT-D - Bounding Box of Inflow BC, d/s STL, and Buffered Centerline*, chosen as the most practical and robust operational default.
 
-![Example of domain truncation](Case-004_FIG-001.png)
-*Figure 5-8. Model domain developed using ALT-A of Decision #11 for Case #4 exposed floodplain truncation when using reach divides for model development. The circle here highlights that domain is not capturing the full extent of floodplain as shown here by the National Flood Hazard Layer (NFHL) floodplain* 
+![Figure 5-8. Model domain developed using ALT-A of Decision #11 for Case #4 exposed floodplain truncation when using reach divides for model development. The circle here highlights that domain is not capturing the full extent of floodplain as shown here by the National Flood Hazard Layer (NFHL) floodplain](Case-004_FIG-001.png)
 
 In order to ensure that all gridded datasets line up both within model and between different reach models, the model domain bounds are snapped to the nearest multiple of the model resolution with snapping always favoring a larger domain. For example, if a domain had a minimum x value of 147 meters, the minimum x value would be snapped to 140 meters. Conversely, if a domain had a maximum x value of 147 meters, the maximum x value would be snapped to 150 meters.
 
@@ -307,8 +293,7 @@ Terrain conditioning related uncertainties are still unresolved but they are bei
 
 **How should DEM data be modified to enforce drainage through culverts?** (Appendix D, Decision #10) compared no-conditioning and multiple conditioning workflows (AGREEDEM, stream burning, breaching, and custom methods), but the current recorded baseline remains *ALT-A - Do nothing*. Case #3 and Case #11 nevertheless showed flow divergence around culvert and water pooling behind  culvert when culvert crossings were unresolved in the DEM, so this remains an explicit quality limitation in our workflow.
 
-![[culvert-issue.png]]
-*Figure 5-9. Flow diverged around culvert midway at Reach 30704 due to unburned culverts in DEM in Case #3.*
+![Figure 5-9. Flow diverged around culvert midway at Reach 30704 due to unburned culverts in DEM in Case #3.](culvert-issue.png)
 
 Similarly, **How should channel bathymetry be accounted for?** (Appendix D, Decision #21) currently remains at *ALT-A - No handling*, despite testing that clearly showed sensitivity of FIM to topobathy in Case #15. This is another known limitation carried forward into prototype planning. See Limitations below for further discussion on this topic.
 
@@ -321,8 +306,7 @@ Once the model is developed it need to be executed/run for different flow and st
 #### 5.6.6. Scenario Combinations Development Decisions
 Executing KWSE scenario runs for a model is compute intensive and lead to large data storage requirements as well, hence careful consideration should be give to select reaches where KWSE runs are required. The core question is **Should KWSE scenario be modeled or not?** (Appendix D, Decision #1) for a reach. Case #1  showed under prediction of depths and extents when downstream stage transfer was excluded, which is why the selected baseline is *ALT-A - For All Reaches*. As a future work an alternative can be proposed that smartly manages selective execution of KWSE runs.
 
-![[FIG-002.png]]
-*Figure 5-10. Under prediction of depth near tie-in when downstream stage transfer is not enforced for the selected reach in yellow in Case #1. The profile graph is for the selected yellow reach comparing depth rasters (meters) of KWSE and normal-depth (ND) runs.*
+![Figure 5-10. Under prediction of depth near tie-in when downstream stage transfer is not enforced for the selected reach in yellow in Case #1. The profile graph is for the selected yellow reach comparing depth rasters (meters) of KWSE and normal-depth (ND) runs.](FIG-002.png)
 
 For lake/coastal scenarios specifically, decision **For lake and coastal reaches, what downstream boundary conditions should be applied?** (Appendix D, Decision #5) compared single-slope-only approaches against a mixed KWSE + slope strategy. Case #2 rejected the low-slope-only approach due to downstream pooling behavior, leading to the selected baseline *ALT-C - Both KWSE and Reach Normal Depth Slope* which is same as what we have for an standard reach.
 #### 5.6.7. Evaluation Decisions
@@ -380,8 +364,7 @@ During the middle phase of methodology development, the team recognized that the
 
 ### 6.1. Process Overview
 
-![](workflow-image1.jpeg)
-Figure 6-1. Overview of the proposed automation workflow.
+![Figure 6-1. Overview of the proposed automation workflow.](workflow-image1.jpeg)
 
 Our proposed production workflow defines a standardized repeatable process for generating flood models and FIM libraries. The workflow is documented through a series of diagrams that describe each processing step, from data acquisition and preprocessing through model execution and product generation. A more hands on step-by-step example is also provided in the next section.
 
@@ -390,16 +373,13 @@ The production workflow is initialized by querying network database for a list o
 ### 6.2. Create Reach Model
 The goal of the Create Reach Model step is to develop a **reusable** LISFLOOD-FP model that will be able to simulate any flood condition of interest. This is accomplished by making an initial estimate of a model domain, running the largest expected flood through it, and expanding the domain if necessary.
 
-![](workflow-image2.jpeg)
-Figure 6-2. Detailed overview of reach model development.
+![Figure 6-2. Detailed overview of reach model development.](workflow-image2.jpeg)
 
 #### 6.2.1. Generate Geometries
-![](workflow-image3.jpeg)
-Figure 6-3. Detailed overview of the geometry generation process.
+![Figure 6-3. Detailed overview of the geometry generation process.](workflow-image3.jpeg)
 
 
-![](workflow-image3.jpeg)
-Figure 6-4. Detailed overview of the geometry generation process for lake and coastal reaches.
+![Figure 6-4. Detailed overview of the geometry generation process for lake and coastal reaches.](workflow-image3.jpeg)
 
 The Generate Geometries step makes an initial guess at an appropriate model domain and creates vector datasets required to simulate a flood in that area. Specifically, these vectors are a) an inflow line, b) an outflow line, and c) a stage transfer line. This step relies on the hydrofabric flowpaths layer, model outputs from downstream models created by this framework, and a layer delineating areas where it is acceptable for terminal reaches to have outflows. That last layer will be compiled from several datasets, such as a coastal waters dataset (e.g., Natural Earth, TIGER, etc), a US administrative boundaries dataset (e.g., Natural Earth, TIGER, etc), and a dataset of the extents of large waterbodies in the US (e.g., NHDPlus Waterbodies).
 
@@ -422,8 +402,7 @@ After quasi-steady state conditions are reached, wetted domain edge cells are re
 When domain expansion is triggered, any edge that had cells triggering the expansion is bumped out. The domain is bumped out a distance of 50% of the model width or height for east/west or north/south edges, respectively. If a model domain would be expanded to more than 50 times the bankfull width in any dimension, expansion is stopped, and the model is accepted as-is.
 
 ### 6.3. Execute Runs
-![](workflow-image4.jpeg)
-Figure 6-5. Detailed overview of run execution steps.
+![Figure 6-5. Detailed overview of run execution steps.](workflow-image4.jpeg)
 
 With a LISFLOOD-FP model for a reach developed, simulations may now be executed to generate the reach FIM library. Run execution follows the same workflow shown in Figure 6-5. For terminal reaches, simulations for all discharges of interest are executed with a normal depth boundary condition. For non-terminal reaches, various combinations of downstream flow conditions and at-reach discharge are modeled. The exact details of discharge-downstream condition combination development is intentionally nonspecific, and can be tailored to yield various levels of discharge fidelity, transition smoothness, and computational cost.
 
@@ -435,81 +414,63 @@ The section will walk through the application of proposed automation workflow de
 
 A 100-year flood was run through each modeled reach. Discharges were obtained from U.S. Geological Survey Scientific Investigations Report 2025-5088 (U.S. Geological Survey, 2025) using the drainage area-only equation (eq. 26). Slopes were taken from the hydrofabric flowpath slope attribute. Bankfull width estimates were developed from Bieger et al. (2015).
 
-![](workflow-image5.jpeg)
-Figure 6-6. Step-by-Step example site location in Vermont.
+![Figure 6-6. Step-by-Step example site location in Vermont.](workflow-image5.jpeg)
 
 The next subsections will describe application of the workflow on individual reaches.
 #### 6.5.1. Reach 30831
 
-![](workflow-image6.jpeg)
-Figure 6-7. Location of reach 30831
+![Figure 6-7. Location of reach 30831](workflow-image6.jpeg)
 
 Starting with the most downstream reach, 30831, we apply the production workflow. Since coasts, waterbodies, and administrative boundaries layer has not yet been created and this reach is not a true terminal reach, a custom acceptable outflow area was hand-drawn to match the valley bottom at the downstream end of the reach. A normal depth boundary condition with slope equal to the reach centerline slope was applied along the outflow line. Figures 6-8 through 6-11 document the various stages of the reach model development, and Figure 6-12 shows the final FIM for the 100-year event. Figure 6-13 shows an example of the smoothed water surface elevation contours generated from this model's FIM as well as the stage transfer line that will then be applied to upstream models.
 
-![](workflow-image7.jpeg)
-Figure 6-8. Generated geometries for reach 30831
+![Figure 6-8. Generated geometries for reach 30831](workflow-image7.jpeg)
 
-![](workflow-image8.jpeg)
-Figure 6-9. MRLC Land cover data for reach 30831
+![Figure 6-9. MRLC Land cover data for reach 30831](workflow-image8.jpeg)
 
-![](workflow-image9.jpeg)
-Figure 6-10. Manning's n roughness for reach 30831
+![Figure 6-10. Manning's n roughness for reach 30831](workflow-image9.jpeg)
 
-![](workflow-image10.jpeg)
-Figure 6-11. Digital elevation model for reach 30831
+![Figure 6-11. Digital elevation model for reach 30831](workflow-image10.jpeg)
 
-![](workflow-image11.jpeg)
-Figure 6-12. 100-year FIM for reach 30831
+![Figure 6-12. 100-year FIM for reach 30831](workflow-image11.jpeg)
 
-![](workflow-image12.jpeg)
-Figure 6-13. Stage transfer line generation for reach 30831
+![Figure 6-13. Stage transfer line generation for reach 30831](workflow-image12.jpeg)
 
 #### 6.5.2. Reach 30869
 
 Reach 30869 is the next mainstem reach up from 30831. Figure 6-14 shows the results of geometry generation for this reach. Note that the reach geometry now includes the stage transfer line from Figure 6-13 in the initial domain determination. Figure 6-15 shows the FIM generated for the 100-year event at this reach.
 
-![](workflow-image13.jpeg)
-Figure 6-14. Generated geometries for reach 30869
+![Figure 6-14. Generated geometries for reach 30869](workflow-image13.jpeg)
 
-![](workflow-image14.jpeg)
-Figure 6-15. 100-year FIM for reach 30869
+![Figure 6-15. 100-year FIM for reach 30869](workflow-image14.jpeg)
 
 #### 6.5.3. Reach 30868
 Reach 30868 is the smaller reach discharging to 30831. Figure 6-16 shows the results of geometry generation for this reach. Note that the reach geometry has two discrete outflow lines. Both lines receive the same freefall boundary condition. Figure 6-17 shows the FIM generated for the 100-year event at this reach.
 
-![](workflow-image15.jpeg)
-Figure 6-16. Generated geometries for reach 30868
+![Figure 6-16. Generated geometries for reach 30868](workflow-image15.jpeg)
 
-![](workflow-image16.jpeg)
-Figure 6-17. 100-year FIM for reach 30868
+![Figure 6-17. 100-year FIM for reach 30868](workflow-image16.jpeg)
 
 #### 6.5.4. Reach 30912
 
 Reach 30912 is the next mainstem reach up from 30869. Figure 6-18 shows the results of geometry generation for this reach. Figure 6-19 shows the FIM generated for the 100-year event at this reach.
 
-![](workflow-image17.jpeg)
-Figure 6-18. Generated geometries for reach 30912
+![Figure 6-18. Generated geometries for reach 30912](workflow-image17.jpeg)
 
-![](workflow-image18.jpeg)
-Figure 6-19. 100-year FIM for reach 30912
+![Figure 6-19. 100-year FIM for reach 30912](workflow-image18.jpeg)
 
 #### 6.5.5. Reach 30913
 Reach 30913 is the smaller reach discharging to 30869. Figure 6-20 shows the results of geometry generation for this reach, and Figure 6-21 shows the FIM generated for the 100-year event at this reach. After running the 100-year event at this reach, domain expansion was triggered for both the east and west edges due to water pooling upstream of the highway embankment and against the domain edges. Figure 6-22 shows the final FIM for this reach after expanding the domain and re-running the model.
 
-![](workflow-image19.jpeg)
-Figure 6-20. Generated geometries for reach 30913
+![Figure 6-20. Generated geometries for reach 30913](workflow-image19.jpeg)
 
-![](workflow-image20.jpeg)
-Figure 6-21. Initial FIM for reach 30913
+![Figure 6-21. Initial FIM for reach 30913](workflow-image20.jpeg)
 
-![](workflow-image21.jpeg)
-Figure 6-22. Final FIM for reach 30913
+![Figure 6-22. Final FIM for reach 30913](workflow-image21.jpeg)
 
 #### 6.5.6. Merged FIM From Individual Reaches
 Figure 6-23 shows a mock-up of what a FIM might look like if Flows2FIM was used to create a mosaiced 100-year FIM in this area. Each cell represents the pixelwise maximum depth from all models overlapping that area. No strange jumps in depth or water surface elevation are apparent.
 
-![](workflow-image22.jpeg)
-Figure 6-23. Merged 100-year FIM for the demo area.
+![Figure 6-23. Merged 100-year FIM for the demo area.](workflow-image22.jpeg)
 
 \newpage
 
@@ -520,32 +481,25 @@ This benchmark is intentionally an apples-to-apples comparison to isolate errors
 
 The geometries for this composite model is shown in Figure 7-1. For this model, the domain was developed by taking the bounding box of all reach-based model domains. The outflow line from model 30831 was used with a normal depth boundary condition equal to reach centerline slope. Upstream boundary conditions from reaches 30868, 30912, and 30913 were used as inflow lines. Discharges in the initial reach-based model were derived such that the outflow at reach 30831 is equal to the sum of inflows in reaches 30868, 30912, and 30913. The composite model was run until quasi-steady state conditions were reached. The resulting FIM is shown in Figure 7-2.
 
-![](workflow-image23.jpeg)
-Figure 7-1. Generated geometries for reach 30913
+![Figure 7-1. Generated geometries for reach 30913](workflow-image23.jpeg)
 
-![](workflow-image24.jpeg)
-Figure 7-2. 100-year FIM for the composite model
+![Figure 7-2. 100-year FIM for the composite model](workflow-image24.jpeg)
   
 A difference raster was created between the merged 100-year FIM from reach-based models and the composite single-model reference FIM. The results of that difference are shown in Figure 7-3 with negative values indicating that the reach-based FIM had higher depths and water-surface elevations. A histogram of depth differences is shown in Figure 7-4, and an empirical cumulative density function is shown in Figure 7-5. The models agreed extremely well. More than 90% of inundated cells disagreed less than 0.05 meters.
 
-![](workflow-image25.jpeg)
-Figure 7-3. Depth differences between the merged 100-year FIM from reach-based models and the composite single-model reference FIM.
+![Figure 7-3. Depth differences between the merged 100-year FIM from reach-based models and the composite single-model reference FIM.](workflow-image25.jpeg)
 
-![](workflow-image26.png)
-Figure 7-4. Histogram of depth differences across all cells.
+![Figure 7-4. Histogram of depth differences across all cells.](workflow-image26.png)
 
-![](workflow-image27.png)
-Figure 7-5. Empirical cumulative density function of depth differences across all cells.
+![Figure 7-5. Empirical cumulative density function of depth differences across all cells.](workflow-image27.png)
 
 While the models had nearly identical predictions, there were some areas with negligible differences. Some areas showed elevated depths in the reach-based models (orange area in Figure 7-6). We attribute these differences to slight variability in how the model resolved hydraulic computations as opposed to a symptom of the modeling workflow.
 
-![](workflow-image29.png)
-Figure 7-6. Area with hydraulic model artifacts (orange).
+![Figure 7-6. Area with hydraulic model artifacts (orange).](workflow-image29.png)
 
 A small area in Figure 7-7 shows deeper depths in the composite model FIM than the reach-based merged FIM. We suspect that this overflow area would fill to a similar depth as the composite model if the reach-based model were run for a longer period. That said, determining adequate stopping conditions is still a persistent challenge for automation of this work.
 
-![](workflow-image30.png)
-Figure 7-7. Area where models did not stabilize at the same depth (blue).
+![Figure 7-7. Area where models did not stabilize at the same depth (blue).](workflow-image30.png)
 
 \newpage
 
@@ -561,8 +515,7 @@ Results show that the “with bathymetry” model tracks closer to the observed 
 
 In large‑scale implementations, a common workaround is to omit explicit bathymetry and represent river channels as **sub‑grid features** within each 2D cell. In practice, this means the grid cell stores an idealized 1D channel geometry (width, depth, roughness) so flow and storage can be approximated without resolving the channel in the terrain. This can reduce data requirements and improve runtime, but it also shifts accuracy to the quality of the sub‑grid parameterization. An alternative option would be to burn a simplified channel into the topography where the lack of bathymetry would significantly impact inundation extents. For our workflow, this highlights a tradeoff: either invest in bathymetric data where available, or adopt sub‑grid channel representations and quantify the resulting bias, especially for lower‑magnitude flows. 
 
-![Bathymetry influence on stage accuracy](image28.png)
-*Figure 8-1. Ohio River (Evansville) comparison of WSEL with and without bathymetry.*
+![Figure 8-1. Ohio River (Evansville) comparison of WSEL with and without bathymetry.](image28.png)
 
 ### 8.2. Boundary Condition Artifacts
 Water‑surface elevation anomalies can occur near inflow boundaries in certain geometries, and non‑physical outflows can occur when edge boundary conditions are too permissive. These artifacts can propagate into composite maps if not controlled by boundary placement, domain sizing, and STL geometry.
@@ -657,36 +610,31 @@ Zhao, T., Q. Shao, and Y. Zhang (2017), Deriving flood-mediated connectivity bet
 *connected reaches* and reaches draining into the same *reach outlet* for the reach of interest.
 
 All blue reaches are *adjacent reaches* for green reach.
-![Adjacent reaches](B6.png)
-*Figure A-1. Adjacent Reaches example.*
+![Figure A-1. Adjacent Reaches example.](B6.png)
 
 #### Common Outlet Reaches
 Reaches sharing common *reach outlet*.
 
 Two green reaches here are common outlet reaches because they share same *reach outlet*.
-![Common outlet reaches](B4.png)
-*Figure A-2. Common Outlet Reaches example.*
+![Figure A-2. Common Outlet Reaches example.](B4.png)
 
 #### Connected Reaches
 Reaches connected to a reach through upstream or downstream relationship.
 
 All blue reaches are *connected reaches* for green reach. Note that red reach is not.
-![Connected reaches](B5.png)
-*Figure A-3. Connected Reaches example.*
+![Figure A-3. Connected Reaches example.](B5.png)
 
 #### FIM Transition Zone
 The *Transition Zone* for a reach is the area between the *Stage Transfer Line* and the outflow line.
 
 The yellow area in the image below shows the *Transition Zone* for this reach.
-![FIM transition zone](B7.png)
-*Figure A-4. FIM Transition Zone (yellow area).*
+![Figure A-4. FIM Transition Zone (yellow area).](B7.png)
 
 #### Headwater Reaches
 Reaches that have no reaches upstream of them in the reach network.
 
 *headwater reaches* shown in green
-![Headwater reaches](B1.png)
-*Figure A-5. Headwater Reaches shown in green.*
+![Figure A-5. Headwater Reaches shown in green.](B1.png)
 
 #### Lake and Coastal Reaches
 Subset of *Terminal Reaches* that discharge to
@@ -697,15 +645,13 @@ Subset of *Terminal Reaches* that discharge to
 End point of the reach.
 
 Reach outlet for green reach shown in red circle.
-![Reach outlet](B3.png)
-*Figure A-6. Reach Outlet shown for green reach (red circle).*
+![Figure A-6. Reach Outlet shown for green reach (red circle).](B3.png)
 
 #### Reach Start
 Start point of the reach.
 
 Reach start for green reach shown in red circle.
-![Reach start](B2.png)
-*Figure A-7. Reach Start shown for green reach (red circle).*
+![Figure A-7. Reach Start shown for green reach (red circle).](B2.png)
 
 #### Stage Transfer Line (STL)
 A line that is within the domain of both upstream and downstream reach models and which is used to transfer WSEL from the downstream model to an upstream model.
@@ -736,8 +682,7 @@ Coordinate systems are reported using European Petroleum Survey Group (EPSG) cod
 
 #### Case #1 - Y Shape Confluence with 2 Level Stream Order Difference
 
-![Case #1 representative figure](C1.png)
-*Figure C-1. Representative view for Case #1.*
+![Figure C-1. Representative view for Case #1.](C1.png)
 
 | Fact | Value |
 | --- | --- |
@@ -756,8 +701,7 @@ This case was selected to evaluate confluence behavior where stream-order mismat
 
 #### Case #2 - Lake Reach
 
-![Case #2 representative figure](C2.png)
-*Figure C-2. Representative view for Case #2.*
+![Figure C-2. Representative view for Case #2.](C2.png)
 
 | Fact | Value |
 | --- | --- |
@@ -776,8 +720,7 @@ This case represents a terminal reach discharging into Lake Champlain and was se
 
 #### Case #3 - Small Culverts
 
-![Case #3 representative figure](C3.png)
-*Figure C-3. Representative view for Case #3.*
+![Figure C-3. Representative view for Case #3.](C3.png)
 
 | Fact | Value |
 | --- | --- |
@@ -796,8 +739,7 @@ This case was selected to evaluate terrain-conditioning needs where unresolved s
 
 #### Case #4 - Model Domain Example
 
-![Case #4 representative figure](C4.png)
-*Figure C-4. Representative view for Case #4.*
+![Figure C-4. Representative view for Case #4.](C4.png)
 
 | Fact | Value |
 | --- | --- |
@@ -816,8 +758,7 @@ This case was selected to test model-domain construction where overbank floodpla
 
 #### Case #5 - Model Domain Example 2
 
-![Case #5 representative figure](C5.png)
-*Figure C-5. Representative view for Case #5.*
+![Figure C-5. Representative view for Case #5.](C5.png)
 
 | Fact | Value |
 | --- | --- |
@@ -836,8 +777,7 @@ This case was selected to examine headwater tributary confluence behavior where 
 
 #### Case #6 - Inflow Boundary Conditions
 
-![Case #6 representative figure](C6.png)
-*Figure C-6. Representative view for Case #6.*
+![Figure C-6. Representative view for Case #6.](C6.png)
 
 | Fact | Value |
 | --- | --- |
@@ -856,8 +796,7 @@ This mid-sized river case was selected to test upstream inflow-boundary geometry
 
 #### Case #7 - Complex Semi-urban Confluence Along Low-Gradient River
 
-![Case #7 representative figure](C7.png)
-*Figure C-7. Representative view for Case #7.*
+![Figure C-7. Representative view for Case #7.](C7.png)
 
 | Fact | Value |
 | --- | --- |
@@ -876,8 +815,7 @@ This case was selected to stress methodology in a complex low-gradient semi-urba
 
 #### Case #8 - Very Wide Floodplain
 
-![Case #8 representative figure](C8.png)
-*Figure C-8. Representative view for Case #8.*
+![Figure C-8. Representative view for Case #8.](C8.png)
 
 | Fact | Value |
 | --- | --- |
@@ -896,8 +834,7 @@ This case was selected to test very wide-floodplain behavior along the Mississip
 
 #### Case #9 - Rural Unconfined Farm Fields
 
-![Case #9 representative figure](C9.png)
-*Figure C-9. Representative view for Case #9.*
+![Figure C-9. Representative view for Case #9.](C9.png)
 
 | Fact | Value |
 | --- | --- |
@@ -916,8 +853,7 @@ This case was selected to evaluate methodology performance in small, rural, unco
 
 #### Case #10 - Steep confined Mountainous Terrain
 
-![Case #10 representative figure](C10.png)
-*Figure C-10. Representative view for Case #10.*
+![Figure C-10. Representative view for Case #10.](C10.png)
 
 | Fact | Value |
 | --- | --- |
@@ -936,8 +872,7 @@ This case was selected to evaluate steep, confined mountainous terrain with mult
 
 #### Case #11 - Large Urban River
 
-![Case #11 representative figure](C11.png)
-*Figure C-11. Representative view for Case #11.*
+![Figure C-11. Representative view for Case #11.](C11.png)
 
 | Fact | Value |
 | --- | --- |
@@ -956,8 +891,7 @@ This case was selected as a large urban-river testbed to assess structure-influe
 
 #### Case #12 - Desert Wash
 
-![Case #12 representative figure](C12.png)
-*Figure C-12. Representative view for Case #12.*
+![Figure C-12. Representative view for Case #12.](C12.png)
 
 | Fact | Value |
 | --- | --- |
@@ -976,8 +910,7 @@ This case was selected to evaluate desert-wash behavior, where nonstandard morph
 
 #### Case #13 - Large Inland Waterbody
 
-![Case #13 representative figure](C13.png)
-*Figure C-13. Representative view for Case #13.*
+![Figure C-13. Representative view for Case #13.](C13.png)
 
 | Fact | Value |
 | --- | --- |
@@ -996,8 +929,7 @@ This case was selected to develop and test methodology for large inland waterbod
 
 #### Case #14 - Coastal Area
 
-![Case #14 representative figure](C14.png)
-*Figure C-14. Representative view for Case #14.*
+![Figure C-14. Representative view for Case #14.](C14.png)
 
 | Fact | Value |
 | --- | --- |
@@ -1016,8 +948,7 @@ This case was selected to develop and test methodology for coastal boundary sett
 
 #### Case #15 - Large River
 
-![Case #15 representative figure](C15.png)
-*Figure C-15. Representative view for Case #15.*
+![Figure C-15. Representative view for Case #15.](C15.png)
 
 | Fact | Value |
 | --- | --- |
