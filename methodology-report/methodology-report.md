@@ -18,9 +18,7 @@ This report proposes a 2D hydrodynamic reach‑based library approach to address
 
 This report lays out a pilot‑informed, initial, scalable methodology and explains how it was developed, where the most consequential decisions sit, and where uncertainty remains. It documents those decisions and open questions through a System Decision Records (SDR) process, and defines the conceptual framework, automation logic, and operational interfaces needed to implement the approach. Once approved, the methodology will be refined and tested in a prototype area before scaling further.
 
-The intent of the work described in the following sections is to assess implementation readiness for 2D reach‑based FIM libraries and to sharpen methodological clarity. The work does not deliver a final production automation workflow; instead, it establishes the foundation for upcoming tasks to achieve that goal. The scope therefore focuses on describing the workflow, documenting decision evidence, and identifying where specialized handling or additional validation is required before national‑scale production.
-
-For clarity, project phasing in this report is: Phase 1 (methodology development), a planned Review Phase (methodology review), Phase 2 (prototype software and method refinement), and Phase 3 (automation hardening and prototype library generation).
+For clarity, project phasing in this report is: Phase 1 (methodology development), Phase 2 (method refinement and prototyping software), and Phase 3 (automation hardening and prototype library generation).
 
 ![Reach-based hydrodynamic modeling for the National Water Model using 1D and 2D approaches](image1.png)
 *Figure 1. Reach‑based hydrodynamic modeling for the National Water Model river network using Ripple1D and 2D approaches. Ripple1D relies on existing 1D models and conflates their cross sections onto target reaches to build reach‑based models. The new 2D methodology does not rely on existing models; it creates a new 2D model for each reach domain, illustrated by the different colored grids in the rightmost panel.*
