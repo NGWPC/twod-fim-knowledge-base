@@ -423,7 +423,7 @@ For reaches that have had their largest event modeled, a process will post-proce
 ### 6.5. Step-by-Step Example
 The section will walk through the application of proposed automation workflow described in the previous section for a subset of reaches in a hands on way. Five reaches were taken from the flowpaths layer of the draft NextGen Hydrofabric. Three reaches (30831, 30869, and 30912) fall along the mainstem of the Winooski River in Vermont. These reaches have a maximum drainage area of 2,504 square kilometers and an average slope of 0.166%. A fourth reach (30868) follows Johnnie Brook, a small tributary with drainage area 70 square kilometers and a slope of 3.78%. The final reach (30913) follows Snipe Island Brook, another tributary with drainage area 50 square kilometers and slope 4.19%.
 
-A 100-year flood was run through each modeled reach. Discharges were obtained from [USGS Scientific Investigations Report (SIR) 2025-5088](https://pubs.usgs.gov/publication/sir20255088/full) using the drainage area-only equation (eq. 26). Slopes were taken from the hydrofabric flowpath slope attribute. Bankfull width estimates were developed from [Bieger et al., 2015](https://onlinelibrary.wiley.com/doi/abs/10.1111/jawr.12282).
+A 100-year flood was run through each modeled reach. Discharges were obtained from U.S. Geological Survey Scientific Investigations Report 2025-5088 (U.S. Geological Survey, 2025) using the drainage area-only equation (eq. 26). Slopes were taken from the hydrofabric flowpath slope attribute. Bankfull width estimates were developed from Bieger et al. (2015).
 
 ![](workflow-image5.jpeg)
 Figure 6-6. Step-by-Step example site location in Vermont.
