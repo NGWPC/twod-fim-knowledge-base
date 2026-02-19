@@ -301,7 +301,7 @@ Terrain conditioning related uncertainties are still unresolved but they are bei
 **How should DEM data be modified to enforce drainage through culverts?** (Appendix D, Decision #10) compared no-conditioning and multiple conditioning workflows (AGREEDEM, stream burning, breaching, and custom methods), but the current recorded baseline remains *ALT-A - Do nothing*. Case #3 and Case #11 nevertheless showed flow divergence around culvert and water pooling behind  culvert when culvert crossings were unresolved in the DEM, so this remains an explicit quality limitation in our workflow.
 
 ![[culvert-issue.png]]
-*Figure TBD. Flow diverged around culvert midway at Reach 30704 due to unburden culverts in DEM in Case #3.*
+*Figure TBD. Flow diverged around culvert midway at Reach 30704 due to unburned culverts in DEM in Case #3.*
 
 Similarly, **How should below water topobathy be accounted for?** (Appendix D, Decision #21) currently remains at *ALT-A - No handling*, despite testing that clearly showed sensitivity of FIM to topobathy in Case #15. This is another known limitation carried forward into prototype planning.
 
@@ -318,7 +318,7 @@ Executing KWSE scenario runs for a model is compute intensive and lead to large 
 
 For lake/coastal scenarios specifically, decision **For lake and coastal reaches, what downstream boundary conditions should be applied?** (Appendix D, Decision #5) compared single-slope-only approaches against a mixed KWSE + slope strategy. Case #2 rejected the low-slope-only approach due to downstream pooling behavior, leading to the selected baseline *ALT-C - Both KWSE and Reach Normal Depth Slope* which is same as what we have for an standard reach.
 #### Evaluation Decisions
-The testing of the quality of produced FIMs and inter connectivity framework required some decisions around evaluation and compositing logic. **What is the definition of benchmark FIM for model connectivity testing?** (Appendix D, Decision #2) sets the reference benchmark FIM source as *ALT-A - Composite 2D Model with Same Input Data*. Then **What is the strategy of pixel value calculation for composite maps?** (Appendix D, Decision #4) resolves overlap behavior for mosaicing individual reach FIMs . Here, alternatives ranged from network order based compositing to clipping maps and then pixel-wise aggregation. The selected baseline is *ALT-D - Pixel-wise Max* for deterministic overlap handling in FIM transition/overlap zones.
+The testing of the quality of produced FIMs and reach models inter connectivity methods required some decisions around evaluation and compositing logic. **What is the definition of benchmark FIM for model connectivity testing?** (Appendix D, Decision #2) sets the reference benchmark FIM source as *ALT-A - Composite 2D Model with Same Input Data*. Then **What is the strategy of pixel value calculation for composite maps?** (Appendix D, Decision #4) resolves overlap behavior for mosaicing individual reach FIMs . Here, alternatives ranged from network order based compositing to clipping maps and then pixel-wise aggregation. The selected baseline is *ALT-D - Pixel-wise Max* for deterministic overlap handling in FIM transition/overlap zones.
 
 #### Network Preparation Decisions
 Before any reach-level model development, the river network must be made fit for purpose. The current hydrofabric is designed for hydrologic accounting and routing, with divide structure that works well for rainfall-runoff representation. Flood hydraulics at larger magnitudes do not always follow those same divides. In wide floodplains and low-gradient systems, overbank flowpaths, backwater propagation, and multi-source inundation can span across divides. Similarly, very short and flat reaches that carry nearly unchanged flow from one segment to the next are often inefficient to model separately and can create avoidable automation complexity. For these reasons, methodology development required a set of network-preparation decisions specifically aimed at making the reach network suitable for hydraulic modeling.
@@ -338,7 +338,7 @@ During the middle phase of methodology development, the team recognized that the
 | Title | Number | Current Alternative |
 | --- | --- | --- |
 | What Should be Geometry and Location of Input BC | Decision #13 | ALT-A - At Perpendicular Line Some Distance Away on Highest Drainage Area `Upstream Reach` |
-| What Should be Geometry and Location of Input BC for `Headwater Reaches` | Decision #14 | ALT-B - At Points Distributed Along the Reach |
+| What Should be Geometry and Location of Input BC for `Headwater Reaches` | Decision #14 | ALT-C - At a Point on Reach Start |
 | What Line Width Should be Used for Inflow BC Line | Decision #15 | ALT-A - 100m Wide |
 | What Upstream Offset Distance Should be Used for Inflow BC Line Placement | Decision #16 | ALT-A - 0.25 of Upstream Reach Length |
 | Where to Apply Stage Transfer Condition | Decision #9 | ALT-B - At `Reach Outlet` |
@@ -564,24 +564,30 @@ Some areas respond more to flood volume than peak discharge (e.g., lakes, reserv
 Taken together, these limitations do not negate the approach. They clarify where automation needs guardrails and targeted exceptions so the system remains fit for rapid, decision‑support mapping.
 
 ## Discussion and Next Steps
-This report proposes a defensible, automatable methodology grounded in pilot evidence and a structured decision process. The next phase will refine open decisions, select a production model, and implement a prototype pipeline for a HUC6-scale area. The SDR system will continue to capture decision evolution, ensuring that methodology changes are traceable and evidence-based.
+This report proposes a defensible, automatable methodology grounded in pilot evidence and a structured decision process that led to this methodology. The proposed automation workflow makes a case for implementation feasibility. Comparison with a benchmark composite-model FIM showed strong agreement (>90% of inundated cells within 0.05 m WSEL difference).
 
-The approach described here represents a significant compute effort relative to existing GIS or 1D workflows. As a result, near‑term work should prioritize optimization of methodology and cost over expanding library coverage. In practice, this means focusing on the performance envelope of the system before scaling further. Key optimization areas include model choice and solver configuration, CPU vs GPU execution trade‑offs, domain sizing and reach merging rules, use of sub‑grid or multi‑resolution techniques where appropriate, and I/O strategies that avoid writing or storing data outside the flood‑relevant extent. Decisions in these areas have outsized impacts on cost, throughput, and the feasibility of national‑scale production.
+The next phase will refine open decisions, finalize the shortlist and select a 2D hydrodynamic model for production use, develop a prototype pipeline for large scale implementation, and produce HUC6-wide prototype FIM libraries. The SDR process will continue to capture decision evolution so that methodology changes remain traceable and evidence-based.
 
-We therefore recommend a dedicated optimization and benchmarking effort in the next phase, using a prototype HUC6 to compare candidate models and configurations on representative hardware. The goal is to establish cost‑per‑reach and cost‑per‑library targets, identify bottlenecks, and refine automation rules (domain trimming, reach eclipsing, data reduction) before committing to large‑scale library generation.
+The methodology described here represents a significant compute effort relative to existing GIS or 1D workflows (HAND and Ripple1D). In light of this, work in the next phase (Phase 2) will prioritize optimization of methodology and prototyping over expanding library coverage. For the same reasons, a separate dedicated effort is recommended for cost optimization with a goal to bring down cost‑per‑reach and cost‑per‑library of FIM generation. In practice, this will mean focusing on the performance envelope of the system before scaling further. Key optimization areas include model choice and solver configuration, CPU vs GPU execution trade‑offs, domain sizing and reach merging rules, use of sub‑grid or multi‑resolution techniques where appropriate, and I/O strategies that avoid writing or storing data outside the flood‑relevant extent. Decisions in these areas have outsized impacts on production cost, storage cost, production capacity, and the overall feasibility of national‑scale deployment.
 
-Recommended next steps are best framed as a short‑term roadmap tied to time, with an emphasis on optimization before scale. A suggested sequencing is below; durations are placeholders to be adjusted based on staffing and compute availability.
+In addition to cost optimization, a separate dedicated effort is also recommended to resolve outstanding modeling challenges that directly affect FIM quality but are beyond the scope of currently planned work. Priority topics include bathymetry handling, terrain conditioning for culverts and embankments, and handling of storage- and volume-driven areas. Advancing these topics should improve the depth and extent accuracy of FIMs across diverse hydraulic settings.
 
-**Suggested Roadmap (Time‑Phased)**
+Table TBD suggests a project roadmap with both currently planned and suggested phases and the primary focus of each phase. SDR updates should accompany each phase to keep decision rationale traceable.
 
-| Phase | Timing (Placeholder) | Primary Focus | Key Outputs |
-| --- | --- | --- | --- |
-| Phase 1 | 0–2 months | Benchmarking and cost modeling | Model speed/cost comparison (CPU vs GPU); solver configuration sensitivity; cost‑per‑reach and cost‑per‑library targets |
-| Phase 2 | 2–4 months | Methodology closure | Decisions finalized for quasi‑steady state, inflow geometry, STL placement, lake/coastal classification; QA/QC acceptance metrics defined |
-| Phase 3 | 4–6 months | Automation hardening | Domain expansion rules validated; reach‑merging/eclipsing criteria refined; terrain‑conditioning workflows integrated |
-| Phase 4 | 6–9 months | Prototype production | End‑to‑end HUC6 pipeline run; data‑reduction strategies tested; comparison to HAND/Ripple1D baselines |
+**Table TBD. Suggested Project Roadmap**
 
-SDR updates should accompany each phase to keep decision rationale traceable.
+| Phase                    | Duration | Primary Focus            | Key Outputs                                                                |
+| ------------------------ | -------- | ------------------------ | -------------------------------------------------------------------------- |
+| Phase 1 (current)        | 4 months | Methodology development  | - Draft methodology<br>- Pilot case studies<br>- Comparison with benchmark |
+| Review Phase (planned)   |          | Methodology review       |                                                                            |
+| Phase 2 (planned)        | 4 months | Software development     | - Prototype methodology<br>- Draft software                                |
+| Phase 3 (planned)        | 3 months | Automation hardening     | -  Prototype Software<br>-  Prototype Data/libraries                       |
+| Review Phase (suggested) |          | Broader community review |                                                                            |
+| Phase 4 (suggested)      |          | Cost optimization        | - Updated software                                                         |
+| Phase 5 (suggested)      |          | Outstanding methodology challenges | - Updated methodology                                                      |
+| Phase 6 (suggested)      |          | Production               | - Nationwide FIM libraries                                                 |
+
+
 
 ## References
 Banasiak, R. (2024), Large-scale two-dimensional cascade modeling of the Odra River for flood hazard management, *Water*, 16(1), 39, https://doi.org/10.3390/w16010039.
