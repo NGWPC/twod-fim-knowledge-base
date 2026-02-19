@@ -25,7 +25,7 @@ This report lays out a pilot‑informed, initial, scalable methodology and expla
 For clarity, project phasing in this report is: Phase 1 (methodology development), Phase 2 (method refinement and prototyping software), and Phase 3 (automation hardening and prototype library generation).
 
 ### Glossary
-Terminology used in this report follows definitions provided in 'Appendix B - Glossary' to keep methods, documentation, and figures aligned. In the main report, controlled glossary terms are shown in backticks (for example, `Reach Outlet`, `Headwater Reach`, `Stage Transfer Line`) to indicate they use the appendix definitions.
+Terminology used in this report follows definitions provided in 'Appendix A - Glossary' to keep methods, documentation, and figures aligned. In the main report, controlled glossary terms are shown in backticks (for example, `Reach Outlet`, `Headwater Reach`, `Stage Transfer Line`) to indicate they use the appendix definitions.
 
 ### Maps and Figures
 The figures in this report use a consistent symbology. This is defined once here to avoid repeating legends in every figure. All maps have north arrow upside. Deviations from these norms are noted explicitly.
@@ -579,18 +579,16 @@ Table TBD suggests a project roadmap with both currently planned and suggested p
 
 **Table TBD. Suggested Project Roadmap**
 
-| Phase                    | Duration | Primary Focus                      | Key Outputs                                                                |
-| ------------------------ | -------- | ---------------------------------- | -------------------------------------------------------------------------- |
-| Phase 1 (current)        | 4 months | Methodology development            | - Draft methodology<br>- Pilot case studies<br>- Comparison with benchmark |
-| Review Phase (planned)   |          | Methodology review                 |                                                                            |
-| Phase 2 (planned)        | 4 months | Software development               | - Prototype methodology<br>- Draft software                                |
-| Phase 3 (planned)        | 3 months | Automation hardening               | -  Prototype Software<br>-  Prototype Data/libraries                       |
-| Review Phase (suggested) |          | Broader community review           |                                                                            |
-| Phase 4 (suggested)      |          | Cost optimization                  | - Updated software                                                         |
-| Phase 5 (suggested)      |          | Outstanding methodology challenges | - Updated methodology                                                      |
-| Phase 6 (suggested)      |          | Production                         | - Nationwide FIM libraries                                                 |
-
-
+| Phase | Duration | Primary Focus | Key Outputs |
+| --- | --- | --- | --- |
+| Phase 1 (current) | 4 months | Methodology development | - Draft methodology<br>- Pilot case studies<br>- Comparison with benchmark |
+| Review Phase (planned) | | Methodology review | |
+| Phase 2 (planned) | 4 months | Software development | - Prototype methodology<br>- Draft software |
+| Phase 3 (planned) | 3 months | Automation hardening | -  Prototype Software<br>-  Prototype Data/libraries |
+| Review Phase (suggested) | | Broader community review | |
+| Phase 4 (suggested) | | Cost optimization | - Updated software |
+| Phase 5 (suggested) | | Outstanding methodology challenges | - Updated methodology |
+| Phase 6 (suggested) | | Production | - Nationwide FIM libraries |
 
 ## References
 Banasiak, R. (2024), Large-scale two-dimensional cascade modeling of the Odra River for flood hazard management, *Water*, 16(1), 39, https://doi.org/10.3390/w16010039.
@@ -633,10 +631,9 @@ Zhao, T., Q. Shao, and Y. Zhang (2017), Deriving flood-mediated connectivity bet
 
 ## Appendices
 
-### Appendix A.
+### Appendix A. Glossary
 
 
-### Appendix B. Glossary
 #### Adjacent Reaches
 `connected reaches` and reaches draining into the same `reach outlet` for the reach of interest.
 
@@ -705,6 +702,8 @@ The reach with the largest drainage area of all `upstream reaches` for a reach o
 
 #### Upstream Reach
 A reach that drain to a reach of interest.
+
+### Appendix B. Model Development WebApp
 
 ### Appendix C. Pilot Cases
 All figures in this appendix follow the same symbology convention described in Figure 7, unless overridden by Figure caption.
@@ -1254,10 +1253,10 @@ Headwater reaches are handled separately because upstream geometry options are n
 **ALT-A - At Perpendicular Line on `Reach Start`**
 Use a perpendicular line at headwater `reach start` so inflow is distributed across a short section instead of concentrated at a point.
 
-**ALT-B - At Points Distributed Along the Reach** `current`
+**ALT-B - At Points Distributed Along the Reach** 
 Apply distributed point inflows along the headwater reach to reduce concentration of inflow at a single boundary location. This option is a strong candidate because headwater reaches are usually not distinct in DEM and inputting a large flow at the top can route to different locations.
 
-**ALT-C - At a Point on `Reach Start`**
+**ALT-C - At a Point on `Reach Start`** `current`
 This alternative suggest simplest approach of one point at headwater `reach start`.
 
 #### Decision #15 - What Line Width Should be Used for Inflow BC Line
