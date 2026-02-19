@@ -71,7 +71,7 @@ As noted above, the framework mirrors the Ripple1D library approach but uses 2D 
 
 The framework is focused on riverine (fluvial) flooding, where reach‑scale hydraulics dominate and boundary conditions can be represented by discharge and downstream stage. A key assumption for riverine flooding is that the response to streamflow is largely confined to the local reach. Under that assumption, a sufficiently dense library spanning the range of upstream flows and downstream stage conditions should yield a close enough FIM for most expected NWM forecast scenarios without requiring forecast event specific simulations. Lake and coastal settings are only touched in the context of boundary‑condition handling for specific reaches; full treatment of those domains and other non‑fluvial processes is outside the current scope.
 
-Under this framework, each reach model consists of a rectangular domain, an inflow boundary, a stage transfer line (STL), and an outflow boundary. The downstream reach water‑surface elevation (WSEL) provides downstream boundary condition to the upstream reach at the STL, enforcing a water‑surface tie‑in to propagate backwater effects. In the “simple case” this structure covers most reaches. Special cases such as lake/coastal reaches, large floodplains, or hydraulically coupled reaches require modifications described later in this report.
+Under this framework, each reach model consists of a rectangular domain, an inflow boundary, a stage transfer line (STL), and an outflow boundary. The downstream reach water‑surface elevation (WSEL) provides downstream boundary condition to the upstream reach at the STL, enforcing a water‑surface tie‑in to propagate backwater effects. In the “simple case” this structure covers most reaches. Special cases such as lake and coastal reaches, large floodplains, or hydraulically coupled reaches require modifications described later in this report.
 
 ![Figure 4-1. Example geometry for a single reach-based model showing inflow, outflow, and stage transfer lines.](image2.png)
 
@@ -142,7 +142,7 @@ Table 5-2 lists the summary results of the survey of 2D models and the model sel
 
 | Model | Equations / Approach | Grid / Automation | Performance | Linux / Container | Boundary Conditions & IO | Status / Rationale |
 | --- | --- | --- | --- | --- | --- | --- |
-| LISFLOOD-FP | Multiple solvers; some solve shallow-water equations; some use Manning-based formulations | Gridded; automation feasible; broad community patterns | Fast; GPU support for ACC, FV1, DG2 | Linux-friendly; containerizable | Supports hydrograph, fixed inflow, free-flow (valley slope), constant or time-varying WSE; exports WSE and velocity grids; checkpointing | Continue evaluation; strong literature and tooling, good performance |
+| LISFLOOD-FP | Multiple solvers; some solve shallow-water equations; some use Manning-based formulations | Gridded; automation feasible; broad community patterns | Fast; GPU support for ACC, FV1, DG2 | Linux-friendly; containerizable | Supports hydrograph, fixed inflow, free-flow (valley slope), constant or time-varying WSE; exports WSEL and velocity grids; checkpointing | Continue evaluation; strong literature and tooling, good performance |
 | TRITON | Full shallow-water equations (ARoe solver) | Gridded; automation feasible; maturity still developing | Very fast on GPU; weaker on CPU | Linux-friendly; containerizable | Supports hydrograph, free flow, constant WSE, normal slope, Froude number; exports depth/velocity; checkpointing | Continue evaluation; strong physics and GPU speed, less mature |
 | SFINCS | Shallow-water equations with simplified formulation (convective acceleration ignored) | Gridded; HydroMT provides automated setup | Fast for large domains; performance depends on setup | Linux-friendly; containerizable | Boundary conditions supported via HydroMT workflows; standard raster outputs | Continue evaluation; strong automation, needs validation for reach-based rivers |
 | TELEMAC-2D | Shallow-water equations | Mesh-based; may require code-level adjustments | Reported fast; widely used in EU | Linux-capable; containerization possible but non-trivial | Standard hydraulic boundary conditions; IO requires integration work | Not prioritized; higher automation burden |
@@ -223,7 +223,7 @@ SDR is implemented in a dedicated repository and is actively used by engineers a
 The next subsections, **Pilot Cases** and **Core Method Decisions and Evidence**, is a narrative summary of the current Test Cases and Decision Register state and the evidence patterns that led to these decisions. Appendix D is derived directly from the current SDR state and provides the individual decision pages, including the complete alternative sets for each decision.
 
 ### 5.5. Pilot Cases
-Pilot locations were selected to stress test the methodology and evaluate design decisions across contrasting hydraulic and physiographic conditions rather than to maximize geographic count. The set includes small rural systems, steep headwaters, urban/structure-influenced corridors, very wide floodplains, arid channels, a variety of confluences and river networks, and lake/coastal terminal settings. Finally, deviation experiments were executed against the baseline methodology to discover and isolate failure modes such as WSEL mismatch at tie-ins, edge leakage, inflow artifacts, etc. Decisions from these cases were recorded using the SDR workflow described above.
+Pilot locations were selected to stress test the methodology and evaluate design decisions across contrasting hydraulic and physiographic conditions rather than to maximize geographic count. The set includes small rural systems, steep headwaters, urban/structure-influenced corridors, very wide floodplains, arid channels, a variety of confluences and river networks, and lake and coastal terminal settings. Finally, deviation experiments were executed against the baseline methodology to discover and isolate failure modes such as WSEL mismatch at tie-ins, edge leakage, inflow artifacts, etc. Decisions from these cases were recorded using the SDR workflow described above.
 
 Figure 5-2 depicts location of all cases. Table 5-3 provides case number, location, and title for these cases. Appendix C provides full details for each case.
 
@@ -308,7 +308,7 @@ Executing KWSE scenario runs for a model is compute intensive and lead to large 
 
 ![Figure 5-10. Under prediction of depth near tie-in when downstream stage transfer is not enforced for the selected reach in yellow in Case #1. The profile graph is for the selected yellow reach comparing depth rasters (meters) of KWSE and normal-depth (ND) runs.](FIG-002.png)
 
-For lake/coastal scenarios specifically, decision **For lake and coastal reaches, what downstream boundary conditions should be applied?** (Appendix D, Decision #5) compared single-slope-only approaches against a mixed KWSE + slope strategy. Case #2 rejected the low-slope-only approach due to downstream pooling behavior, leading to the selected baseline *ALT-C - Both KWSE and Reach Normal Depth Slope* which is same as what we have for an standard reach.
+For lake and coastal scenarios specifically, decision **For lake and coastal reaches, what downstream boundary conditions should be applied?** (Appendix D, Decision #5) compared single-slope-only approaches against a mixed KWSE + slope strategy. Case #2 rejected the low-slope-only approach due to downstream pooling behavior, leading to the selected baseline *ALT-C - Both KWSE and Reach Normal Depth Slope* which is same as what we have for an standard reach.
 #### 5.6.7. Evaluation Decisions
 The testing of the quality of produced FIMs and reach models inter connectivity methods required some decisions around evaluation and compositing logic. **What is the definition of benchmark FIM for model connectivity testing?** (Appendix D, Decision #2) sets the reference benchmark FIM source as *ALT-A - Composite 2D Model with Same Input Data*. Then **What is the strategy of pixel value calculation for composite maps?** (Appendix D, Decision #4) resolves overlap behavior for mosaicing individual reach FIMs . Here, alternatives ranged from network order based compositing to clipping maps and then pixel-wise aggregation. The selected baseline is *ALT-D - Pixel-wise Max* for deterministic overlap handling in FIM transition/overlap zones.
 
@@ -1044,7 +1044,7 @@ Resolve overlaps by assigning the maximum depth value per pixel so compositing i
 #### Decision #5 - For Lake and Coastal Reaches What Downstream Boundary Conditions Should be Applied
 
 **Description**
-For these reaches, the standard WSE transfer approach might not apply.  These reaches will, however, need some area to discharge floodwaters.
+For these reaches, the standard WSEL transfer approach might not apply.  These reaches will, however, need some area to discharge floodwaters.
 
 **Alternatives**
 **ALT-A - Only Reach Normal Depth Slope**
@@ -1101,9 +1101,6 @@ Use model domain BBOX and water body polygon intersection directly as STL geomet
 
 **ALT-B - Intersection of Model Domain and Water Body Polygon Boundary** `current`
 This alternative converts the water body polygon into a polyline and then perform intersection with domain BBOX. This will give a line geometry similar to WSEL contours in standard reaches.
-
-
-- ALT-B selected based on judgement
 
 \newpage
 
