@@ -25,7 +25,7 @@ This report lays out a pilot‑informed, initial, scalable methodology and expla
 For clarity, project phasing in this report is: Phase 1 (methodology development), Phase 2 (method refinement and prototyping software), and Phase 3 (automation hardening and prototype library generation).
 
 ### 2.2. Glossary
-Terminology used in this report follows definitions provided in 'Appendix A - Glossary' to keep methods, documentation, and figures aligned. In the main report, controlled glossary terms are shown in backticks (for example, `Reach Outlet`, `Headwater Reach`, `Stage Transfer Line`) to indicate they use the appendix definitions.
+Terminology used in this report follows definitions provided in 'Appendix A - Glossary' to keep methods, documentation, and figures aligned. In the main report, controlled glossary terms are shown in italics (for example, *Reach Outlet*, *Headwater Reach*, *Stage Transfer Line*) to indicate they use the appendix definitions.
 
 ### 2.3. Maps and Figures
 The figures in this report use a consistent symbology. This is defined once here to avoid repeating legends in every figure. All maps have north arrow upside. Deviations from these norms are noted explicitly.
@@ -263,11 +263,11 @@ For inflow placement in non-headwater reaches, the central question is **What ge
 ![Reduced artifacts with line inflow](Case-006_FIG-003.png)
 *Figure 5-4. Reduced inflow artifacts when inflow geometry was a line in Case #6.*
 
-`Headwater Reaches` required separate handling from regular reaches, this decision was tracked through **What geometry type and location criteria should be used for the input BC at `Headwater Reaches`?** (Appendix D, Decision #14). This was mainly a choice between line-at-start and point-based options, with distributed points retained as the current practical compromise. The selected baseline is *ALT-C - At a Point on Reach Start*.
+*Headwater Reaches* required separate handling from regular reaches, this decision was tracked through **What geometry type and location criteria should be used for the input BC at *Headwater Reaches*?** (Appendix D, Decision #14). This was mainly a choice between line-at-start and point-based options, with distributed points retained as the current practical compromise. The selected baseline is *ALT-C - At a Point on Reach Start*.
 
 Two parameter decisions then stabilize the selected geometry: **What line width should be used for inflow BC line?** (Appendix D, Decision #15), selected as *ALT-A - 100m Wide*, and **What upstream offset distance should be used for inflow BC line placement?** (Appendix D, Decision #16), selected as *ALT-A - 0.25 of Upstream Reach Length*.
 
-Downstream coupling introduced a second decision cluster. **Where to apply stage transfer condition?** (Appendix D, Decision #9) considered three placement patterns: at downstream-informed edge cells, at the `Reach Outlet`, or across a larger intersection region. The selected baseline is *ALT-B - At Reach Outlet*. Given that placement, **What should be the geometry of STL?** (Appendix D, Decision #25) evaluated divide-derived, contour-derived, and synthetic line approaches. The selected baseline is *ALT-B - WSEL Contour From D/S FIM*. To keep automation simple across library generation, **Should there be 1 STL per reach or 1 STL per reach per run?** (Appendix D, Decision #26) was resolved to *ALT-A - 1 STL Per Reach From Largest Model Run*.
+Downstream coupling introduced a second decision cluster. **Where to apply stage transfer condition?** (Appendix D, Decision #9) considered three placement patterns: at downstream-informed edge cells, at the *Reach Outlet*, or across a larger intersection region. The selected baseline is *ALT-B - At Reach Outlet*. Given that placement, **What should be the geometry of STL?** (Appendix D, Decision #25) evaluated divide-derived, contour-derived, and synthetic line approaches. The selected baseline is *ALT-B - WSEL Contour From D/S FIM*. To keep automation simple across library generation, **Should there be 1 STL per reach or 1 STL per reach per run?** (Appendix D, Decision #26) was resolved to *ALT-A - 1 STL Per Reach From Largest Model Run*.
 
 Edge and outlet behavior were evaluated separately for regular versus terminal settings. For standard reaches, **Where and what boundary conditions to apply along the edge cells?** (Appendix D, Decision #3) moved from broad all-edge openings toward selective downstream-informed edge opening. Case #1 showed that permissive edge handling could produce non-outlet water loss, which drove selection to *ALT-D - D/S Model FIM Informed Edge Cells get Freefall*.
 
@@ -338,17 +338,17 @@ During the middle phase of methodology development, the team recognized that the
 
 | Title | Number | Current Alternative |
 | --- | --- | --- |
-| What Should be Geometry and Location of Input BC | Decision #13 | ALT-A - At Perpendicular Line Some Distance Away on Highest Drainage Area `Upstream Reach` |
-| What Should be Geometry and Location of Input BC for `Headwater Reaches` | Decision #14 | ALT-C - At a Point on Reach Start |
+| What Should be Geometry and Location of Input BC | Decision #13 | ALT-A - At Perpendicular Line Some Distance Away on Highest Drainage Area *Upstream Reach* |
+| What Should be Geometry and Location of Input BC for *Headwater Reaches* | Decision #14 | ALT-C - At a Point on Reach Start |
 | What Line Width Should be Used for Inflow BC Line | Decision #15 | ALT-A - 100m Wide |
 | What Upstream Offset Distance Should be Used for Inflow BC Line Placement | Decision #16 | ALT-A - 0.25 of Upstream Reach Length |
-| Where to Apply Stage Transfer Condition | Decision #9 | ALT-B - At `Reach Outlet` |
+| Where to Apply Stage Transfer Condition | Decision #9 | ALT-B - At *Reach Outlet* |
 | What Should be the Geometry of STL | Decision #25 | ALT-B - WSEL Contour From D/S FIM |
 | Should There be 1 STL per Reach or 1 STL per Reach per Run | Decision #26 | ALT-A - 1 STL Per Reach From Largest Model Run |
 | Where and What Boundary Conditions to Apply Along the Edge Cells | Decision #3 | ALT-D - D/S Model FIM Informed Edge Cells get Freefall |
 | What Should be an STL for Lake and Coastal Reaches | Decision #8 | ALT-B - Intersection of Model Domain and Water Body Polygon Boundary |
 | For Lake and Coastal Reaches Where and What Boundary Conditions to Apply Along the Edge Cells | Decision #6 | ALT-E - D/S Water Body Informed Edge Cells get Steep Slope |
-| How to Determine Initial Model Domain | Decision #11 | ALT-D - Bounding Box of Inflow BC, d/s `STL`, and Buffered Centerline |
+| How to Determine Initial Model Domain | Decision #11 | ALT-D - Bounding Box of Inflow BC, d/s *STL*, and Buffered Centerline |
 | What Horizontal Resolution DEM Should be Used for Modeling | Decision #17 | ALT-A - 10 meters |
 | What Source DEM Should be Used for Modeling | Decision #18 | ALT-A - USGS 3DEP |
 | What Source Surface Roughness Data Should be Used for Modeling | Decision #19 | ALT-A - National Land Cover Dataset converted to Manning's n |
@@ -375,7 +375,7 @@ Figure 6-1. Overview of the proposed automation workflow.
 
 Our proposed production workflow defines a standardized repeatable process for generating flood models and FIM libraries. The workflow is documented through a series of diagrams that describe each processing step, from data acquisition and preprocessing through model execution and product generation. A more hands on step-by-step example is also provided in the next section.
 
-The production workflow is initialized by querying network database for a list of `terminal reaches`. These are reaches that drain to a) a coast, b) an area outside the administrative boundaries of the US, or c) a large inland water body. Starting with a single reach, a model is developed, and a library of FIM is generated for a variety of downstream conditions and reach discharges. These processing steps are detailed in the following subsections. Once a single reach is completed, the process then repeats for the next set of upstream reaches or another terminal reach.
+The production workflow is initialized by querying network database for a list of *terminal reaches*. These are reaches that drain to a) a coast, b) an area outside the administrative boundaries of the US, or c) a large inland water body. Starting with a single reach, a model is developed, and a library of FIM is generated for a variety of downstream conditions and reach discharges. These processing steps are detailed in the following subsections. Once a single reach is completed, the process then repeats for the next set of upstream reaches or another terminal reach.
 
 ### 6.2. Create Reach Model
 The goal of the Create Reach Model step is to develop a **reusable** LISFLOOD-FP model that will be able to simulate any flood condition of interest. This is accomplished by making an initial estimate of a model domain, running the largest expected flood through it, and expanding the domain if necessary.
@@ -632,42 +632,42 @@ Zhao, T., Q. Shao, and Y. Zhang (2017), Deriving flood-mediated connectivity bet
 ### Appendix A. Glossary
 
 #### Adjacent Reaches
-`connected reaches` and reaches draining into the same `reach outlet` for the reach of interest.
+*connected reaches* and reaches draining into the same *reach outlet* for the reach of interest.
 
-All blue reaches are `adjacent reaches` for green reach.
+All blue reaches are *adjacent reaches* for green reach.
 ![Adjacent reaches](B6.png)
-*Figure A-1. `Adjacent Reaches` example.*
+*Figure A-1. Adjacent Reaches example.*
 
 #### Common Outlet Reaches
-Reaches sharing common `reach outlet`.
+Reaches sharing common *reach outlet*.
 
-Two green reaches here are common outlet reaches because they share same `reach outlet`.
+Two green reaches here are common outlet reaches because they share same *reach outlet*.
 ![Common outlet reaches](B4.png)
-*Figure A-2. `Common Outlet Reaches` example.*
+*Figure A-2. Common Outlet Reaches example.*
 
 #### Connected Reaches
 Reaches connected to a reach through upstream or downstream relationship.
 
-All blue reaches are `connected reaches` for green reach. Note that red reach is not.
+All blue reaches are *connected reaches* for green reach. Note that red reach is not.
 ![Connected reaches](B5.png)
-*Figure A-3. `Connected Reaches` example.*
+*Figure A-3. Connected Reaches example.*
 
 #### FIM Transition Zone
-The `Transition Zone` for a reach is the area between the `Stage Transfer Line` and the outflow line.
+The *Transition Zone* for a reach is the area between the *Stage Transfer Line* and the outflow line.
 
-The yellow area in the image below shows the `Transition Zone` for this reach.
+The yellow area in the image below shows the *Transition Zone* for this reach.
 ![FIM transition zone](B7.png)
-*Figure A-4. `FIM Transition Zone` (yellow area).*
+*Figure A-4. FIM Transition Zone (yellow area).*
 
 #### Headwater Reaches
 Reaches that have no reaches upstream of them in the reach network.
 
-`headwater reaches` shown in green
+*headwater reaches* shown in green
 ![Headwater reaches](B1.png)
-*Figure A-5. `Headwater Reaches` shown in green.*
+*Figure A-5. Headwater Reaches shown in green.*
 
 #### Lake and Coastal Reaches
-Subset of `Terminal Reaches` that discharge to
+Subset of *Terminal Reaches* that discharge to
 - coasts
 - large waterbodies
 
@@ -676,14 +676,14 @@ End point of the reach.
 
 Reach outlet for green reach shown in red circle.
 ![Reach outlet](B3.png)
-*Figure A-6. `Reach Outlet` shown for green reach (red circle).*
+*Figure A-6. Reach Outlet shown for green reach (red circle).*
 
 #### Reach Start
 Start point of the reach.
 
 Reach start for green reach shown in red circle.
 ![Reach start](B2.png)
-*Figure A-7. `Reach Start` shown for green reach (red circle).*
+*Figure A-7. Reach Start shown for green reach (red circle).*
 
 #### Stage Transfer Line (STL)
 A line that is within the domain of both upstream and downstream reach models and which is used to transfer WSEL from the downstream model to an upstream model.
@@ -695,7 +695,7 @@ Terminal reaches include reaches that discharge to
 - large waterbodies
 
 #### Upstream Mainstem Reach
-The reach with the largest drainage area of all `upstream reaches` for a reach of interest.
+The reach with the largest drainage area of all *upstream reaches* for a reach of interest.
 
 #### Upstream Reach
 A reach that drain to a reach of interest.
@@ -704,7 +704,7 @@ A reach that drain to a reach of interest.
 
 ### Appendix C. Pilot Cases
 All figures in this appendix follow the same symbology convention described in Figure 2-2, unless overridden by Figure caption.
-Coordinate systems are reported using European Petroleum Survey Group (EPSG) codes 5070 and 4326. `N/A` means not applicable.
+Coordinate systems are reported using European Petroleum Survey Group (EPSG) codes 5070 and 4326. 'N/A' means not applicable.
 
 #### Case #1 - Y Shape Confluence with 2 Level Stream Order Difference
 
@@ -1022,7 +1022,7 @@ This alternative applies normal-depth behavior to all edges but computes local s
 Apply reach centerline slope normal depth boundary condition only along edge cells identified as part of downstream reach FIM, leaving other edge segments closed.
 
 **ALT-D - D/S Model FIM Informed Edge Cells get Freefall** `current`
-This is similar to ALT-A but only the edge cells that are intersecting with D/S reach FIM gets a freefall boundary condition. A freefall is needed because we want water to escape without resistance and not elevate WSEL in the `transition zone`. ALT-C suggestion of centerline slope with normal depth is a crude approximation of flow conditions, and is often based on a slope value with limited accuracy.  If the slope is flatter, it can lead to water being pooled in the transition zone.
+This is similar to ALT-A but only the edge cells that are intersecting with D/S reach FIM gets a freefall boundary condition. A freefall is needed because we want water to escape without resistance and not elevate WSEL in the *transition zone*. ALT-C suggestion of centerline slope with normal depth is a crude approximation of flow conditions, and is often based on a slope value with limited accuracy.  If the slope is flatter, it can lead to water being pooled in the transition zone.
 
 #### Decision #4 - Strategy of Pixel Value Calculation For Composite Maps
 
@@ -1036,7 +1036,7 @@ Place downstream rasters beneath upstream rasters so overlap precedence favors u
 **ALT-B - Upstream Maps at Bottom, Downstream at Top**
 This alternative prioritizes downstream rasters in overlap areas by layering them above upstream rasters
 
-**ALT-C - Maps Clipped. `Common Outlet Reaches` Maps at No Particular Order**
+**ALT-C - Maps Clipped. *Common Outlet Reaches* Maps at No Particular Order**
 This option clips maps prior to compositing so each reach contributes only within constrained extents and overlap conflicts are reduced.
 
 **ALT-D - Pixelwise Max** `current`
@@ -1060,7 +1060,7 @@ This alternative suggest to use a range of reasonable depths from downstream wat
 #### Decision #6 - For Lake and Coastal Reaches Where and What Boundary Conditions to Apply Along the Edge Cells
 
 **Description**
-Determine whether `lake and coastal reaches` require different edge-cell boundary handling from standard reaches.
+Determine whether *lake and coastal reaches* require different edge-cell boundary handling from standard reaches.
 
 **Alternatives**
 **ALT-A - Freefall at all Edges**
@@ -1076,7 +1076,7 @@ Apply reach centerline slope normal depth boundary condition only along edge cel
 All edge cells get closed boundary and water has no place to escape. This alternate works in combination with DR-008 - What Should be an STL for Lake and Coastal Reaches.
 
 **ALT-E - D/S Water Body Informed Edge Cells get Steep Slope** `current`
-This is similar to ALT-A but only at edge cells that are intersecting with D/S Water Body get freefall boundary condition. A freefall is needed because we want water to escape without resistance and not elevate WSEL in the `transition zone`. ALT-C suggestion of centerline slope with normal depth is a crude approximation of flow conditions, and is often based on a slope value with limited accuracy. If the slope is flatter, it can lead to water being pooled in the transition zone..
+This is similar to ALT-A but only at edge cells that are intersecting with D/S Water Body get freefall boundary condition. A freefall is needed because we want water to escape without resistance and not elevate WSEL in the *transition zone*. ALT-C suggestion of centerline slope with normal depth is a crude approximation of flow conditions, and is often based on a slope value with limited accuracy. If the slope is flatter, it can lead to water being pooled in the transition zone..
 
 #### Decision #7 - How to Mark Reaches as Lake and Coastal Reaches
 
@@ -1103,15 +1103,15 @@ This alternative converts the water body polygon into a polyline and then perfor
 #### Decision #9 - Where to Apply Stage Transfer Condition
 
 **Description**
-This decision decide if Stage transfer should take place at model domain BBOX, at `Reach Outlet` or as a region where domain intersect with D/S FIM. Placement of this condition strongly affects transition-zone WSEL behavior and FIM alignment between reaches.
+This decision decide if Stage transfer should take place at model domain BBOX, at *Reach Outlet* or as a region where domain intersect with D/S FIM. Placement of this condition strongly affects transition-zone WSEL behavior and FIM alignment between reaches.
 
 **Alternatives**
 **ALT-A - At Model Domain Edge Cells that Inetersects D/S Reach FIM**
 At the intersection of model domain BBOX and D/S Reach FIM. This has benefit that there will be no transition zone.
 This would cause sudden floodplain width increase if there is a big flow increase from upstream to downstream. (See picture in description. We still need to back it by evidence.)
 
-**ALT-B - At `Reach Outlet`** `current`
-Apply stage transfer at the `reach outlet` as a Line, called `STL`. See DR-025 - What Should be the Geometry of STL for further specifications.
+**ALT-B - At *Reach Outlet*** `current`
+Apply stage transfer at the *reach outlet* as a Line, called *STL*. See DR-025 - What Should be the Geometry of STL for further specifications.
 
 **ALT-C - At the Intersection of Domain and D/S FIM**
 Apply stage transfer across the whole region rather than a single line.
@@ -1165,7 +1165,7 @@ In this approach, the a bounding box is taken on some buffer around the stream c
 **ALT-C - Coarse Model FIM**
 In this approach the assumption is that a course model would have been already executed for the reach, which will give a maximum FIM and the domain in actual modeling can simply be BBOX of the coarse model FIM.
 
-**ALT-D - Bounding Box of Inflow BC, d/s `STL`, and Buffered Centerline** `current`
+**ALT-D - Bounding Box of Inflow BC, d/s *STL*, and Buffered Centerline** `current`
 A bounding box on the inflow line, the downstream Stage Transfer Line (when available), and the buffered centerline from ALT-B is used for the model domain.
 
 #### Decision #12 - What Strategy to be used for Determining if Domain Should be Expanded
@@ -1176,30 +1176,30 @@ The initial domain from DR-011 may not be large enough.  This may lead to situat
 This DR explores strategies for dynamically determining after a simulation whether water is pooling on an edge in a way that impacts FIM extents negatively and hence FIM should be expanded.
 
 **Alternatives**
-**ALT-A Informed by `Adjacent Reaches` FIM**
+**ALT-A Informed by *Adjacent Reaches* FIM**
 The domain should be expanded until there are no flooding cells on the edges other than cells that are intersecting with
-- the `downstream reaches` FIM
-- the buffer (acting as proxy for FIM) on the `upstream reaches` and `common outlet reaches`  using same approach as DR-011 - How to Determine Initial Model Domain#ALT-B - Buffer on Centerline.
+- the *downstream reaches* FIM
+- the buffer (acting as proxy for FIM) on the *upstream reaches* and *common outlet reaches*  using same approach as DR-011 - How to Determine Initial Model Domain#ALT-B - Buffer on Centerline.
 
 **ALT-B - Informed by Elevation**
-The domain should be expanded until there are no flooding cells on the edges other than cells that have elevation lower than the elevation at the  `outlet point` of the reach.
+The domain should be expanded until there are no flooding cells on the edges other than cells that have elevation lower than the elevation at the  *outlet point* of the reach.
 
 **ALT-C - Informed by Water-Surface Elevation**
-The domain should be expanded until there are no flooding cells on the edges other than cells that have water-surface elevation lower than the water-surface elevation at the  `reach outlet` of the reach or water-surface elevation higher than the water-surface elevation at the `reach start`.
+The domain should be expanded until there are no flooding cells on the edges other than cells that have water-surface elevation lower than the water-surface elevation at the  *reach outlet* of the reach or water-surface elevation higher than the water-surface elevation at the *reach start*.
 
 **ALT-D - Informed by Stage-Transfer Lines**
 Once a model has been run, draft stage transfer lines would be developed. The floodplain polygon would be split by these lines.  If any of the polygon between the stage transfer lines touches a domain edge, that edge should be expanded.
 
 **ALT-E - Informed by Smoothed Water-Surface Elevation**
-The domain should be expanded until there are no flooding cells on the edges other than cells that have water-surface elevation lower than the water-surface elevation at the  `reach outlet` of the reach or water-surface elevation higher than the water-surface elevation at the `reach start`.
+The domain should be expanded until there are no flooding cells on the edges other than cells that have water-surface elevation lower than the water-surface elevation at the  *reach outlet* of the reach or water-surface elevation higher than the water-surface elevation at the *reach start*.
 
 **ALT-F - Informed by Water-Surface Elevation with 4,000 Meter Expansion Limit**
-The domain should be expanded until there are no flooding cells on the edges other than cells that have water-surface elevation lower than the water-surface elevation at the  `reach outlet` of the reach or water-surface elevation higher than the water-surface elevation at the `reach start`.
+The domain should be expanded until there are no flooding cells on the edges other than cells that have water-surface elevation lower than the water-surface elevation at the  *reach outlet* of the reach or water-surface elevation higher than the water-surface elevation at the *reach start*.
 
 If the domain would expand more than 4,000 meters from the initial domain, stop expansion.
 
 **ALT-G - Informed by Water-Surface Elevation with Regression Expansion Limit** `current`
-The domain should be expanded until there are no flooding cells on the edges other than cells that have water-surface elevation lower than the water-surface elevation at the  `reach outlet` of the reach or water-surface elevation higher than the water-surface elevation at the `reach start`.
+The domain should be expanded until there are no flooding cells on the edges other than cells that have water-surface elevation lower than the water-surface elevation at the  *reach outlet* of the reach or water-surface elevation higher than the water-surface elevation at the *reach start*.
 
 If the domain would expand more than 50 times bankfull width from the initial domain, stop expansion. Bankfull width may be obtained via regression from the source below.
 
@@ -1211,12 +1211,12 @@ If the domain would expand more than 50 times bankfull width from the initial do
 We need to provide flow as input boundary condition to the model domain. What should be the geometry and location of input boundary condition?
 
 **Alternatives**
-**ALT-A - At Perpendicular Line Some Distance Away on Highest Drainage Area `Upstream Reach`** `current`
+**ALT-A - At Perpendicular Line Some Distance Away on Highest Drainage Area *Upstream Reach*** `current`
 Apply line inflow on the highest-drainage upstream reach some distance from the target reach start, aligning inflow with dominant upstream conveyance.
 
 Green reach is being modeled.
 
-**ALT-B - At Perpendicular Lines Some Distance Away on All `Upstream Reaches` with Weighted Flow by Drainage Area**
+**ALT-B - At Perpendicular Lines Some Distance Away on All *Upstream Reaches* with Weighted Flow by Drainage Area**
 This alternative distributes inflow across multiple upstream reaches with drainage-area weighting so tributary contributions are represented explicitly.
 
 Green reach is being modeled.
@@ -1226,41 +1226,41 @@ This option spreads inflow across multiple points along the reach, which can red
 
 Green reach is being modeled.
 
-**ALT-D - At Point Some Distance Away on the `Upstream Mainstem Reach`**
-This option applies one point on the `upstream mainstem reach` some distance away from `reach start`.
+**ALT-D - At Point Some Distance Away on the *Upstream Mainstem Reach***
+This option applies one point on the *upstream mainstem reach* some distance away from *reach start*.
 
 Green reach is being modeled.
 
-**ALT-E - A Point at the `Reach Start`**
+**ALT-E - A Point at the *Reach Start***
 This option is the simplest point-based setup at reach start, but it is more susceptible to concentrated inflow artifacts in larger channels.
 
 Green reach is being modeled.
 
-**ALT-F - At Perpendicular Line at the `Reach Start`**
+**ALT-F - At Perpendicular Line at the *Reach Start***
 This option is similar to ALT-E but uses line instead of point.
 
 Green reach is being modeled.
 
-#### Decision #14 - What Should be Geometry and Location of Input  BC for `Headwater Reaches`
+#### Decision #14 - What Should be Geometry and Location of Input  BC for *Headwater Reaches*
 
 **Description**
 We need to provide flow as input boundary condition to the model domain. What should be the geometry and location of input boundary condition?
 Headwater reaches are handled separately because upstream geometry options are not available relative to non-headwater reaches.
 
 **Alternatives**
-**ALT-A - At Perpendicular Line on `Reach Start`**
-Use a perpendicular line at headwater `reach start` so inflow is distributed across a short section instead of concentrated at a point.
+**ALT-A - At Perpendicular Line on *Reach Start***
+Use a perpendicular line at headwater *reach start* so inflow is distributed across a short section instead of concentrated at a point.
 
 **ALT-B - At Points Distributed Along the Reach** 
 Apply distributed point inflows along the headwater reach to reduce concentration of inflow at a single boundary location. This option is a strong candidate because headwater reaches are usually not distinct in DEM and inputting a large flow at the top can route to different locations.
 
-**ALT-C - At a Point on `Reach Start`** `current`
-This alternative suggest simplest approach of one point at headwater `reach start`.
+**ALT-C - At a Point on *Reach Start*** `current`
+This alternative suggest simplest approach of one point at headwater *reach start*.
 
 #### Decision #15 - What Line Width Should be Used for Inflow BC Line
 
 **Description**
-This DR is only relevant for line based alternatives in  DR-013 - What Should be Geometry and Location of Input  BC and DR-014 - What Should be Geometry and Location of Input  BC for `Headwater Reaches`
+This DR is only relevant for line based alternatives in  DR-013 - What Should be Geometry and Location of Input  BC and DR-014 - What Should be Geometry and Location of Input  BC for *Headwater Reaches*
 
 **Alternatives**
 **ALT-A - 100m Wide** `current`
@@ -1415,14 +1415,14 @@ This decision defines thresholds for alternatives in DR-023 - How to Deal with S
 **Description**
 Define how to derive the stage transfer line (STL) for regular reaches.
 
-This decision is only valid if DR-009 - Where to Apply Stage Transfer Condition has ALT-B At `Reach Outlet` selected.
+This decision is only valid if DR-009 - Where to Apply Stage Transfer Condition has ALT-B At *Reach Outlet* selected.
 
 **Alternatives**
 **ALT-A - D/S Reach Divide**
 Define STL using downstream reach divide geometry.
 
 **ALT-B - WSEL Contour From D/S FIM** `current`
-Create a WSEL Contour from D/S FIM and use it as `STL`. One issue with this is that this WSEL Contour will be in close proximity with the Inflow BC line of D/S model, and will cause Water-surface Elevation Anomalies.
+Create a WSEL Contour from D/S FIM and use it as *STL*. One issue with this is that this WSEL Contour will be in close proximity with the Inflow BC line of D/S model, and will cause Water-surface Elevation Anomalies.
 
 It should be evaluated that does it even matter if WSEL contour is irregular shape?  Similarly this issue might only be in flat areas which we might want to avoid per DR-027 - How to Deal with Flat Reaches
 
