@@ -220,14 +220,14 @@ This workflow reduced repeated loops, made edge-case handling systematic, and ke
 
 SDR is implemented in a dedicated repository and is actively used by engineers as the primary method-refinement workspace (`https://github.com/NGWPC/twod-fim-knowledge-base/tree/main/system-decision-record`). Beyond immediate decision support, this is expected to materially improve onboarding and external technical review because the reasoning trail is explicit and auditable.
 
-The next subsections, **Pilot Cases** and **Core Method Decisions and Evidence**, is a narrative summary of the current Test Cases and Decision Register state and the evidence patterns that led to these decisions. Appendix D is derived directly from the current SDR state and provides the individual decision pages, including the complete alternative sets for each decision.
+The next subsections, **Pilot Cases** and **Core Method Decisions and Evidence**, is a narrative summary of the current Test Cases and Decision Register state and the evidence patterns that led to these decisions. Appendix C is derived directly from the current SDR state and provides the individual decision pages, including the complete alternative sets for each decision.
 
 ### 5.5. Pilot Cases
 Pilot locations were selected to stress test the methodology and evaluate design decisions across contrasting hydraulic and physiographic conditions rather than to maximize geographic count. The set includes small rural systems, steep headwaters, urban/structure-influenced corridors, very wide floodplains, arid channels, a variety of confluences and river networks, and lake and coastal terminal settings. Finally, deviation experiments were executed against the baseline methodology to discover and isolate failure modes such as WSEL mismatch at tie-ins, edge leakage, inflow artifacts, etc. Decisions from these cases were recorded using the SDR workflow described above.
 
-Figure 5-2 depicts location of all cases. Table 5-3 provides case number, location, and title for these cases. Appendix C provides full details for each case.
+Figure 5-2 depicts location of all cases. Table 5-3 provides case number, location, and title for these cases. Appendix B provides full details for each case.
 
-![Figure 5-2. Locations of pilot study cases. For full detail about each case refer to Appendix C.](pilot_cases_locations.jpeg)
+![Figure 5-2. Locations of pilot study cases. For full detail about each case refer to Appendix B.](pilot_cases_locations.jpeg)
 
 **Table 5-3. Case Index**
 
@@ -250,24 +250,24 @@ Figure 5-2 depicts location of all cases. Table 5-3 provides case number, locati
 | Case #15 | Evansville, IN | Large River |
 
 ### 5.6. Core Method Decisions and Evidence
-This subsection explains the decision logic behind the current methodology baseline. It follows the same implementation sequence used during model development. As described in the SDR, for each decision, it summarizes the design question, the alternatives considered, how evidence from testing changed the decision over time, and which alternative is currently selected. Here, an alternative refers to one candidate option within a decision. Appendix D is derived directly from the current SDR state and provides the individual decision pages, including the complete alternative sets for each decision. At the end of this subsection Table 5-4 summarizes key design decisions and their current valid solution as a decision register. This decision register form our baseline methodology for automation work that will follow.
+This subsection explains the decision logic behind the current methodology baseline. It follows the same implementation sequence used during model development. As described in the SDR, for each decision, it summarizes the design question, the alternatives considered, how evidence from testing changed the decision over time, and which alternative is currently selected. Here, an alternative refers to one candidate option within a decision. Appendix C is derived directly from the current SDR state and provides the individual decision pages, including the complete alternative sets for each decision. At the end of this subsection Table 5-4 summarizes key design decisions and their current valid solution as a decision register. This decision register form our baseline methodology for automation work that will follow.
 
 #### 5.6.1. Inflow and Outflow Geometries Decisions
 To create a methodology of automated model development a set of decisions is needed to define geometry and boundary placement: where water enters, where stage is transferred, and where water is allowed to leave the domain. These choices had a strong first-order impact on stability and map artifacts.
 
-For inflow placement in non-headwater reaches, the central question is **What geometry type and location criteria should be used for the input boundary condition (BC)?** (see Appendix D, Decision #13 for full details). In practice, this decision compared line-based inflow placement on upstream reaches against point-based placements at or near the reach start. Testing on Case #6 (Appendix C) showed that point-focused alternatives produced stronger local WSEL artifacts, while line-based placement reduced those effects with no side-effects. The selected solution here is *ALT-A - At Perpendicular Line Some Distance Away on Highest Drainage Area Upstream Reach*. The images below show the difference in the WSEL's contour lines when using points vs lines for input discharge. 
+For inflow placement in non-headwater reaches, the central question is **What geometry type and location criteria should be used for the input boundary condition (BC)?** (see Appendix C, Decision #13 for full details). In practice, this decision compared line-based inflow placement on upstream reaches against point-based placements at or near the reach start. Testing on Case #6 (Appendix B) showed that point-focused alternatives produced stronger local WSEL artifacts, while line-based placement reduced those effects with no side-effects. The selected solution here is *ALT-A - At Perpendicular Line Some Distance Away on Highest Drainage Area Upstream Reach*. The images below show the difference in the WSEL's contour lines when using points vs lines for input discharge. 
 
 ![Figure 5-3. WSEL artifacts if we introduce inflow at a point  in Case #6. White lines in this picture are WSEL Contours.](Case-006_FIG-002.png)
 
 ![Figure 5-4. Reduced inflow artifacts when inflow geometry was a line in Case #6.](Case-006_FIG-003.png)
 
-*Headwater Reaches* required separate handling from regular reaches, this decision was tracked through **What geometry type and location criteria should be used for the input BC at *Headwater Reaches*?** (Appendix D, Decision #14). This was mainly a choice between line-at-start and point-based options, with distributed points retained as the current practical compromise. The selected baseline is *ALT-C - At a Point on Reach Start*.
+*Headwater Reaches* required separate handling from regular reaches, this decision was tracked through **What geometry type and location criteria should be used for the input BC at *Headwater Reaches*?** (Appendix C, Decision #14). This was mainly a choice between line-at-start and point-based options, with distributed points retained as the current practical compromise. The selected baseline is *ALT-C - At a Point on Reach Start*.
 
-Two parameter decisions then stabilize the selected geometry: **What line width should be used for inflow BC line?** (Appendix D, Decision #15), selected as *ALT-A - 100m Wide*, and **What upstream offset distance should be used for inflow BC line placement?** (Appendix D, Decision #16), selected as *ALT-A - 0.25 of Upstream Reach Length*.
+Two parameter decisions then stabilize the selected geometry: **What line width should be used for inflow BC line?** (Appendix C, Decision #15), selected as *ALT-A - 100m Wide*, and **What upstream offset distance should be used for inflow BC line placement?** (Appendix C, Decision #16), selected as *ALT-A - 0.25 of Upstream Reach Length*.
 
-Downstream coupling introduced a second decision cluster. **Where to apply stage transfer condition?** (Appendix D, Decision #9) considered three placement patterns: at downstream-informed edge cells, at the *Reach Outlet*, or across a larger intersection region. The selected baseline is *ALT-B - At Reach Outlet*. Given that placement, **What should be the geometry of STL?** (Appendix D, Decision #25) evaluated divide-derived, contour-derived, and synthetic line approaches. The selected baseline is *ALT-B - WSEL Contour From D/S FIM*. To keep automation simple across library generation, **Should there be 1 STL per reach or 1 STL per reach per run?** (Appendix D, Decision #26) was resolved to *ALT-A - 1 STL Per Reach From Largest Model Run*.
+Downstream coupling introduced a second decision cluster. **Where to apply stage transfer condition?** (Appendix C, Decision #9) considered three placement patterns: at downstream-informed edge cells, at the *Reach Outlet*, or across a larger intersection region. The selected baseline is *ALT-B - At Reach Outlet*. Given that placement, **What should be the geometry of STL?** (Appendix C, Decision #25) evaluated divide-derived, contour-derived, and synthetic line approaches. The selected baseline is *ALT-B - WSEL Contour From D/S FIM*. To keep automation simple across library generation, **Should there be 1 STL per reach or 1 STL per reach per run?** (Appendix C, Decision #26) was resolved to *ALT-A - 1 STL Per Reach From Largest Model Run*.
 
-Edge and outlet behavior were evaluated separately for regular versus terminal settings. For standard reaches, **Where and what boundary conditions to apply along the edge cells?** (Appendix D, Decision #3) moved from broad all-edge openings toward selective downstream-informed edge opening. Case #1 showed that permissive edge handling could produce non-outlet water loss, which drove selection to *ALT-D - D/S Model FIM Informed Edge Cells get Freefall*.
+Edge and outlet behavior were evaluated separately for regular versus terminal settings. For standard reaches, **Where and what boundary conditions to apply along the edge cells?** (Appendix C, Decision #3) moved from broad all-edge openings toward selective downstream-informed edge opening. Case #1 showed that permissive edge handling could produce non-outlet water loss, which drove selection to *ALT-D - D/S Model FIM Informed Edge Cells get Freefall*.
 
 
 ![Figure 5-5. ALT-C and ALT-D in Decision #3 suggests only edge cells that intersects with downstream FIM should get open boundary, shown in neon green in this image.](<DR-003 - FIG-001.png>)
@@ -275,53 +275,53 @@ Edge and outlet behavior were evaluated separately for regular versus terminal s
 
 ![Figure 5-6. Decision #3, Example from ALT-A (not selected) tested applying a freefall boundary condition at all edges. This approach caused water to escape the model domain at upstream reaches (reverse flow) in Case #1, which is undesired.](Case-001_Fig-003.png)
 
-For lake and coastal reaches, the related decisions are **What should be an STL for lake and coastal reaches?** (Appendix D, Decision #8), selected alternative is *ALT-B - Intersection of Model Domain and Water Body Polygon Boundary* and **For lake and coastal reaches, where and what boundary conditions to apply along edge cells?** (Appendix D, Decision #6), selected alternative is *ALT-E - D/S Water Body Informed Edge Cells get Steep Slope*. Here, the alternatives ranged from broad all-edge open to selective downstream water body informed open boundary determination.
+For lake and coastal reaches, the related decisions are **What should be an STL for lake and coastal reaches?** (Appendix C, Decision #8), selected alternative is *ALT-B - Intersection of Model Domain and Water Body Polygon Boundary* and **For lake and coastal reaches, where and what boundary conditions to apply along edge cells?** (Appendix C, Decision #6), selected alternative is *ALT-E - D/S Water Body Informed Edge Cells get Steep Slope*. Here, the alternatives ranged from broad all-edge open to selective downstream water body informed open boundary determination.
 
 ![Figure 5-7. ALT-B of Decision #8 suggests a Stage Tranfer Line (STL) for a reach draining into a water body should be the edge of water body polygon. The WSEL values at this transfer line then can come from water body stage.](placeholder.png)
 
 #### 5.6.2. Initial Domain Development Decision
-After geometry and boundary frameworks are established, the next question is **What should be the initial model domain?** (Appendix D, Decision #11). The alternatives represented divide-based, centerline-based, and coarse-model-informed domain generation patterns. In early iterations, divide based setups were attractive for automation simplicity, but repeated testing (notably Case #4, Case #8, and Case #15) exposed floodplain truncation when domains remained too close to hydrofabric divides. The selected alternative now is *ALT-D - Bounding Box of Inflow BC, d/s STL, and Buffered Centerline*, chosen as the most practical and robust operational default.
+After geometry and boundary frameworks are established, the next question is **What should be the initial model domain?** (Appendix C, Decision #11). The alternatives represented divide-based, centerline-based, and coarse-model-informed domain generation patterns. In early iterations, divide based setups were attractive for automation simplicity, but repeated testing (notably Case #4, Case #8, and Case #15) exposed floodplain truncation when domains remained too close to hydrofabric divides. The selected alternative now is *ALT-D - Bounding Box of Inflow BC, d/s STL, and Buffered Centerline*, chosen as the most practical and robust operational default.
 
 ![Figure 5-8. Model domain developed using ALT-A of Decision #11 for Case #4 exposed floodplain truncation when using reach divides for model development. The circle here highlights that domain is not capturing the full extent of floodplain as shown here by the National Flood Hazard Layer (NFHL) floodplain](Case-004_FIG-001.png)
 
 In order to ensure that all gridded datasets line up both within model and between different reach models, the model domain bounds are snapped to the nearest multiple of the model resolution with snapping always favoring a larger domain. For example, if a domain had a minimum x value of 147 meters, the minimum x value would be snapped to 140 meters. Conversely, if a domain had a maximum x value of 147 meters, the maximum x value would be snapped to 150 meters.
 
 #### 5.6.3. Source and Derived Data Decisions
-Once geometry and initial domain are fixed, the design process moved to input data and its transformation for modeling purposes. The initial data sources and transformations steps were standardized through four decisions: **What horizontal resolution DEM should be used for modeling?** (Appendix D, Decision #17), selected as *ALT-A - 10 meters*; **What source DEM should be used for modeling?** (Appendix D, Decision #18), selected as *ALT-A - USGS 3DEP*; **What source surface roughness data should be used for modeling?** (Appendix D, Decision #19), selected as *ALT-A - National Land Cover Dataset converted to Manning's n*; and **What lookup table should be used for land-cover classes to Manning's n relationship?** (Appendix D, Decision #20), selected as *ALT-A - USACE Dictionary*.
+Once geometry and initial domain are fixed, the design process moved to input data and its transformation for modeling purposes. The initial data sources and transformations steps were standardized through four decisions: **What horizontal resolution DEM should be used for modeling?** (Appendix C, Decision #17), selected as *ALT-A - 10 meters*; **What source DEM should be used for modeling?** (Appendix C, Decision #18), selected as *ALT-A - USGS 3DEP*; **What source surface roughness data should be used for modeling?** (Appendix C, Decision #19), selected as *ALT-A - National Land Cover Dataset converted to Manning's n*; and **What lookup table should be used for land-cover classes to Manning's n relationship?** (Appendix C, Decision #20), selected as *ALT-A - USACE Dictionary*.
 
 Terrain conditioning related uncertainties are still unresolved but they are being tracked through Decisions #10 and #21.
 
-**How should DEM data be modified to enforce drainage through culverts?** (Appendix D, Decision #10) compared no-conditioning and multiple conditioning workflows (AGREEDEM, stream burning, breaching, and custom methods), but the current recorded baseline remains *ALT-A - Do nothing*. Case #3 and Case #11 nevertheless showed flow divergence around culvert and water pooling behind  culvert when culvert crossings were unresolved in the DEM, so this remains an explicit quality limitation in our workflow.
+**How should DEM data be modified to enforce drainage through culverts?** (Appendix C, Decision #10) compared no-conditioning and multiple conditioning workflows (AGREEDEM, stream burning, breaching, and custom methods), but the current recorded baseline remains *ALT-A - Do nothing*. Case #3 and Case #11 nevertheless showed flow divergence around culvert and water pooling behind  culvert when culvert crossings were unresolved in the DEM, so this remains an explicit quality limitation in our workflow.
 
 ![Figure 5-9. Flow diverged around culvert midway at Reach 30704 due to unburned culverts in DEM in Case #3.](culvert-issue.png)
 
-Similarly, **How should channel bathymetry be accounted for?** (Appendix D, Decision #21) currently remains at *ALT-A - No handling*, despite testing that clearly showed sensitivity of FIM to topobathy in Case #15. This is another known limitation carried forward into prototype planning. See Limitations below for further discussion on this topic.
+Similarly, **How should channel bathymetry be accounted for?** (Appendix C, Decision #21) currently remains at *ALT-A - No handling*, despite testing that clearly showed sensitivity of FIM to topobathy in Case #15. This is another known limitation carried forward into prototype planning. See Limitations below for further discussion on this topic.
 
 #### 5.6.4. Domain Expansion Decision
-A model is not fully developed until the domain bounding box (BBOX) is been tested to be wide enough for all flood scenarios, hence a method is required to determine whether the domain should expand, this is tracked through **What strategy to be used for determining if domain should be expanded?** (Appendix D, Decision #12). This decision has the clearest evolution path (ALT-A -> ALT-B -> ALT-F -> ALT-G). Case #7 and Case #8 were pivotal in this evolution because they exposed opposite failure modes: uncontrolled expansion versus  undesired truncation in very wide floodplains. The selected baseline is *ALT-G - Informed by Water-Surface Elevation with Regression Expansion Limit*.
+A model is not fully developed until the domain bounding box (BBOX) is been tested to be wide enough for all flood scenarios, hence a method is required to determine whether the domain should expand, this is tracked through **What strategy to be used for determining if domain should be expanded?** (Appendix C, Decision #12). This decision has the clearest evolution path (ALT-A -> ALT-B -> ALT-F -> ALT-G). Case #7 and Case #8 were pivotal in this evolution because they exposed opposite failure modes: uncontrolled expansion versus  undesired truncation in very wide floodplains. The selected baseline is *ALT-G - Informed by Water-Surface Elevation with Regression Expansion Limit*.
 
 #### 5.6.5. Model Execution Related Decisions
-Once the model is developed it need to be executed/run for different flow and stage scenarios. This will lead to decisions like **How to determine model quasi-steady state?** (Appendix D, Decision #22). This decision moved from flow balance checks to raster stabilization checks after known water-surface elevation (KWSE) boundary introduced flow of its own that made flow balance closure checks less reliable as a stopping criterion. The selected baseline now is *ALT-B - Check WSEL Raster has Stabilized Between Different Time Steps*.
+Once the model is developed it need to be executed/run for different flow and stage scenarios. This will lead to decisions like **How to determine model quasi-steady state?** (Appendix C, Decision #22). This decision moved from flow balance checks to raster stabilization checks after known water-surface elevation (KWSE) boundary introduced flow of its own that made flow balance closure checks less reliable as a stopping criterion. The selected baseline now is *ALT-B - Check WSEL Raster has Stabilized Between Different Time Steps*.
 
 #### 5.6.6. Scenario Combinations Development Decisions
-Executing KWSE scenario runs for a model is compute intensive and lead to large data storage requirements as well, hence careful consideration should be give to select reaches where KWSE runs are required. The core question is **Should KWSE scenario be modeled or not?** (Appendix D, Decision #1) for a reach. Case #1  showed under prediction of depths and extents when downstream stage transfer was excluded, which is why the selected baseline is *ALT-A - For All Reaches*. As a future work an alternative can be proposed that smartly manages selective execution of KWSE runs.
+Executing KWSE scenario runs for a model is compute intensive and lead to large data storage requirements as well, hence careful consideration should be give to select reaches where KWSE runs are required. The core question is **Should KWSE scenario be modeled or not?** (Appendix C, Decision #1) for a reach. Case #1  showed under prediction of depths and extents when downstream stage transfer was excluded, which is why the selected baseline is *ALT-A - For All Reaches*. As a future work an alternative can be proposed that smartly manages selective execution of KWSE runs.
 
 ![Figure 5-10. Under prediction of depth near tie-in when downstream stage transfer is not enforced for the selected reach in yellow in Case #1. The profile graph is for the selected yellow reach comparing depth rasters (meters) of KWSE and normal-depth (ND) runs.](FIG-002.png)
 
-For lake and coastal scenarios specifically, decision **For lake and coastal reaches, what downstream boundary conditions should be applied?** (Appendix D, Decision #5) compared single-slope-only approaches against a mixed KWSE + slope strategy. Case #2 rejected the low-slope-only approach due to downstream pooling behavior, leading to the selected baseline *ALT-C - Both KWSE and Reach Normal Depth Slope* which is same as what we have for an standard reach.
+For lake and coastal scenarios specifically, decision **For lake and coastal reaches, what downstream boundary conditions should be applied?** (Appendix C, Decision #5) compared single-slope-only approaches against a mixed KWSE + slope strategy. Case #2 rejected the low-slope-only approach due to downstream pooling behavior, leading to the selected baseline *ALT-C - Both KWSE and Reach Normal Depth Slope* which is same as what we have for an standard reach.
 #### 5.6.7. Evaluation Decisions
-The testing of the quality of produced FIMs and reach models inter connectivity methods required some decisions around evaluation and compositing logic. **What is the definition of benchmark FIM for model connectivity testing?** (Appendix D, Decision #2) sets the reference benchmark FIM source as *ALT-A - Composite 2D Model with Same Input Data*. Then **What is the strategy of pixel value calculation for composite maps?** (Appendix D, Decision #4) resolves overlap behavior for mosaicing individual reach FIMs . Here, alternatives ranged from network order based compositing to clipping maps and then pixel-wise aggregation. The selected baseline is *ALT-D - Pixel-wise Max* for deterministic overlap handling in FIM transition/overlap zones.
+The testing of the quality of produced FIMs and reach models inter connectivity methods required some decisions around evaluation and compositing logic. **What is the definition of benchmark FIM for model connectivity testing?** (Appendix C, Decision #2) sets the reference benchmark FIM source as *ALT-A - Composite 2D Model with Same Input Data*. Then **What is the strategy of pixel value calculation for composite maps?** (Appendix C, Decision #4) resolves overlap behavior for mosaicing individual reach FIMs . Here, alternatives ranged from network order based compositing to clipping maps and then pixel-wise aggregation. The selected baseline is *ALT-D - Pixel-wise Max* for deterministic overlap handling in FIM transition/overlap zones.
 
 #### 5.6.8. Network Preparation Decisions
 Before any reach-level model development, the river network must be made fit for purpose. The current hydrofabric is designed for hydrologic accounting and routing, with divide structure that works well for rainfall-runoff representation. Flood hydraulics at larger magnitudes do not always follow those same divides. In wide floodplains and low-gradient systems, overbank flowpaths, backwater propagation, and multi-source inundation can span across divides. Similarly, very short and flat reaches that carry nearly unchanged flow from one segment to the next are often inefficient to model separately and can create avoidable automation complexity. For these reasons, methodology development required a set of network-preparation decisions specifically aimed at making the reach network suitable for hydraulic modeling.
 
-The first network decision is **How to deal with short reaches?** (Appendix D, Decision #23). Alternatives ranged from leaving hydrofabric unchanged (ALT-A), to merge rules based on negligible drainage-area differences (ALT-B), to coarse-model-informed merging (ALT-C). As evidence accumulated, especially from larger-river contexts, retaining every short reach added complexity with no hydraulic benefit. The selected baseline is 'ALT-B - Merge Continuous Reaches that have Negligible Drainage Area Difference Up to Some River Mile Length'.
+The first network decision is **How to deal with short reaches?** (Appendix C, Decision #23). Alternatives ranged from leaving hydrofabric unchanged (ALT-A), to merge rules based on negligible drainage-area differences (ALT-B), to coarse-model-informed merging (ALT-C). As evidence accumulated, especially from larger-river contexts, retaining every short reach added complexity with no hydraulic benefit. The selected baseline is 'ALT-B - Merge Continuous Reaches that have Negligible Drainage Area Difference Up to Some River Mile Length'.
 
-The second network decision is **What should be thresholds for merging short reaches?** (Appendix D, Decision #24). This decision operationalize Decision #23 by defining concrete merge limits. The selected baseline is 'ALT-A - 5% Drainage Area Difference, Upto 3 miles, Stream Order 3 or up'. Preliminary analysis showed that the 5% threshold will lead to an excessive degree of merging, and future experiments will be performed to hone these thresholds.
+The second network decision is **What should be thresholds for merging short reaches?** (Appendix C, Decision #24). This decision operationalize Decision #23 by defining concrete merge limits. The selected baseline is 'ALT-A - 5% Drainage Area Difference, Upto 3 miles, Stream Order 3 or up'. Preliminary analysis showed that the 5% threshold will lead to an excessive degree of merging, and future experiments will be performed to hone these thresholds.
 
-The third network decision is **How do deal with flat reaches?** (Appendix D, Decision #27). Alternatives were to keep default behavior (ALT-A) or add slope criteria to merging logic (ALT-B). This remains provisional while additional evidence is gathered, with the current baseline at 'ALT-A - Do Nothing'.
+The third network decision is **How do deal with flat reaches?** (Appendix C, Decision #27). Alternatives were to keep default behavior (ALT-A) or add slope criteria to merging logic (ALT-B). This remains provisional while additional evidence is gathered, with the current baseline at 'ALT-A - Do Nothing'.
 
-The fourth network decision is **How to mark reaches as lake and coastal reaches?** (Appendix D, Decision #7). This decision is still open, and it remains a key dependency for fully automated pipeline.
+The fourth network decision is **How to mark reaches as lake and coastal reaches?** (Appendix C, Decision #7). This decision is still open, and it remains a key dependency for fully automated pipeline.
 
 #### 5.6.9. Decisions Summary
 During the middle phase of methodology development, the team recognized that the methodology should be treated as a dynamic set of decisions and therefore be version-controlled. To enable version control of the methodology itself, a decision register was implemented to capture the methodology state at any point in time. As decisions evolve, the register is updated and version-controlled in the SDR implementation repository, and experiments and tests records the methodology version adopted. This creates a traceable chain from decision state to test evidence, improving reproducibility, auditability, and cross iteration comparison. The decision register state at the time of writing is presented in Table 5-4 below.
@@ -670,11 +670,7 @@ A reach that drain to a reach of interest.
 
 \newpage
 
-### Appendix B. Model Development WebApp
-
-\newpage
-
-### Appendix C. Pilot Cases
+### Appendix B. Pilot Cases
 All figures in this appendix follow the same symbology convention described in Figure 2-2, unless overridden by Figure caption.
 Coordinate systems are reported using European Petroleum Survey Group (EPSG) codes 5070 and 4326. 'N/A' means not applicable.
 
@@ -682,7 +678,7 @@ Coordinate systems are reported using European Petroleum Survey Group (EPSG) cod
 
 #### Case #1 - Y Shape Confluence with 2 Level Stream Order Difference
 
-![Figure C-1. Representative view for Case #1.](C1.png)
+![Figure B-1. Representative view for Case #1.](C1.png)
 
 | Fact | Value |
 | --- | --- |
@@ -701,7 +697,7 @@ This case was selected to evaluate confluence behavior where stream-order mismat
 
 #### Case #2 - Lake Reach
 
-![Figure C-2. Representative view for Case #2.](C2.png)
+![Figure B-2. Representative view for Case #2.](C2.png)
 
 | Fact | Value |
 | --- | --- |
@@ -720,7 +716,7 @@ This case represents a terminal reach discharging into Lake Champlain and was se
 
 #### Case #3 - Small Culverts
 
-![Figure C-3. Representative view for Case #3.](C3.png)
+![Figure B-3. Representative view for Case #3.](C3.png)
 
 | Fact | Value |
 | --- | --- |
@@ -739,7 +735,7 @@ This case was selected to evaluate terrain-conditioning needs where unresolved s
 
 #### Case #4 - Model Domain Example
 
-![Figure C-4. Representative view for Case #4.](C4.png)
+![Figure B-4. Representative view for Case #4.](C4.png)
 
 | Fact | Value |
 | --- | --- |
@@ -758,7 +754,7 @@ This case was selected to test model-domain construction where overbank floodpla
 
 #### Case #5 - Model Domain Example 2
 
-![Figure C-5. Representative view for Case #5.](C5.png)
+![Figure B-5. Representative view for Case #5.](C5.png)
 
 | Fact | Value |
 | --- | --- |
@@ -777,7 +773,7 @@ This case was selected to examine headwater tributary confluence behavior where 
 
 #### Case #6 - Inflow Boundary Conditions
 
-![Figure C-6. Representative view for Case #6.](C6.png)
+![Figure B-6. Representative view for Case #6.](C6.png)
 
 | Fact | Value |
 | --- | --- |
@@ -796,7 +792,7 @@ This mid-sized river case was selected to test upstream inflow-boundary geometry
 
 #### Case #7 - Complex Semi-urban Confluence Along Low-Gradient River
 
-![Figure C-7. Representative view for Case #7.](C7.png)
+![Figure B-7. Representative view for Case #7.](C7.png)
 
 | Fact | Value |
 | --- | --- |
@@ -815,7 +811,7 @@ This case was selected to stress methodology in a complex low-gradient semi-urba
 
 #### Case #8 - Very Wide Floodplain
 
-![Figure C-8. Representative view for Case #8.](C8.png)
+![Figure B-8. Representative view for Case #8.](C8.png)
 
 | Fact | Value |
 | --- | --- |
@@ -834,7 +830,7 @@ This case was selected to test very wide-floodplain behavior along the Mississip
 
 #### Case #9 - Rural Unconfined Farm Fields
 
-![Figure C-9. Representative view for Case #9.](C9.png)
+![Figure B-9. Representative view for Case #9.](C9.png)
 
 | Fact | Value |
 | --- | --- |
@@ -853,7 +849,7 @@ This case was selected to evaluate methodology performance in small, rural, unco
 
 #### Case #10 - Steep confined Mountainous Terrain
 
-![Figure C-10. Representative view for Case #10.](C10.png)
+![Figure B-10. Representative view for Case #10.](C10.png)
 
 | Fact | Value |
 | --- | --- |
@@ -872,7 +868,7 @@ This case was selected to evaluate steep, confined mountainous terrain with mult
 
 #### Case #11 - Large Urban River
 
-![Figure C-11. Representative view for Case #11.](C11.png)
+![Figure B-11. Representative view for Case #11.](C11.png)
 
 | Fact | Value |
 | --- | --- |
@@ -891,7 +887,7 @@ This case was selected as a large urban-river testbed to assess structure-influe
 
 #### Case #12 - Desert Wash
 
-![Figure C-12. Representative view for Case #12.](C12.png)
+![Figure B-12. Representative view for Case #12.](C12.png)
 
 | Fact | Value |
 | --- | --- |
@@ -910,7 +906,7 @@ This case was selected to evaluate desert-wash behavior, where nonstandard morph
 
 #### Case #13 - Large Inland Waterbody
 
-![Figure C-13. Representative view for Case #13.](C13.png)
+![Figure B-13. Representative view for Case #13.](C13.png)
 
 | Fact | Value |
 | --- | --- |
@@ -929,7 +925,7 @@ This case was selected to develop and test methodology for large inland waterbod
 
 #### Case #14 - Coastal Area
 
-![Figure C-14. Representative view for Case #14.](C14.png)
+![Figure B-14. Representative view for Case #14.](C14.png)
 
 | Fact | Value |
 | --- | --- |
@@ -948,7 +944,7 @@ This case was selected to develop and test methodology for coastal boundary sett
 
 #### Case #15 - Large River
 
-![Figure C-15. Representative view for Case #15.](C15.png)
+![Figure B-15. Representative view for Case #15.](C15.png)
 
 | Fact | Value |
 | --- | --- |
@@ -965,7 +961,7 @@ This case was selected as a large-river testbed with a wide floodplain and avail
 
 \newpage
 
-### Appendix D. Decision Pages
+### Appendix C. Decision Pages
 
 \newpage
 
