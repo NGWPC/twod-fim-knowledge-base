@@ -12,7 +12,7 @@ This report documents the conceptual framework, evidence-driven methodology evol
 \newpage
 
 ## 2. Introduction
-National Oceanic and Atmospheric Administration's (NOAA) Office of Water Prediction (OWP) currently produces nationwide flood inundation maps using HAND (Height Above Nearest Drainage) method and, where available, HEC‑RAS 1D based libraries from Ripple1D (NGWPC, n.d.-a). These approaches provide broad coverage and operational reliability, however limitations including physics derived accuracy, reproducibility, and flexibility to handle diverse hydraulic settings are well documented. Bathtub or level‑pool methods such as HAND treat flooding as a static surface and do not represent flow routing, backwater, or structure‑influenced hydraulics. These methods can produce large biases in inundation area (e.g., >200% error) and recent work calls for avoiding them in decision‑relevant flood‑management practice (Sanders et al., 2024). Recent incorporation of Ripple1D libraries improves physical realism by leveraging 1D hydraulic models and cross‑sectional data from existing studies, but reliance on **prebuilt legacy models** brings their irregularities such as sparse and discontinuous coverage, inconsistent development methodologies, terrain/data mismatches, and outdated inputs (i.e., unknown or superseded data sources) into OWP's operational flood inundation mapping. As a result, Ripple1D can improve local fidelity but adds complexity and coverage gaps.
+National Oceanic and Atmospheric Administration's (NOAA) Office of Water Prediction (OWP) currently produces nationwide flood inundation maps using HAND (Height Above Nearest Drainage) method and, where available, HEC‑RAS 1D based libraries from Ripple1D (NGWPC, n.d.-a). These approaches provide broad coverage and operational reliability, however limitations including physics derived accuracy, reproducibility, and flexibility to handle diverse hydraulic settings are well documented. Bathtub or level‑pool methods such as HAND treat flooding as a static surface and do not represent flow routing, backwater, or structure‑influenced hydraulics. These methods can produce large biases in inundation area (e.g., >200% error) and recent work calls for avoiding them in decision‑relevant flood‑management practice (Sanders et al., 2024). Recent incorporation of Ripple1D libraries improves physical realism by leveraging 1D hydraulic models and cross‑sectional data from existing studies, but reliance on prebuilt legacy models brings their irregularities such as sparse and discontinuous coverage, inconsistent development methodologies, terrain/data mismatches, and outdated inputs (i.e., unknown or superseded data sources) into OWP's operational flood inundation mapping. As a result, Ripple1D can improve local fidelity but adds complexity and coverage gaps.
 
 Acknowledging the aforementioned limitations, these methods were selected in part to achieve the goal of creating a product with complete national coverage, and the cost effectiveness and scalability of these methods was a key factor for not developing physics based models. Having achieved a national coverage benchmark, along with recent advances in GPU/HPC compute, cloud parallelization, and modern 2D hydrodynamic solvers, it is now feasible to evaluate application of 2D modeling beyond local studies and into a national library‑based system.
 
@@ -111,7 +111,7 @@ For pilot modeling as part of methodology development, topography is sourced fro
 
 For roughness conversion, Table 5-1 lists the selected NLCD-to-Manning's n lookup, derived from U.S. Army Corps of Engineers (USACE) HEC-RAS guidance (U.S. Army Corps of Engineers, n.d.).
 
-**Table 5-1. NLCD land-cover to Manning's n lookup used to convert land-cover rasters into model roughness inputs for pilot runs**
+Table 5-1. NLCD land-cover to Manning's n lookup used to convert land-cover rasters into model roughness inputs for pilot runs
 
 | NLCD Value | NLCD Class | Manning's n |
 | --- | --- | --- |
@@ -138,7 +138,7 @@ For this reason, a preliminary review of potential candidates was performed base
 
 Table 5-2 lists the summary results of the survey of 2D models and the model selection decision basis
 
-**Table 5-2: Preliminary 2D model survey used to screen candidate 2D models for large-scale automation**
+Table 5-2: Preliminary 2D model survey used to screen candidate 2D models for large-scale automation
 
 | Model | Equations / Approach | Grid / Automation | Performance | Linux / Container | Boundary Conditions & IO | Status / Rationale |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -220,7 +220,7 @@ This workflow reduced repeated loops, made edge-case handling systematic, and ke
 
 SDR is implemented in a dedicated repository and is actively used by engineers as the primary method-refinement workspace (`https://github.com/NGWPC/twod-fim-knowledge-base/tree/main/system-decision-record`). Beyond immediate decision support, this is expected to materially improve onboarding and external technical review because the reasoning trail is explicit and auditable.
 
-The next subsections, **Pilot Cases** and **Core Method Decisions and Evidence**, are narrative summaries of the current Test Cases and Decision Register state and the evidence patterns that led to these decisions. Appendix C is derived directly from the current SDR state and provides the individual decision pages, including the complete alternative sets for each decision.
+The next subsections, Pilot Cases and Core Method Decisions and Evidence, are narrative summaries of the current Test Cases and Decision Register state and the evidence patterns that led to these decisions. Appendix C is derived directly from the current SDR state and provides the individual decision pages, including the complete alternative sets for each decision.
 
 ### 5.5. Pilot Cases
 Pilot locations were selected to stress test the methodology and evaluate design decisions across contrasting hydraulic and physiographic conditions rather than to maximize geographic count. The set includes small rural systems, steep headwaters, urban/structure-influenced corridors, very wide floodplains, arid channels, a variety of confluences and river networks, and lake and coastal terminal settings. Finally, deviation experiments were executed against the baseline methodology to discover and isolate failure modes such as WSEL mismatch at tie-ins, edge leakage, inflow artifacts, etc. Decisions from these cases were recorded using the SDR workflow described above.
@@ -229,7 +229,7 @@ Figure 5-2 depicts location of all cases. Table 5-3 provides case number, locati
 
 ![Figure 5-2. Geographic distribution of pilot cases used to test methodology decisions across contrasting hydraulic and physiographic settings; case details are listed in Appendix B.](pilot_cases_locations.jpeg)
 
-**Table 5-3. Pilot case index used throughout Section 5 and Appendix C decision discussions**
+Table 5-3. Pilot case index used throughout Section 5 and Appendix C decision discussions
 
 | Case Number | Location | Title |
 | --- | --- | --- |
@@ -330,7 +330,7 @@ The fourth network decision is **How to mark reaches as lake and coastal reaches
 #### 5.6.9. Decisions Summary
 During the middle phase of methodology development, the team recognized that the methodology should be treated as a dynamic set of decisions and therefore be version-controlled. To enable version control of the methodology itself, a decision register was implemented to capture the methodology state at any point in time. As decisions evolve, the register is updated and version-controlled in the SDR implementation repository, and experiments and tests record the methodology version adopted. This creates a traceable chain from decision state to test evidence, improving reproducibility, auditability, and cross-iteration comparison. The decision register state at the time of writing is presented in Table 5-4 below.
 
-**Table 5-4. Decision Register snapshot (current baseline methods)**
+Table 5-4. Decision Register snapshot (current baseline methods)
 
 | Title | Number | Current Alternative |
 | --- | --- | --- |
@@ -375,7 +375,7 @@ Our proposed production workflow defines a standardized, repeatable process for 
 The production workflow is initialized by querying the network database for a list of *terminal reaches*. These are reaches that drain to a) a coast, b) an area outside the administrative boundaries of the US, or c) a large inland water body. Starting with a single reach, a model is developed, and a library of FIMs is generated for a variety of downstream conditions and reach discharges. These processing steps are detailed in the following subsections. Once a single reach is completed, the process then repeats for the next set of upstream reaches or another terminal reach.
 
 ### 6.2. Create Reach Model
-The goal of the Create Reach Model step is to develop a **reusable** LISFLOOD-FP model that will be able to simulate any flood condition of interest. This is accomplished by making an initial estimate of a model domain, running the largest expected flood through it, and expanding the domain if necessary.
+The goal of the Create Reach Model step is to develop a reusable LISFLOOD-FP model that will be able to simulate any flood condition of interest. This is accomplished by making an initial estimate of a model domain, running the largest expected flood through it, and expanding the domain if necessary.
 
 ![Figure 6-2. Reach-model development sequence, including geometry creation, source-data preparation, largest-event test run, and conditional domain expansion.](workflow-image2.jpeg)
 
@@ -554,7 +554,7 @@ In addition to cost optimization, a separate dedicated effort is also recommende
 
 The project roadmap in Table 9-1 includes both currently planned and suggested phases with the primary focus of each phase. SDR updates should accompany each phase to keep decision rationale traceable.
 
-**Table 9-1. Suggested project roadmap summarizing planned and proposed phases, primary focus areas, and expected outputs**
+Table 9-1. Suggested project roadmap summarizing planned and proposed phases, primary focus areas, and expected outputs
 
 | Phase | Duration | Primary Focus | Key Outputs |
 | --- | --- | --- | --- |
@@ -694,7 +694,7 @@ Coordinate systems are reported using European Petroleum Survey Group (EPSG) cod
 | Flows (cms) | 500, 6000 |
 | Stream Orders | 4, 6 |
 
-**Description**
+**Description**:
 This case was selected to evaluate confluence behavior where stream-order mismatch and low-gradient backwater make downstream stage handling sensitive.
 
 \newpage
@@ -713,7 +713,7 @@ This case was selected to evaluate confluence behavior where stream-order mismat
 | Flows (cms) | 2680 |
 | Stream Orders | 4 |
 
-**Description**
+**Description**:
 This case represents a terminal reach discharging into Lake Champlain and was selected to evaluate boundary-condition behavior in lake-connected settings.
 
 \newpage
@@ -732,7 +732,7 @@ This case represents a terminal reach discharging into Lake Champlain and was se
 | Flows (cms) | 36.75 |
 | Stream Orders | 1 |
 
-**Description**
+**Description**:
 This case was selected to evaluate terrain-conditioning needs where unresolved small culverts can cause divergent flow paths and upstream impoundment.
 
 \newpage
@@ -751,7 +751,7 @@ This case was selected to evaluate terrain-conditioning needs where unresolved s
 | Flows (cms) | 2344 |
 | Stream Orders | 4 |
 
-**Description**
+**Description**:
 This case was selected to test model-domain construction where overbank floodplain extent lies far from the channel and can be clipped by narrow domain rules.
 
 \newpage
@@ -770,7 +770,7 @@ This case was selected to test model-domain construction where overbank floodpla
 | Flows (cms) | 52.8 |
 | Stream Orders | 1 |
 
-**Description**
+**Description**:
 This case was selected to examine headwater tributary confluence behavior where water can pool near a common outlet, affecting automated domain-expansion logic.
 
 \newpage
@@ -789,7 +789,7 @@ This case was selected to examine headwater tributary confluence behavior where 
 | Flows (cms) | 13500 |
 | Stream Orders | 6 |
 
-**Description**
+**Description**:
 This mid-sized river case was selected to test upstream inflow-boundary geometry and placement effects on WSEL artifacts; discharges were based on USGS 01172000.
 
 \newpage
@@ -808,7 +808,7 @@ This mid-sized river case was selected to test upstream inflow-boundary geometry
 | Flows (cms) | 4240 |
 | Stream Orders | 6 |
 
-**Description**
+**Description**:
 This case was selected to stress methodology in a complex low-gradient semi-urban confluence with multiple tributaries and levee influences.
 
 \newpage
@@ -827,7 +827,7 @@ This case was selected to stress methodology in a complex low-gradient semi-urba
 | Flows (cms) | N/A |
 | Stream Orders | 10 |
 
-**Description**
+**Description**:
 This case was selected to test very wide-floodplain behavior along the Mississippi River, where floodplain widths of roughly 12–22 km challenge domain and boundary rules.
 
 \newpage
@@ -846,7 +846,7 @@ This case was selected to test very wide-floodplain behavior along the Mississip
 | Flows (cms) | N/A |
 | Stream Orders | 3, 1 |
 
-**Description**
+**Description**:
 This case was selected to evaluate methodology performance in small, rural, unconfined agricultural channels.
 
 \newpage
@@ -865,7 +865,7 @@ This case was selected to evaluate methodology performance in small, rural, unco
 | Flows (cms) | N/A |
 | Stream Orders | 4, 1 |
 
-**Description**
+**Description**:
 This case was selected to evaluate steep, confined mountainous terrain with multiple tributary inflows.
 
 \newpage
@@ -884,7 +884,7 @@ This case was selected to evaluate steep, confined mountainous terrain with mult
 | Flows (cms) | N/A |
 | Stream Orders | 6, 3 |
 
-**Description**
+**Description**:
 This case was selected as a large urban-river testbed to assess structure-influenced hydraulics and culvert/bridge handling strategies.
 
 \newpage
@@ -903,7 +903,7 @@ This case was selected as a large urban-river testbed to assess structure-influe
 | Flows (cms) | N/A |
 | Stream Orders | 3, 2, 1 |
 
-**Description**
+**Description**:
 This case was selected to evaluate desert-wash behavior, where nonstandard morphology and adjacent-reach interactions can challenge hydrofabric-based domain logic.
 
 \newpage
@@ -922,7 +922,7 @@ This case was selected to evaluate desert-wash behavior, where nonstandard morph
 | Flows (cms) | N/A |
 | Stream Orders | 1, 2, 5, 6 |
 
-**Description**
+**Description**:
 This case was selected to develop and test methodology for large inland waterbody settings such as lakes and reservoirs.
 
 \newpage
@@ -941,7 +941,7 @@ This case was selected to develop and test methodology for large inland waterbod
 | Flows (cms) | N/A |
 | Stream Orders | 1, 2, 3 |
 
-**Description**
+**Description**:
 This case was selected to develop and test methodology for coastal boundary settings.
 
 \newpage
@@ -960,7 +960,7 @@ This case was selected to develop and test methodology for coastal boundary sett
 | Flows (cms) | N/A |
 | Stream Orders | 7 |
 
-**Description**
+**Description**:
 This case was selected as a large-river testbed with a wide floodplain and available surveyed bathymetry to evaluate domain rules and stage behavior.
 
 \newpage
