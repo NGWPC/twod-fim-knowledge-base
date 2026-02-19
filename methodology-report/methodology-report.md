@@ -633,88 +633,88 @@ Wing, O. E. J., et al. (2019), A flood inundation forecast of Hurricane Harvey u
 
 Zhao, T., Q. Shao, and Y. Zhang (2017), Deriving flood-mediated connectivity between river channels and floodplains: Data-driven approaches, *Scientific Reports*, 7, 43239, https://doi.org/10.1038/srep43239.
 
-## 11. Appendices
+## Appendices
 
-### 11.1. Appendix A. Glossary
+### Appendix A. Glossary
 
-#### 11.1.1. Adjacent Reaches
+#### Adjacent Reaches
 `connected reaches` and reaches draining into the same `reach outlet` for the reach of interest.
 
 All blue reaches are `adjacent reaches` for green reach.
 ![Adjacent reaches](B6.png)
-*Figure A1. `Adjacent Reaches` example.*
+*Figure A-1. `Adjacent Reaches` example.*
 
-#### 11.1.2. Common Outlet Reaches
+#### Common Outlet Reaches
 Reaches sharing common `reach outlet`.
 
 Two green reaches here are common outlet reaches because they share same `reach outlet`.
 ![Common outlet reaches](B4.png)
-*Figure A2. `Common Outlet Reaches` example.*
+*Figure A-2. `Common Outlet Reaches` example.*
 
-#### 11.1.3. Connected Reaches
+#### Connected Reaches
 Reaches connected to a reach through upstream or downstream relationship.
 
 All blue reaches are `connected reaches` for green reach. Note that red reach is not.
 ![Connected reaches](B5.png)
-*Figure A3. `Connected Reaches` example.*
+*Figure A-3. `Connected Reaches` example.*
 
-#### 11.1.4. FIM Transition Zone
+#### FIM Transition Zone
 The `Transition Zone` for a reach is the area between the `Stage Transfer Line` and the outflow line.
 
 The yellow area in the image below shows the `Transition Zone` for this reach.
 ![FIM transition zone](B7.png)
-*Figure A4. `FIM Transition Zone` (yellow area).*
+*Figure A-4. `FIM Transition Zone` (yellow area).*
 
-#### 11.1.5. Headwater Reaches
+#### Headwater Reaches
 Reaches that have no reaches upstream of them in the reach network.
 
 `headwater reaches` shown in green
 ![Headwater reaches](B1.png)
-*Figure A5. `Headwater Reaches` shown in green.*
+*Figure A-5. `Headwater Reaches` shown in green.*
 
-#### 11.1.6. Lake and Coastal Reaches
+#### Lake and Coastal Reaches
 Subset of `Terminal Reaches` that discharge to
 - coasts
 - large waterbodies
 
-#### 11.1.7. Reach Outlet
+#### Reach Outlet
 End point of the reach.
 
 Reach outlet for green reach shown in red circle.
 ![Reach outlet](B3.png)
-*Figure A6. `Reach Outlet` shown for green reach (red circle).*
+*Figure A-6. `Reach Outlet` shown for green reach (red circle).*
 
-#### 11.1.8. Reach Start
+#### Reach Start
 Start point of the reach.
 
 Reach start for green reach shown in red circle.
 ![Reach start](B2.png)
-*Figure A7. `Reach Start` shown for green reach (red circle).*
+*Figure A-7. `Reach Start` shown for green reach (red circle).*
 
-#### 11.1.9. Stage Transfer Line (STL)
+#### Stage Transfer Line (STL)
 A line that is within the domain of both upstream and downstream reach models and which is used to transfer WSEL from the downstream model to an upstream model.
 
-#### 11.1.10. Terminal Reaches
+#### Terminal Reaches
 Terminal reaches include reaches that discharge to
 - coasts
 - areas outside the US
 - large waterbodies
 
-#### 11.1.11. Upstream Mainstem Reach
+#### Upstream Mainstem Reach
 The reach with the largest drainage area of all `upstream reaches` for a reach of interest.
 
-#### 11.1.12. Upstream Reach
+#### Upstream Reach
 A reach that drain to a reach of interest.
 
-### 11.2. Appendix B. Model Development WebApp
+### Appendix B. Model Development WebApp
 
-### 11.3. Appendix C. Pilot Cases
+### Appendix C. Pilot Cases
 All figures in this appendix follow the same symbology convention described in Figure 2-2, unless overridden by Figure caption.
 
-#### 11.3.1. Case #1 - Y Shape Confluence with 2 Level Stream Order Difference
+#### Case #1 - Y Shape Confluence with 2 Level Stream Order Difference
 
 ![Case #1 representative figure](C1.png)
-*Figure C1. Representative view for Case #1.*
+*Figure C-1. Representative view for Case #1.*
 
 | Fact | Value |
 | --- | --- |
@@ -729,10 +729,10 @@ All figures in this appendix follow the same symbology convention described in F
 **Description**
 This case was selected to evaluate confluence behavior where stream-order mismatch and low-gradient backwater make downstream stage handling sensitive.
 
-#### 11.3.2. Case #2 - Lake Reach
+#### Case #2 - Lake Reach
 
 ![Case #2 representative figure](C2.png)
-*Figure C2. Representative view for Case #2.*
+*Figure C-2. Representative view for Case #2.*
 
 | Fact | Value |
 | --- | --- |
@@ -747,10 +747,10 @@ This case was selected to evaluate confluence behavior where stream-order mismat
 **Description**
 This case represents a terminal reach discharging into Lake Champlain and was selected to evaluate boundary-condition behavior in lake-connected settings.
 
-#### 11.3.3. Case #3 - Small Culverts
+#### Case #3 - Small Culverts
 
 ![Case #3 representative figure](C3.png)
-*Figure C3. Representative view for Case #3.*
+*Figure C-3. Representative view for Case #3.*
 
 | Fact | Value |
 | --- | --- |
@@ -765,10 +765,10 @@ This case represents a terminal reach discharging into Lake Champlain and was se
 **Description**
 This case was selected to evaluate terrain-conditioning needs where unresolved small culverts can cause divergent flow paths and upstream impoundment.
 
-#### 11.3.4. Case #4 - Model Domain Example
+#### Case #4 - Model Domain Example
 
 ![Case #4 representative figure](C4.png)
-*Figure C4. Representative view for Case #4.*
+*Figure C-4. Representative view for Case #4.*
 
 | Fact | Value |
 | --- | --- |
@@ -783,10 +783,10 @@ This case was selected to evaluate terrain-conditioning needs where unresolved s
 **Description**
 This case was selected to test model-domain construction where overbank floodplain extent lies far from the channel and can be clipped by narrow domain rules.
 
-#### 11.3.5. Case #5 - Model Domain Example 2
+#### Case #5 - Model Domain Example 2
 
 ![Case #5 representative figure](C5.png)
-*Figure C5. Representative view for Case #5.*
+*Figure C-5. Representative view for Case #5.*
 
 | Fact | Value |
 | --- | --- |
@@ -801,10 +801,10 @@ This case was selected to test model-domain construction where overbank floodpla
 **Description**
 This case was selected to examine headwater tributary confluence behavior where water can pool near a common outlet, affecting automated domain-expansion logic.
 
-#### 11.3.6. Case #6 - Inflow Boundary Conditions
+#### Case #6 - Inflow Boundary Conditions
 
 ![Case #6 representative figure](C6.png)
-*Figure C6. Representative view for Case #6.*
+*Figure C-6. Representative view for Case #6.*
 
 | Fact | Value |
 | --- | --- |
@@ -819,10 +819,10 @@ This case was selected to examine headwater tributary confluence behavior where 
 **Description**
 This mid-sized river case was selected to test upstream inflow-boundary geometry and placement effects on WSEL artifacts; discharges were based on USGS 01172000.
 
-#### 11.3.7. Case #7 - Complex Semi-urban Confluence Along Low-Gradient River
+#### Case #7 - Complex Semi-urban Confluence Along Low-Gradient River
 
 ![Case #7 representative figure](C7.png)
-*Figure C7. Representative view for Case #7.*
+*Figure C-7. Representative view for Case #7.*
 
 | Fact | Value |
 | --- | --- |
@@ -837,10 +837,10 @@ This mid-sized river case was selected to test upstream inflow-boundary geometry
 **Description**
 This case was selected to stress methodology in a complex low-gradient semi-urban confluence with multiple tributaries and levee influences.
 
-#### 11.3.8. Case #8 - Very Wide Floodplain
+#### Case #8 - Very Wide Floodplain
 
 ![Case #8 representative figure](C8.png)
-*Figure C8. Representative view for Case #8.*
+*Figure C-8. Representative view for Case #8.*
 
 | Fact | Value |
 | --- | --- |
@@ -855,10 +855,10 @@ This case was selected to stress methodology in a complex low-gradient semi-urba
 **Description**
 This case was selected to test very wide-floodplain behavior along the Mississippi River, where floodplain widths of roughly 12–22 km challenge domain and boundary rules.
 
-#### 11.3.9. Case #9 - Rural Unconfined Farm Fields
+#### Case #9 - Rural Unconfined Farm Fields
 
 ![Case #9 representative figure](C9.png)
-*Figure C9. Representative view for Case #9.*
+*Figure C-9. Representative view for Case #9.*
 
 | Fact | Value |
 | --- | --- |
@@ -873,10 +873,10 @@ This case was selected to test very wide-floodplain behavior along the Mississip
 **Description**
 This case was selected to evaluate methodology performance in small, rural, unconfined agricultural channels.
 
-#### 11.3.10. Case #10 - Steep confined Mountainous Terrain
+#### Case #10 - Steep confined Mountainous Terrain
 
 ![Case #10 representative figure](C10.png)
-*Figure C10. Representative view for Case #10.*
+*Figure C-10. Representative view for Case #10.*
 
 | Fact | Value |
 | --- | --- |
@@ -891,10 +891,10 @@ This case was selected to evaluate methodology performance in small, rural, unco
 **Description**
 This case was selected to evaluate steep, confined mountainous terrain with multiple tributary inflows.
 
-#### 11.3.11. Case #11 - Large Urban River
+#### Case #11 - Large Urban River
 
 ![Case #11 representative figure](C11.png)
-*Figure C11. Representative view for Case #11.*
+*Figure C-11. Representative view for Case #11.*
 
 | Fact | Value |
 | --- | --- |
@@ -909,10 +909,10 @@ This case was selected to evaluate steep, confined mountainous terrain with mult
 **Description**
 This case was selected as a large urban-river testbed to assess structure-influenced hydraulics and culvert/bridge handling strategies.
 
-#### 11.3.12. Case #12 - Desert Wash
+#### Case #12 - Desert Wash
 
 ![Case #12 representative figure](C12.png)
-*Figure C12. Representative view for Case #12.*
+*Figure C-12. Representative view for Case #12.*
 
 | Fact | Value |
 | --- | --- |
@@ -927,10 +927,10 @@ This case was selected as a large urban-river testbed to assess structure-influe
 **Description**
 This case was selected to evaluate desert-wash behavior, where nonstandard morphology and adjacent-reach interactions can challenge hydrofabric-based domain logic.
 
-#### 11.3.13. Case #13 - Large Inland Waterbody
+#### Case #13 - Large Inland Waterbody
 
 ![Case #13 representative figure](C13.png)
-*Figure C13. Representative view for Case #13.*
+*Figure C-13. Representative view for Case #13.*
 
 | Fact | Value |
 | --- | --- |
@@ -945,10 +945,10 @@ This case was selected to evaluate desert-wash behavior, where nonstandard morph
 **Description**
 This case was selected to develop and test methodology for large inland waterbody settings such as lakes and reservoirs.
 
-#### 11.3.14. Case #14 - Coastal Area
+#### Case #14 - Coastal Area
 
 ![Case #14 representative figure](C14.png)
-*Figure C14. Representative view for Case #14.*
+*Figure C-14. Representative view for Case #14.*
 
 | Fact | Value |
 | --- | --- |
@@ -963,10 +963,10 @@ This case was selected to develop and test methodology for large inland waterbod
 **Description**
 This case was selected to develop and test methodology for coastal boundary settings.
 
-#### 11.3.15. Case #15 - Large River
+#### Case #15 - Large River
 
 ![Case #15 representative figure](C15.png)
-*Figure C15. Representative view for Case #15.*
+*Figure C-15. Representative view for Case #15.*
 
 | Fact | Value |
 | --- | --- |
@@ -981,9 +981,9 @@ This case was selected to develop and test methodology for coastal boundary sett
 **Description**
 This case was selected as a large-river testbed with a wide floodplain and available surveyed bathymetry to evaluate domain rules and stage behavior.
 
-### 11.4. Appendix D. Decision Pages
+### Appendix D. Decision Pages
 
-#### 11.4.1. Decision #1 - Should KWSE Scenario be Modeled or Not
+#### Decision #1 - Should KWSE Scenario be Modeled or Not
 
 **Description**
 Define whether KWSE scenarios should be modeled for all reaches or only selected reaches.
@@ -997,7 +997,7 @@ Model KWSE scenarios for all reaches so downstream-stage sensitivity is represen
 **ALT-B - For No Reach**
 This option reduces library size and modeling effort significantly, but it assumes downstream-stage variability can be ignored in all reaches.
 
-#### 11.4.2. Decision #2 - What is the Definition of Benchmark FIM for Model Connectivity Testing
+#### Decision #2 - What is the Definition of Benchmark FIM for Model Connectivity Testing
 
 **Description**
 A benchmark FIM is needed to evaluate the model connectivity framework. This decision set benchmark for what quality a composite FIM from different reach models should strive to achieve.
@@ -1006,7 +1006,7 @@ A benchmark FIM is needed to evaluate the model connectivity framework. This dec
 **ALT-A - Composite 2D Model with Same Input Data** `current`
 Use a composite 2D model configured for the test area that is developed using same source input data and forcing. The model should also be developed using same 2D hydraulic software
 
-#### 11.4.3. Decision #3 - Where and What Boundary Conditions to Apply Along the Edge Cells
+#### Decision #3 - Where and What Boundary Conditions to Apply Along the Edge Cells
 
 **Description**
 Define which boundary condition should be applied along model edge cells (the domain bounding box).
@@ -1029,7 +1029,7 @@ Apply reach centerline slope normal depth boundary condition only along edge cel
 **ALT-D - D/S Model FIM Informed Edge Cells get Freefall** `current`
 This is similar to ALT-A but only the edge cells that are intersecting with D/S reach FIM gets a freefall boundary condition. A freefall is needed because we want water to escape without resistance and not elevate WSEL in the `transition zone`. ALT-C suggestion of centerline slope with normal depth is a crude approximation of flow conditions, and is often based on a slope value with limited accuracy.  If the slope is flatter, it can lead to water being pooled in the transition zone.
 
-#### 11.4.4. Decision #4 - Strategy of Pixel Value Calculation For Composite Maps
+#### Decision #4 - Strategy of Pixel Value Calculation For Composite Maps
 
 **Description**
 What should be the strategy to create composite map from individual reaches. What pixel value should a composite map pixel adopt in overlap zones.
@@ -1047,7 +1047,7 @@ This option clips maps prior to compositing so each reach contributes only withi
 **ALT-D - Pixelwise Max** `current`
 Resolve overlaps by assigning the maximum depth value per pixel so compositing is deterministic and independent of draw order.
 
-#### 11.4.5. Decision #5 - For Lake and Coastal Reaches What Downstream Boundary Conditions Should be Applied
+#### Decision #5 - For Lake and Coastal Reaches What Downstream Boundary Conditions Should be Applied
 
 **Description**
 For these reaches, the standard WSE transfer approach might not apply.  These reaches will, however, need some area to discharge floodwaters.
@@ -1062,7 +1062,7 @@ Same as ALT-A, but uses a very low normal depth slope (ex. 10e-6). As slope appr
 **ALT-C - Both KWSE and Reach Normal Depth Slope** `current`
 This alternative suggest to use a range of reasonable depths from downstream waterbody. This has advantage that a lake or coastal reach doesn't get any special treatment in code development.
 
-#### 11.4.6. Decision #6 - For Lake and Coastal Reaches Where and What Boundary Conditions to Apply Along the Edge Cells
+#### Decision #6 - For Lake and Coastal Reaches Where and What Boundary Conditions to Apply Along the Edge Cells
 
 **Description**
 Determine whether `lake and coastal reaches` require different edge-cell boundary handling from standard reaches.
@@ -1083,14 +1083,14 @@ All edge cells get closed boundary and water has no place to escape. This altern
 **ALT-E - D/S Water Body Informed Edge Cells get Steep Slope** `current`
 This is similar to ALT-A but only at edge cells that are intersecting with D/S Water Body get freefall boundary condition. A freefall is needed because we want water to escape without resistance and not elevate WSEL in the `transition zone`. ALT-C suggestion of centerline slope with normal depth is a crude approximation of flow conditions, and is often based on a slope value with limited accuracy. If the slope is flatter, it can lead to water being pooled in the transition zone..
 
-#### 11.4.7. Decision #7 - How to Mark Reaches as Lake and Coastal Reaches
+#### Decision #7 - How to Mark Reaches as Lake and Coastal Reaches
 
 **Description**
 Define the criteria or workflow for classifying reaches as lake or coastal reaches in the network analysis phase.
 
 **Alternatives**
 
-#### 11.4.8. Decision #8 - What Should be an STL for Lake and Coastal Reaches
+#### Decision #8 - What Should be an STL for Lake and Coastal Reaches
 
 **Description**
 Define how to derive the stage transfer line (STL) for lake and coastal reaches.
@@ -1105,7 +1105,7 @@ This alternative converts the water body polygon into a polyline and then perfor
 
 - ALT-B selected based on judgement
 
-#### 11.4.9. Decision #9 - Where to Apply Stage Transfer Condition
+#### Decision #9 - Where to Apply Stage Transfer Condition
 
 **Description**
 This decision decide if Stage transfer should take place at model domain bbox, at `Reach Outlet` or as a region where domain intersect with D/S FIM. Placement of this condition strongly affects transition-zone WSEL behavior and FIM alignment between reaches.
@@ -1123,7 +1123,7 @@ Apply stage transfer across the whole region rather than a single line.
 
 This is making model unstable because of large number of pixels with forced WSEL.
 
-#### 11.4.10. Decision #10 - How should DEM data be modified to enforce drainage through culverts
+#### Decision #10 - How should DEM data be modified to enforce drainage through culverts
 
 **Description**
 Large bridges are generally removed from DEMs, but many smaller culverts remain as flow obstructions in the terrain, how enforce drainage through these DEM humps?
@@ -1150,7 +1150,7 @@ https://fema-ffrd.github.io/overflow/user-guide/terrain-conditioning/breach/
 **ALT-E - Custom terrain modification**
 Custom code could be written to clip flowpath lines to some buffer around the road network.  A trapezoidal channel could then be imputed in the area around the intersection.
 
-#### 11.4.11. Decision #11 - How to Determine Initial Model Domain
+#### Decision #11 - How to Determine Initial Model Domain
 
 **Description**
 The first step of model creation is determining the model extents. Some initial estimate of floodplain size must be made.
@@ -1173,7 +1173,7 @@ In this approach the assumption is that a course model would have been already e
 **ALT-D - Bounding Box of Inflow BC, d/s `STL`, and Buffered Centerline** `current`
 A bounding box on the inflow line, the downstream Stage Transfer Line (when available), and the buffered centerline from ALT-B is used for the model domain.
 
-#### 11.4.12. Decision #12 - What Strategy to be used for Determining if Domain Should be Expanded
+#### Decision #12 - What Strategy to be used for Determining if Domain Should be Expanded
 
 **Description**
 The initial domain from DR-011 may not be large enough.  This may lead to situations where water pools on domain edges and the FIM underestimates extent.
@@ -1210,7 +1210,7 @@ If the domain would expand more than 50 times bankfull width from the initial do
 
 *Bieger, Katrin, Hendrik Rathjens, Peter M. Allen, and Jeffrey G. Arnold, 2015. Development and Evaluation of Bankfull Hydraulic Geometry Relationships for the Physiographic Regions of the United States. Journal of the American Water Resources Association (JAWRA) 51(3): 842-858. DOI: [10.1111/jawr.12282](https://doi.org/10.1111/jawr.12282 "Link to external resource: 10.1111/jawr.12282")*
 
-#### 11.4.13. Decision #13 - What Should be Geometry and Location of Input  BC
+#### Decision #13 - What Should be Geometry and Location of Input  BC
 
 **Description**
 We need to provide flow as input boundary condition to the model domain. What should be the geometry and location of input boundary condition?
@@ -1246,7 +1246,7 @@ This option is similar to ALT-E but uses line instead of point.
 
 Green reach is being modeled.
 
-#### 11.4.14. Decision #14 - What Should be Geometry and Location of Input  BC for `Headwater Reaches`
+#### Decision #14 - What Should be Geometry and Location of Input  BC for `Headwater Reaches`
 
 **Description**
 We need to provide flow as input boundary condition to the model domain. What should be the geometry and location of input boundary condition?
@@ -1262,7 +1262,7 @@ Apply distributed point inflows along the headwater reach to reduce concentratio
 **ALT-C - At a Point on `Reach Start`** `current`
 This alternative suggest simplest approach of one point at headwater `reach start`.
 
-#### 11.4.15. Decision #15 - What Line Width Should be Used for Inflow BC Line
+#### Decision #15 - What Line Width Should be Used for Inflow BC Line
 
 **Description**
 This DR is only relevant for line based alternatives in  DR-013 - What Should be Geometry and Location of Input  BC and DR-014 - What Should be Geometry and Location of Input  BC for `Headwater Reaches`
@@ -1271,7 +1271,7 @@ This DR is only relevant for line based alternatives in  DR-013 - What Should be
 **ALT-A - 100m Wide** `current`
 Set inflow line width to 100 m as a standard default so line-based inflow geometry remains consistent across applicable reaches.
 
-#### 11.4.16. Decision #16 - What Upstream Offset Distance Should be Used for Inflow BC Line Placement
+#### Decision #16 - What Upstream Offset Distance Should be Used for Inflow BC Line Placement
 
 **Description**
 This DR is only relevant for some alternatives in  DR-013 - What Should be Geometry and Location of Input  BC
@@ -1283,7 +1283,7 @@ Place line inflow at one-quarter of upstream-reach length so boundary effects at
 **ALT-B - 100 meters**
 The fixed offset is simple to operationalize, but it may be less adaptive than relative-length offsets across very short or very long upstream reaches.
 
-#### 11.4.17. Decision #17 - What Horizontal Resolution DEM Should be Used for Modeling
+#### Decision #17 - What Horizontal Resolution DEM Should be Used for Modeling
 
 **Description**
 Topographic data is available at various source resolutions and can be resampled to any resolution needed. What final resolution should be used for modeling? This decision effects compute cost and mapping resolution of produced rasters.
@@ -1295,7 +1295,7 @@ Use 10 m DEM resolution to preserve floodplain/channel-adjacent detail needed fo
 **ALT-B 30 meters**
 This alternative suggests 30 m terrain resolution to lower compute and storage cost while accepting lower topographic detail in mapped results.
 
-#### 11.4.18. Decision #18 - What Source DEM Should be Used for Modeling
+#### Decision #18 - What Source DEM Should be Used for Modeling
 
 **Description**
 Topographic data is needed for model creation. What source should be used for topographic data? Source consistency is essential here so that national libraries can be produced without region-specific alterations.
@@ -1306,7 +1306,7 @@ USGS 3DEP is the first choice because of its authoritativeness as well as availa
 
 Source: https://prd-tnm.s3.amazonaws.com/StagedProducts/Elevation/13/TIFF/USGS_Seamless_DEM_13.vrt
 
-#### 11.4.19. Decision #19 - What Source Surface Roughness Data Should be Used for Modeling
+#### Decision #19 - What Source Surface Roughness Data Should be Used for Modeling
 
 **Description**
 All hydraulic models considered use Manning'n values to parameterize roughness and friction forces. Where should this dataset come from?
@@ -1319,7 +1319,7 @@ Use NLCD Land Cover dataset derived Manning's n rasters. NLCD LC dataset is the 
 
 Source: https://www.mrlc.gov/geoserver/mrlc_download/wms
 
-#### 11.4.20. Decision #20 - What Lookup Table Should be Used for Land Cover Classes to Manning's n Relationship
+#### Decision #20 - What Lookup Table Should be Used for Land Cover Classes to Manning's n Relationship
 
 **Description**
 Only relevant for DR-019 - What Source Surface Roughness Data Should be Used for Modeling.
@@ -1350,7 +1350,7 @@ MANNINGS_LC_LOOKUP = {
 **ALT-B - 'mannings_roughness_generator' Dictionary**
 A QGIS plugin 'mannings_roughness_generator'  lists an alternative dictionary, although the source is unclear: https://github.com/mabdazzam/mannings_roughness_generator/tree/main/lookups
 
-#### 11.4.21. Decision #21 - How Should Below Water Topobathy be Accounted for
+#### Decision #21 - How Should Below Water Topobathy be Accounted for
 
 **Description**
 Conventional LiDAR systems cannot measure bathymetric data below the water surface at time of flight. In some rivers and during some flight conditions, this section channel geometry can represent a significant proportion of channel conveyance. By not accounting for below-LiDAR bathymetry, depth predictions may be highly inaccurate.
@@ -1373,7 +1373,7 @@ Manning's equation could then be used to determine how much area below LiDAR wou
 
 This approach was used by researchers at the University of Vermont.
 
-#### 11.4.22. Decision #22 - How to Determine Model Quasi-Steady State
+#### Decision #22 - How to Determine Model Quasi-Steady State
 
 **Description**
 This modeling approach is built around an assumption of 2D steady flow conditions, meaning that  inflow equals outflow, and outflow does not much change with time. Criteria will need to be established to determine when inflows have balanced outflows and water surface elevations across the model are relatively stable.
@@ -1385,7 +1385,7 @@ Determine quasi-steady behavior using repeated checks that inflow and outflow ar
 **ALT-B Check WSEL Raster has Stabilized Between Different Time Steps** `current`
 Determine quasi-steady behavior using stabilization of WSEL rasters between different time intervals as the primary termination signal.
 
-#### 11.4.23. Decision #23 - How to Deal with Short Reaches
+#### Decision #23 - How to Deal with Short Reaches
 
 **Description**
 In stream network there will be many reaches that will be very short relative to their floodplains and in terms of the flow additions between reaches. How to deal with these reaches.
@@ -1407,7 +1407,7 @@ This alternative suggest coarse model FIM informed analysis to determine which r
 
 ---
 
-#### 11.4.24. Decision #24 - What Should be Thresholds for Merging Short Reaches
+#### Decision #24 - What Should be Thresholds for Merging Short Reaches
 
 **Description**
 This decision defines thresholds for alternatives in DR-023 - How to Deal with Short Reaches.
@@ -1415,7 +1415,7 @@ This decision defines thresholds for alternatives in DR-023 - How to Deal with S
 **Alternatives**
 **ALT-A - 5% Drainage Area Difference, Upto 3 miles, Stream Order 3 or up** `current`
 
-#### 11.4.25. Decision #25 - What Should be the Geometry of STL
+#### Decision #25 - What Should be the Geometry of STL
 
 **Description**
 Define how to derive the stage transfer line (STL) for regular reaches.
@@ -1441,7 +1441,7 @@ The motivation of this approach is that this contour line will be from downstrea
 
 In following picture, green is ND run, and blue is DS model, pink is KWSE run
 
-#### 11.4.26. Decision #26 - Should There be 1 STL per Reach or 1 STL per Reach per RUN
+#### Decision #26 - Should There be 1 STL per Reach or 1 STL per Reach per RUN
 
 **Description**
 Define what stage transfer line (STL) will be used for different runs of an upstream model.
@@ -1455,7 +1455,7 @@ Temp image showing that 1 STL for all runs mean the shape of STL is not perpendi
 **ALT-B - STL Derived Separately during each run**
 Regenerate STL for each run so STL geometry adapts to run specific FIM, at the cost of indexing and automation complexity.
 
-#### 11.4.27. Decision #27 - How do Deal with Flat Reaches
+#### Decision #27 - How do Deal with Flat Reaches
 
 **Description**
 Flat reaches cause model to have level pool, messing up with the methodology in many ways, one such example is that it is then hard to generate correct WSEL contours at reasonable differences, another example is that the domain need to be expanded a lot.
