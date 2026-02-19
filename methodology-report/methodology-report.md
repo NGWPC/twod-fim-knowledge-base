@@ -14,7 +14,7 @@ National Oceanic and Atmospheric Administration's (NOAA) Office of Water Predict
 
 Acknowledging the aforementioned limitations, these methods were selected in part to achieve the goal of creating a product with complete national coverage, and the cost effectiveness and scalability of these methods was a key factor for not developing physics based models. Having achieved a national coverage benchmark, along with recent advances in GPU/HPC compute, cloud parallelization, and modern 2D hydrodynamic solvers, it is now feasible to evaluate application of 2D modeling beyond local studies and into a national library‑based system.
 
-This report proposes a 2D hydrodynamic reach‑based library approach to address these gaps. The approach builds reach‑level models from scratch through an automated pipeline while preserving the Ripple1D and Flows2FIM operational pattern: pre‑generate per‑reach FIM libraries and mosaic them downstream‑to‑upstream in near real time using nowcast or forecast discharges (NGWPC, n.d.-a, n.d.-b). The key difference is how the libraries are derived—the computational engine is 2D hydrodynamics rather than 1D, and model construction is automated rather than repurposed from legacy studies (See Fig. 1 for visual explanation). Because 2D modeling is computationally intensive, the workflow shifts heavy computation (i.e. model simulations) to a pre‑processing step, so forecast‑time FIM development is limited to the rapid assembly step of creating a lightweight selection‑and‑mosaic index rather than a new simulation.
+This report proposes a 2D hydrodynamic reach‑based library approach to address these gaps. The approach builds reach‑level models from scratch through an automated pipeline while preserving the Ripple1D and Flows2FIM operational pattern: pre‑generate per‑reach FIM libraries and mosaic them downstream‑to‑upstream in near real time using nowcast or forecast discharges (NGWPC, n.d.-a; NGWPC, n.d.-b). The key difference is how the libraries are derived—the computational engine is 2D hydrodynamics rather than 1D, and model construction is automated rather than repurposed from legacy studies (See Fig. 1 for visual explanation). Because 2D modeling is computationally intensive, the workflow shifts heavy computation (i.e. model simulations) to a pre‑processing step, so forecast‑time FIM development is limited to the rapid assembly step of creating a lightweight selection‑and‑mosaic index rather than a new simulation.
 
 ![Reach-based hydrodynamic modeling for the National Water Model using 1D and 2D approaches](image1.png)
 *Figure 2-1. Reach‑based hydrodynamic modeling for the National Water Model river network using Ripple1D and 2D approaches. Ripple1D relies on existing 1D models and conflates their cross sections onto target reaches to build reach‑based models. The new 2D methodology does not rely on existing models; it creates a new 2D model for each reach domain, illustrated by the different colored grids in the rightmost panel.*
@@ -37,7 +37,7 @@ Figure 2-2. All figures in this report follow this symbology unless noted otherw
 This project sits at the intersection of three mature research threads: library‑based inundation mapping, large‑scale 2D hydrodynamics, and automated model setup. The literature below provides the closest precedents and highlights where our approach diverges.
 
 ### 3.1. Library‑based inundation mapping
-The USGS Flood Inundation Mapping (FIM) program defines a map library as a set of inundation maps at discrete stages, linked to gages and used operationally for preparedness and response. The USGS process emphasizes repeatable model construction, calibration, and library publication for real‑time use, which is conceptually aligned with our library‑first paradigm (albeit local and not reach‑based at national scale). This is a strong institutional precedent for the idea that *precomputed libraries + real‑time lookup* can be operationally reliable (U.S. Geological Survey, n.d.-a, n.d.-b).
+The USGS Flood Inundation Mapping (FIM) program defines a map library as a set of inundation maps at discrete stages, linked to gages and used operationally for preparedness and response. The USGS process emphasizes repeatable model construction, calibration, and library publication for real‑time use, which is conceptually aligned with our library‑first paradigm (albeit local and not reach‑based at national scale). This is a strong institutional precedent for the idea that *precomputed libraries + real‑time lookup* can be operationally reliable (U.S. Geological Survey, n.d.-a; U.S. Geological Survey, n.d.-b).
 
 ### 3.2. Continental‑scale 2D forecasting with precomputed libraries
 The Hurricane Harvey study by Wing et al. (2019) is the closest direct analogue. The authors coupled Fathom‑US (a continental‑scale 2D model based on LISFLOOD‑FP) to NOAA forecasts of streamflow, rainfall, and coastal surge. For Harvey, fluvial inundation was extracted from an existing US‑wide simulation library, while pluvial and coastal components were simulated for the event. The study produced medium‑term (2–15 day) forecasts and hindcasts, with reported skill around critical success index (CSI) ≈ 0.66 for maximum extent and mean water‑surface error on the order of ~1 m against USGS benchmarks. This work demonstrates that a national 2D library can be operationally coupled to forecasts without crippling lead times. The approach outlined in this document builds on and improves this framework by (1) making the library reach‑based (outputs are organized and indexed per reach), (2) emphasizing downstream stage transfer between connected reaches, (3) treating library construction as a per‑reach automation workflow rather than a single continental model build, and (4) indexing libraries by a discharge × downstream‑WSEL matrix rather than return‑period flow bins.
@@ -595,21 +595,15 @@ The project roadmap in Table 9-1 includes both currently planned and suggested p
 | Phase 6 (suggested) | | Production | - Nationwide FIM libraries |
 
 ## 10. References
-Banasiak, R. (2024), Large-scale two-dimensional cascade modeling of the Odra River for flood hazard management, *Water*, 16(1), 39, https://doi.org/10.3390/w16010039.
-
 Bates, P. D., and A. P. J. De Roo (2000), A simple raster‑based model for flood inundation simulation, *Journal of Hydrology*, 236, 54–77, https://doi.org/10.1016/S0022-1694(00)00278-X.
 
 Baugh, C., J. Colonese, C. D'Angelo, F. Dottori, J. Neal, C. Prudhomme, and P. Salamon (2024), Global river flood hazard maps, European Commission, Joint Research Centre (JRC) [Dataset], http://data.europa.eu/89h/jrc-floods-floodmapgl_rp50y-tif (accessed 12 Feb 2026).
 
+Bieger, K., H. Rathjens, P. M. Allen, and J. G. Arnold (2015), Development and evaluation of bankfull hydraulic geometry relationships for the physiographic regions of the United States, *Journal of the American Water Resources Association (JAWRA)*, 51(3), 842–858, https://doi.org/10.1111/jawr.12282.
+
 Eilander, D., et al. (2023a), HydroMT: Automated and reproducible model building and analysis, *Journal of Open Source Software*, 8(83), 4897, https://doi.org/10.21105/joss.04897.
 
-Eilander, D., et al. (2023b), A globally applicable framework for compound flood hazard modeling, *Natural Hazards and Earth System Sciences*, 23, 823–, https://doi.org/10.5194/nhess-23-823-2023.
-
-Johnson, M. (2024), Current Hydrofabric Data Model, NOAA Office of Water Prediction documentation, https://noaa-owp.github.io/hydrofabric/articles/hf_dm.html (accessed 18 Feb 2026).
-
-Johnson, M. (n.d.), The NextGen Hydrofabric Data Model (data-model deep dive), NOAA Office of Water Prediction documentation, https://noaa-owp.github.io/hydrofabric/articles/v2.2/04-data-model-deep-dive.html (accessed 18 Feb 2026).
-
-Moore, R. B., A. M. Long, L. D. McKay, M. P. Wieczorek, D. R. Dewald, T. L. Soller, and T. R. Loveland (2025), NHDPlus high resolution (NHDPlus HR) user guide, U.S. Geological Survey Scientific Investigations Report 2025-5037, https://doi.org/10.3133/sir20255037.
+Eilander, D., et al. (2023b), A globally applicable framework for compound flood hazard modeling, *Natural Hazards and Earth System Sciences*, 23, 823, https://doi.org/10.5194/nhess-23-823-2023.
 
 NextGen Water Prediction Capabilities (NGWPC) (n.d.-a), Ripple1D (software), GitHub repository, https://github.com/NGWPC/ripple1d (accessed 12 Feb 2026).
 
@@ -619,8 +613,6 @@ Phillips, J. D. (2024), Sequential changes in coastal plain rivers influenced by
 
 Sanders, B. F., O. E. J. Wing, and P. D. Bates (2024), Flooding is not like filling a bath, *Earth’s Future*, 12(12), e2024EF005164, https://doi.org/10.1029/2024EF005164.
 
-Scott, D. T., T. A. Kurz, M. A. C. Coulibaly, and R. M. Twilley (2019), Floodplain inundation spectrum across the United States, *Nature Communications*, 10, 5194, https://doi.org/10.1038/s41467-019-12999-5.
-
 Siddiqui, A. R. (n.d.), System Decision Records (SDR), https://ar-siddiqui.github.io/sdr/ (accessed 16 Feb 2026).
 
 U.S. Army Corps of Engineers (USACE) (n.d.), HEC-RAS 2D User’s Manual: Creating land cover, Manning’s n values, and impervious layers, https://www.hec.usace.army.mil/confluence/rasdocs/r2dum/6.6/developing-a-terrain-model-and-geospatial-layers/creating-land-cover-mannings-n-values-and-impervious-layers (accessed 15 Feb 2026).
@@ -628,6 +620,8 @@ U.S. Army Corps of Engineers (USACE) (n.d.), HEC-RAS 2D User’s Manual: Creatin
 U.S. Geological Survey (n.d.-a), Flood Inundation Mapping (FIM) Program, https://www.usgs.gov/mission-areas/water-resources/science/flood-inundation-mapping-fim-program (accessed 12 Feb 2026).
 
 U.S. Geological Survey (n.d.-b), Flood Inundation Mapping Science, https://www.usgs.gov/mission-areas/water-resources/science/flood-inundation-mapping-science (accessed 12 Feb 2026).
+
+U.S. Geological Survey (2025), Scientific Investigations Report (SIR) 2025-5088, https://pubs.usgs.gov/publication/sir20255088/full (accessed 19 Feb 2026).
 
 Wing, O. E. J., et al. (2019), A flood inundation forecast of Hurricane Harvey using a continental‑scale 2D hydrodynamic model, *Journal of Hydrology X*, 4, 100039, https://doi.org/10.1016/j.hydroa.2019.100039.
 
