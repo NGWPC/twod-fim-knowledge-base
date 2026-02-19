@@ -16,12 +16,22 @@ Acknowledging the aforementioned limitations, these methods were selected in par
 
 This report proposes a 2D hydrodynamic reach‑based library approach to address these gaps. The approach builds reach‑level models from scratch through an automated pipeline while preserving the Ripple1D and Flows2FIM operational pattern: pre‑generate per‑reach FIM libraries and mosaic them downstream‑to‑upstream in near real time using nowcast or forecast discharges (NGWPC, n.d.-a, n.d.-b). The key difference is how the libraries are derived—the computational engine is 2D hydrodynamics rather than 1D, and model construction is automated rather than repurposed from legacy studies (See Fig. 1 for visual explanation). Because 2D modeling is computationally intensive, the workflow shifts heavy computation (i.e. model simulations) to a pre‑processing step, so forecast‑time FIM development is limited to the rapid assembly step of creating a lightweight selection‑and‑mosaic index rather than a new simulation.
 
-This report lays out a pilot‑informed, initial, scalable methodology and explains how it was developed, where the most consequential decisions sit, and where uncertainty remains. It documents those decisions and open questions through a System Decision Records (SDR) process, and defines the conceptual framework, automation logic, and operational interfaces needed to implement the approach. Once approved, the methodology will be refined and tested in a prototype area before scaling further.
-
-For clarity, project phasing in this report is: Phase 1 (methodology development), Phase 2 (method refinement and prototyping software), and Phase 3 (automation hardening and prototype library generation).
-
 ![Reach-based hydrodynamic modeling for the National Water Model using 1D and 2D approaches](image1.png)
 *Figure 1. Reach‑based hydrodynamic modeling for the National Water Model river network using Ripple1D and 2D approaches. Ripple1D relies on existing 1D models and conflates their cross sections onto target reaches to build reach‑based models. The new 2D methodology does not rely on existing models; it creates a new 2D model for each reach domain, illustrated by the different colored grids in the rightmost panel.*
+
+This report lays out a pilot‑informed, initial, scalable methodology and explains how it was developed, where the most consequential decisions sit, and where uncertainty remains. It documents those decisions and open questions through a System Decision Records (SDR) process, and defines the conceptual framework, automation logic, and operational interfaces needed to implement the approach. Once approved, the methodology will be refined and tested in a prototype area before scaling further.
+
+### Project Phases
+For clarity, project phasing in this report is: Phase 1 (methodology development), Phase 2 (method refinement and prototyping software), and Phase 3 (automation hardening and prototype library generation).
+
+### Glossary
+Terminology used in this report follows definitions provided in 'Appendix B - Glossary' to keep methods, documentation, and figures aligned. In the main report, controlled glossary terms are shown in backticks (for example, `Reach Outlet`, `Headwater Reach`, `Stage Transfer Line`) to indicate they use the appendix definitions.
+
+### Maps and Figures
+The figures in this report use a consistent symbology. This is defined once here to avoid repeating legends in every figure. All maps have north arrow upside. Deviations from these norms are noted explicitly.
+
+![symbology](legend.png)
+Figure 7. All figures in this report follow this symbology unless noted otherwise.
 
 ## Related Work and Context
 This project sits at the intersection of three mature research threads: library‑based inundation mapping, large‑scale 2D hydrodynamics, and automated model setup. The literature below provides the closest precedents and highlights where our approach diverges.
@@ -45,8 +55,8 @@ The raster‑based formulation in Bates and De Roo (2000) introduced a simplifie
 
 Taken together, prior work demonstrates the feasibility of precomputed libraries, large‑scale 2D simulation, and automated model setup, but the specific synthesis of reach‑based 2D modeling with downstream stage transfer and Flows2FIM‑compatible libraries is not yet well represented in the literature and is the central contribution of this methodology.
 
-## Conceptual Modeling Framework
-This section describes the conceptual modeling framework for segmented, reach‑based 2D FIM libraries that, when assembled, create outputs with skill approximate to FIMs developed using a continuous network‑scale model.
+## Conceptual Reach-Based Modeling Framework
+This section describes the conceptual reach-based modeling framework for segmented, reach‑based 2D FIM libraries that, when assembled, create outputs with skill approximate to FIMs developed using a continuous network‑scale model.
 
 As noted above, the framework mirrors the Ripple1D library approach but uses 2D hydrodynamic models per reach. At a high level, the workflow is:
 
@@ -83,7 +93,7 @@ Figure 4 and 5 show how pre‑generated libraries are used to generate FIMs for 
 
 The framework is intentionally implementation agnostic; any hydraulic model or automation tooling can be used to generate individual FIMs as long as the outputs adhere to the library interface described above.
 
-The framework is also flexible about internal model details. For example, DEM conditioning or sub‑grid parameterization can be applied within an individual reach model without changing how the broader system functions. This creates a path for regional experts (e.g., RFCs) to improve reach models in their areas while remaining interoperable with the national library. Realizing this at scale will require governance, QA/QC, and cloud‑infrastructure design, which is beyond the scope of the current work.
+The framework is also flexible about internal model details. For example, DEM conditioning or sub‑grid parameterization can be applied within an individual reach model without changing how the broader system functions. This creates a path for regional experts (e.g., RFCs) to improve reach models in their areas while remaining interoperable with the national library. This aligns with the NextGen vision where better performing models can replace existing models throughout the network, however, realizing this at scale will require governance, QA/QC, and cloud‑infrastructure design, which is beyond the scope of the current work.
 
 ## Methodology Development
 The primary goal of Phase 1 was to define a defensible, automatable methodology for reach-based 2D FIM library development. This Phase 1 effort was not intended to produce large-scale libraries or automation pipeline. Instead, it was intended to establish a coherent technical foundation that could be implemented, tested, reviewed, and refined before broader deployment.
@@ -120,7 +130,7 @@ For roughness conversion, Table 1 lists the selected NLCD-to-Manning's n lookup,
 | 95 | Emergent Herbaceous Wetlands | 0.07 |
 
 ### 2D Model Selection
-An automated 2D based FIM library development pipeline will be highly dependent on the underlying 2D hydrodynamic model, so an evaluation of available 2D hydrodynamic models was necessary to gauge if these models satisfy the our practical requirements. As mentioned earlier the conceptual modeling framework is intentionally model agnostic, but any concrete implementation of this framework through an automated pipeline will be dependent on one particular 2D hydrodynamic model.
+An automated 2D based FIM library development pipeline will be highly dependent on the underlying 2D hydrodynamic model, so an evaluation of available 2D hydrodynamic models was necessary to gauge if these models satisfy the our practical requirements. As mentioned earlier the conceptual reach-based modeling framework is intentionally model agnostic, but any concrete implementation of this framework through an automated pipeline will be dependent on one particular 2D hydrodynamic model.
 
 For this reason, a preliminary review of potential candidates was performed based on criteria that may impact large scale automation: governing equations, grid/mesh paradigm, setup automation burden, CPU/GPU performance, Linux and container support, checkpoint/hot-start support, boundary-condition flexibility, output structure, maturity, documentation quality, and licensing constraints.
 
@@ -211,15 +221,6 @@ SDR is implemented in a dedicated repository and is actively used by engineers a
 
 The next subsections, **Pilot Cases** and **Core Method Decisions and Evidence**, is a narrative summary of the current Test Cases and Decision Register state and the evidence patterns that led to these decisions. Appendix D is derived directly from the current SDR state and provides the individual decision pages, including the complete alternative sets for each decision.
 
-### Glossary
-Terminology used in this report follows definitions provided in 'Appendix B - Glossary' to keep methods, documentation, and figures aligned. In the main report, controlled glossary terms are shown in backticks (for example, `Reach Outlet`, `Headwater Reach`, `Stage Transfer Line`) to indicate they use the appendix definitions.
-
-### Symbology
-The figures in this report use a consistent symbology. This is defined once here to avoid repeating legends in every figure.
-
-![symbology](legend.png)
-Figure 7. All figures in this report follow this symbology unless noted otherwise.
-
 ### Pilot Cases
 Pilot locations were selected to stress test the methodology and evaluate design decisions across contrasting hydraulic and physiographic conditions rather than to maximize geographic count. The set includes small rural systems, steep headwaters, urban/structure-influenced corridors, very wide floodplains, arid channels, a variety of confluences and river networks, and lake/coastal terminal settings. Finally, deviation experiments were executed against the baseline methodology to discover and isolate failure modes such as WSEL mismatch at tie-ins, edge leakage, inflow artifacts, etc. Decisions from these cases were recorded using the SDR workflow described above.
 
@@ -288,6 +289,8 @@ After geometry and boundary frameworks are established, the next question is **W
 
 ![Example of domain truncation](Case-004_FIG-001.png)
 *Figure TBD. Model domain developed using ALT-A of Decision #11 for Case #4 exposed floodplain truncation when using reach divides for model development. The circle here highlights that domain is not capturing the full extent of floodplain as shown here by NFHL floodplain* 
+
+In order to ensure that all gridded datasets line up both within model and between different reach models, the model domain bounds are snapped to the nearest multiple of the model resolution with snapping always favoring a larger domain. For example, if a domain had a minimum x value of 147 meters, the minimum x value would be snapped to 140 meters. Conversely, if a domain had a maximum x value of 147 meters, the maximum x value would be snapped to 150 meters.
 
 #### Source and Derived Data Decisions
 Once geometry and initial domain are fixed, the design process moved to input data and its transformation for modeling purposes. The initial data sources and transformations steps were standardized through four decisions: **What horizontal resolution DEM should be used for modeling?** (Appendix D, Decision #17), selected as *ALT-A - 10 meters*; **What source DEM should be used for modeling?** (Appendix D, Decision #18), selected as *ALT-A - USGS 3DEP*; **What source surface roughness data should be used for modeling?** (Appendix D, Decision #19), selected as *ALT-A - National Land Cover Dataset converted to Manning's n*; and **What lookup table should be used for land-cover classes to Manning's n relationship?** (Appendix D, Decision #20), selected as *ALT-A - USACE Dictionary*.
@@ -391,9 +394,7 @@ Using the hydrofabric flowpaths layer, the centerline for the reach of interest 
 To develop an outflow boundary condition line, an acceptable outflow area is designated, and anywhere that area overlaps an edge of the model domain is set as an outflow boundary condition line. When the reach is a terminal reach, the acceptable outflow area is determined from the composite layer described in the first paragraph of this section. When a reach has a downstream model available, the downstream model's largest FIM extents are used for the acceptable outflow area.
 
 #### Download Source Data
-Next, gridded data for the model domain is obtained. In order to ensure that all gridded datasets line up both within model and between models, the model domain bounds are snapped to the nearest multiple of the model resolution with snapping always favoring a larger domain. For example, if a domain had a minimum x value of 147 meters, the minimum x value would be snapped to 140 meters. Conversely, if a domain had a maximum x value of 147 meters, the maximum x value would be snapped to 150 meters.
-
-Topographic data can come from a source such as USGS 3DEP. The topographic data may optionally be post-processed to burn in features such as culverts through embankments or bathymetric data. Roughness data can be derived from landcover data using various approaches, including the conversion table in earlier sections of this report.
+Next, gridded data for the model domain is obtained. Topographic data can come from a source such as USGS 3DEP. The topographic data may optionally be post-processed to burn in features such as culverts through embankments or bathymetric data. Roughness data can be derived from landcover data using various approaches, including the conversion table in earlier sections of this report.
 
 #### Create Model Files and Data Folders
 The Create Model Files and Data Folders is exclusively a bookkeeping step. Here, all developed data is compiled in a consistent directory structure. This structure has been built out in initial tooling, but the exact setup is not critical to the proposed automation workflow. Additional information, such as model run parameters, may also be derived and logged here.
@@ -497,7 +498,7 @@ Figure 22 shows a mock-up of what a FIM might look like if Flows2FIM was used to
 Figure 22. Merged 100-year FIM for the demo area.
 
 ## Comparison to a Composite Model
-To benchmark the accuracy of this Conceptual Modeling Framework as well as Proposed Automation Workflow, we compared the merged FIM developed in Step-by-Step Example subsection and shown in Figure 22 to a comparative FIM developed by a single composite model for this whole area.
+To benchmark the accuracy of the proposed conceptual reach-based modeling framework as well as proposed automation workflow, we compared the merged FIM developed in Step-by-Step Example subsection and shown in Figure 22 to a comparative FIM developed by a single composite model for this whole area.
 
 This benchmark is intentionally an apples-to-apples comparison to isolate errors from segmentation and mosaicing. Both of the approaches compared use the same 2D hydraulic model (LISFLOOD-FP) and the same input and forcing data; the primary difference is segmented reach-based modeling plus mosaicing versus a single composite-domain model. Comparisons to datasets such as FEMA BLE or other locally curated high-fidelity flood maps can still be informative for absolute accuracy, but those products may include manual improvements, surveyed bathymetry, and other model or data differences, so they are not suitable for isolating reach-based modeling errors. Efforts toward absolute accuracy, such as incorporating bathymetric data, should be considered future work (see Discussion and Next Steps).
 
