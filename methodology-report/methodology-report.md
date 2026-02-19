@@ -24,14 +24,15 @@ For clarity, project phasing in this report is: Phase 1 (methodology development
 *Figure 1. Reach‑based hydrodynamic modeling for the National Water Model river network using Ripple1D and 2D approaches. Ripple1D relies on existing 1D models and conflates their cross sections onto target reaches to build reach‑based models. The new 2D methodology does not rely on existing models; it creates a new 2D model for each reach domain, illustrated by the different colored grids in the rightmost panel.*
 
 ## Related Work and Context
-This project sits at the intersection of three mature research threads: **library‑based inundation mapping**, **large‑scale 2D hydrodynamics**, and **automated model setup**. The literature below provides the closest precedents and highlights where our approach diverges.
+This project sits at the intersection of three mature research threads: library‑based inundation mapping, large‑scale 2D hydrodynamics, and automated model setup. The literature below provides the closest precedents and highlights where our approach diverges.
 
-### Library‑based inundation mapping (operational precedents)
-The USGS Flood Inundation Mapping (FIM) program defines a **map library** as a set of inundation maps at discrete stages, linked to gages and used operationally for preparedness and response. The USGS process emphasizes repeatable model construction, calibration, and library publication for real‑time use, which is conceptually aligned with our library‑first paradigm (albeit local and not reach‑based at national scale). This is a strong institutional precedent for the idea that *precomputed libraries + real‑time lookup* can be operationally reliable (U.S. Geological Survey, n.d.-a, n.d.-b).
+### Library‑based inundation mapping 
+The USGS Flood Inundation Mapping (FIM) program defines a map library as a set of inundation maps at discrete stages, linked to gages and used operationally for preparedness and response. The USGS process emphasizes repeatable model construction, calibration, and library publication for real‑time use, which is conceptually aligned with our library‑first paradigm (albeit local and not reach‑based at national scale). This is a strong institutional precedent for the idea that *precomputed libraries + real‑time lookup* can be operationally reliable (U.S. Geological Survey, n.d.-a, n.d.-b).
 
-### Continental‑scale 2D forecasting with precomputed libraries (closest analogue)
-The Hurricane Harvey study by Wing et al. (2019) is the closest direct analogue. The authors coupled **Fathom‑US** (a continental‑scale 2D model based on LISFLOOD‑FP) to NOAA forecasts of streamflow, rainfall, and coastal surge. For Harvey, fluvial inundation was extracted from an existing US‑wide simulation library, while pluvial and coastal components were simulated for the event. The study produced medium‑term (2–15 day) forecasts and hindcasts, with reported skill around CSI ≈ 0.66 for maximum extent and mean water‑surface error on the order of ~1 m against USGS benchmarks. This work demonstrates that a national 2D library can be operationally coupled to forecasts without crippling lead times. The approach outlined in this document builds on and improves this framework by (1) making the library reach‑based (outputs are organized and indexed per reach), (2) emphasizing downstream stage transfer between connected reaches, (3) treating library construction as a per‑reach automation workflow rather than a single continental model build, and (4) indexing libraries by a discharge × downstream‑WSEL matrix rather than return‑period flow bins.
-### Global and regional return‑period libraries (library at scale, but not reach‑based)
+### Continental‑scale 2D forecasting with precomputed libraries
+The Hurricane Harvey study by Wing et al. (2019) is the closest direct analogue. The authors coupled Fathom‑US (a continental‑scale 2D model based on LISFLOOD‑FP) to NOAA forecasts of streamflow, rainfall, and coastal surge. For Harvey, fluvial inundation was extracted from an existing US‑wide simulation library, while pluvial and coastal components were simulated for the event. The study produced medium‑term (2–15 day) forecasts and hindcasts, with reported skill around CSI ≈ 0.66 for maximum extent and mean water‑surface error on the order of ~1 m against USGS benchmarks. This work demonstrates that a national 2D library can be operationally coupled to forecasts without crippling lead times. The approach outlined in this document builds on and improves this framework by (1) making the library reach‑based (outputs are organized and indexed per reach), (2) emphasizing downstream stage transfer between connected reaches, (3) treating library construction as a per‑reach automation workflow rather than a single continental model build, and (4) indexing libraries by a discharge × downstream‑WSEL matrix rather than return‑period flow bins.
+
+### Global and regional return‑period libraries
 The Copernicus CEMS/GloFAS global river flood hazard maps provide precomputed inundation depth layers for multiple return periods (10–500 years). They are derived from LISFLOOD river flows and LISFLOOD‑FP inundation simulations, and are intended for exposure assessment and impact‑based forecasting. These maps are explicitly designed as global library products and are used operationally for rapid mapping. However, they are return‑period‑binned and network‑linked rather than reach‑specific with downstream stage transfer. This demonstrates feasibility of large‑scale library generation and operational linkage to hydrologic forecasts, while also highlighting the gap our reach‑based approach addresses (Baugh et al., 2024).
 
 ### Automated 2D model setup frameworks
@@ -55,7 +56,6 @@ As noted above, the framework mirrors the Ripple1D library approach but uses 2D 
 4. Mosaic per reach FIMs downstream to upstream using Flows2FIM to match both at reach discharge and downstream stage within a defined tolerance.
 
 The framework is focused on riverine (fluvial) flooding, where reach‑scale hydraulics dominate and boundary conditions can be represented by discharge and downstream stage. A key assumption for riverine flooding is that the response to streamflow is largely confined to the local reach. Under that assumption, a sufficiently dense library spanning the range of upstream flows and downstream stage conditions should yield a close enough FIM for most expected NWM forecast scenarios without requiring forecast event specific simulations. Lake and coastal settings are only touched in the context of boundary‑condition handling for specific reaches; full treatment of those domains and other non‑fluvial processes is outside the current scope.
-
 
 Under this framework, each reach model consists of a rectangular domain, an inflow boundary, a stage transfer line (STL), and an outflow boundary. The downstream reach water‑surface elevation (WSEL) provides downstream boundary condition to the upstream reach at the STL, enforcing a water‑surface tie‑in to propagate backwater effects. In the “simple case” this structure covers most reaches. Special cases such as lake/coastal reaches, large floodplains, or hydraulically coupled reaches require modifications described later in this report.
 
@@ -163,12 +163,12 @@ Based on this survey, LISFLOOD-FP, TRITON, and SFINCS remain active candidates. 
 While final model selection has not been completed, a model was needed for pilot modeling.  In our initial model review, it appeared that only LISFLOOD-FP would have sufficient boundary condition control for our method to work, and we pursued pilot modeling in LISFLOOD-FP. Since then, we have learned more about SFINCS and TRITON, and we determined that they would meet our needs. Furthermore, we learned of the active development that is going on in the SFINCS ecosystem. This makes SFINCS a promising candidate, and in the future we plan to explore SFINCS further. TRITON, as of now, is the least preferred option due to its more limited feature set than the other two models.
 
 ### Model Development WebApp
-To move from the conceptual framework to a testable methodology, Phase 1 required some lose tooling that could fast track building many reach models for testing and provide somewhat consistency in model development. For this purpose, a draft Streamlit Python App was created to automate model development. This app was used throughout the testing and iteration process.
+To move from the conceptual framework to a testable methodology, this phase required some lose tooling that could fast track building many reach models for testing and provide somewhat consistency in model development. For this purpose, a lightweight  Python App was created using Streamlit to automate model development. This app was used throughout the testing and iteration process.
 
 ![[Pasted image 20260218122954.png]]
 *Figure 6. Pilot WebApp developed to automate model construction and review.*
 
-During methodology development, design assumptions were still moving; a thin, modular toolchain allowed fast iteration without spending too much time early on coding solutions. Getting this tool out of a scripting environment also allowed the team to engage hydraulic engineers to assist in model development and validation. It also made comparisons across test cases more defensible because geometry and preprocessing logic were applied consistently.
+During methodology development, design assumptions were still moving; a thin, modular toolchain allowed fast iteration without spending too much time early on coding solutions. Getting this tool out of a scripting environment also allowed the team to engage hydraulic engineers to assist in model development and validation.
 
 The WebApp had several core features
  - Import hydrofabric data for a specific reach (centerline, divide, adjacent reaches, etc)
@@ -181,7 +181,7 @@ The WebApp had several core features
  - Generate stage transfer lines
  - Execute LISFLOOD-FP models in a lightweight, containerized environment
 
-While code was kept intentionally lightweight and flexible during this pilot study, this work give the project team a headstart in automation. Many core functions, such as hydrofabric subsetting, data downloads, grid development, and model post-processing can be directly copied to the next stage of this project and may only require modest revisions to optimize performance. The model metadata schema has a few lessons learned, but will only require minor modifications for the next stage. A Docker container for LISFLOOD-FP is ready for use when running models asynchronously in the cloud.
+While code was kept intentionally lightweight and flexible during this pilot study, this work provided the project team a preview and draft of automation tools which will be required in production. Many core functions, such as hydrofabric subsetting, data downloads, grid development, and model post-processing can be directly copied to the next stage of this project and may only require modest revisions to optimize performance. Similarly, the model metadata schema is in place and will require little in terms of modification for the next stage. A Docker container for LISFLOOD-FP is ready for use when running models asynchronously in the cloud.
 
 While the intention of this WebApp was to aid in methodology development, we see it having continued value for the rest of this project. Two tooling gaps identified during the Ripple1d project were the ability to review models and rerun models after making modifications. In Ripple1D, QGIS map templates were used to aid in model review. However, syncing the large datasets supporting these maps between the cloud and a client machine was cumbersome. Furthermore, QGIS is unable to view data from certain file formats (e.g., text, json, etc). By developing this WebApp, we layed the groundwork for a model review platform that can display all relevant model data without large downloads from a convenient, web-based portal. Beyond model review, the WebApp allows the forecasting community a channel to modify models, update run parameters, and request new map generation.  If model issues are detected after the bulk of production occurs, erroneous models can be corrected in the app, re-run, and have their FIM libraries updated.
 
@@ -221,11 +221,12 @@ The figures in this report use a consistent symbology. This is defined once here
 Figure 7. All figures in this report follow this symbology unless noted otherwise.
 
 ### Pilot Cases
-Pilot locations were selected to stress the methodology and different design decisions across contrasting hydraulic and physiographic conditions rather than to maximize geographic count. The set includes small rural systems, steep headwaters, urban/structure-influenced corridors, very wide floodplains, arid channels, different shape confluences or river networks, and lake/coastal terminal settings. The baseline methodology as well targeted deviation experiments were then executed against these cases to discover and isolate failures modes such as WSEL mismatch at tie-ins, edge leakage, inflow artifacts, etc. This is inline with SDR workflow described above.
+Pilot locations were selected to stress test the methodology and evaluate design decisions across contrasting hydraulic and physiographic conditions rather than to maximize geographic count. The set includes small rural systems, steep headwaters, urban/structure-influenced corridors, very wide floodplains, arid channels, a variety of confluences and river networks, and lake/coastal terminal settings. Finally, deviation experiments were executed against the baseline methodology to discover and isolate failure modes such as WSEL mismatch at tie-ins, edge leakage, inflow artifacts, etc. Decisions from these cases were recorded using the SDR workflow described above.
 
 Figure 8 depicts location of all cases. Table 3 provides case number, location, and title for these cases. Appendix C provides full details for each case.
 
-![pilot_cases_locations](pilot_cases_locations.jpeg)Figure 8. Locations of pilot study cases. For full detail about each case refer to Appendix C.
+![pilot_cases_locations](pilot_cases_locations.jpeg)
+Figure 8. Locations of pilot study cases. For full detail about each case refer to Appendix C.
 
 **Table 3. Case Index**
 
@@ -248,16 +249,12 @@ Figure 8 depicts location of all cases. Table 3 provides case number, location, 
 | Case #15 | Evansville, IN | Large River |
 
 ### Core Method Decisions and Evidence
-This subsection explains the decision logic behind the current methodology baseline. It follows the same implementation sequence used during model development. For each decision, it summarizes the design question, the alternatives considered, how evidence from testing changed the decision over time, and which alternative is currently selected. Here, an alternative means one candidate option within a decision.
-
-This methodology development process was managed through System Decision Records (SDR), and both decisions and alternatives are expected to continue evolving as additional pilot evidence is collected. Appendix D is derived directly from the current SDR state and provides the individual decision pages, including the complete alternative sets for each decision.
-
-At the end of this subsection Table TBD summarizes key design decisions and their current valid solution as a decision register. This decision register form our baseline methodology for automation work that will follow.
+This subsection explains the decision logic behind the current methodology baseline. It follows the same implementation sequence used during model development. As described in the SDR, for each decision, it summarizes the design question, the alternatives considered, how evidence from testing changed the decision over time, and which alternative is currently selected. Here, an alternative refers to one candidate option within a decision. Appendix D is derived directly from the current SDR state and provides the individual decision pages, including the complete alternative sets for each decision. At the end of this subsection Table TBD summarizes key design decisions and their current valid solution as a decision register. This decision register form our baseline methodology for automation work that will follow.
 
 #### Inflow and Outflow Geometries Decisions
-To create a methodology of automated model development a set of decisions is needed to define geometry and boundary placement: where water enters, where stage is transferred, and where water is allowed to leave the domain. These choices had strong first-order impact on stability and map artifacts.
+To create a methodology of automated model development a set of decisions is needed to define geometry and boundary placement: where water enters, where stage is transferred, and where water is allowed to leave the domain. These choices had a strong first-order impact on stability and map artifacts.
 
-For inflow placement in non-headwater reaches, the central question is **What should be geometry and location of input BC?** (see Appendix D, Decision #13 for full details). In practice, this decision compared line-based inflow placement on upstream reaches against point-based placements at or near the reach start. Testing on Case #6 (Appendix C) showed that point-focused alternatives produced stronger local WSEL artifacts, while line-based placement reduced those effects with no side-effects. The selected solution here is *ALT-A - At Perpendicular Line Some Distance Away on Highest Drainage Area Upstream Reach*.
+For inflow placement in non-headwater reaches, the central question is **What geometry type and location criteria should be used for the input BC?** (see Appendix D, Decision #13 for full details). In practice, this decision compared line-based inflow placement on upstream reaches against point-based placements at or near the reach start. Testing on Case #6 (Appendix C) showed that point-focused alternatives produced stronger local WSEL artifacts, while line-based placement reduced those effects with no side-effects. The selected solution here is *ALT-A - At Perpendicular Line Some Distance Away on Highest Drainage Area Upstream Reach*. The images below show the difference in the WSEL's contour lines when using points vs lines for input discharge. 
 
 ![WSEL artifacts from point inflow](Case-006_FIG-002.png)
 *Figure TBD. WSEL artifacts if we introduce inflow at a point  in Case #6. White lines in this picture are WSEL Contours.*
@@ -265,13 +262,13 @@ For inflow placement in non-headwater reaches, the central question is **What sh
 ![Reduced artifacts with line inflow](Case-006_FIG-003.png)
 *Figure TBD. Reduced inflow artifacts when inflow geometry was a line in Case #6.*
 
-`Headwater Reaches` required separate handling from regular reaches, this decision was tracked through **What should be geometry and location of input BC for `Headwater Reaches`?** (Appendix D, Decision #14). This was mainly a choice between line-at-start and point-based options, with distributed points retained as the current practical compromise. The selected baseline is *ALT-C - At a Point on Reach Start*.
+`Headwater Reaches` required separate handling from regular reaches, this decision was tracked through **What geometry type and location criteria should be used for the input BC at `Headwater Reaches`?** (Appendix D, Decision #14). This was mainly a choice between line-at-start and point-based options, with distributed points retained as the current practical compromise. The selected baseline is *ALT-C - At a Point on Reach Start*.
 
 Two parameter decisions then stabilize the selected geometry: **What line width should be used for inflow BC line?** (Appendix D, Decision #15), selected as *ALT-A - 100m Wide*, and **What upstream offset distance should be used for inflow BC line placement?** (Appendix D, Decision #16), selected as *ALT-A - 0.25 of Upstream Reach Length*.
 
 Downstream coupling introduced a second decision cluster. **Where to apply stage transfer condition?** (Appendix D, Decision #9) considered three placement patterns: at downstream-informed edge cells, at the `Reach Outlet`, or across a larger intersection region. The selected baseline is *ALT-B - At Reach Outlet*. Given that placement, **What should be the geometry of STL?** (Appendix D, Decision #25) evaluated divide-derived, contour-derived, and synthetic line approaches. The selected baseline is *ALT-B - WSEL Contour From D/S FIM*. To keep automation simple across library generation, **Should there be 1 STL per reach or 1 STL per reach per run?** (Appendix D, Decision #26) was resolved to *ALT-A - 1 STL Per Reach From Largest Model Run*.
 
-Edge and outlet behavior is evaluated separately for regular versus terminal settings. For standard reaches, **Where and what boundary conditions to apply along the edge cells?** (Appendix D, Decision #3) moved from broad all-edge openings toward selective downstream-informed edge opening. Case #1 showed that permissive edge handling could produce non-outlet water loss, which drove selection to *ALT-D - D/S Model FIM Informed Edge Cells get Freefall*.
+Edge and outlet behavior were evaluated separately for regular versus terminal settings. For standard reaches, **Where and what boundary conditions to apply along the edge cells?** (Appendix D, Decision #3) moved from broad all-edge openings toward selective downstream-informed edge opening. Case #1 showed that permissive edge handling could produce non-outlet water loss, which drove selection to *ALT-D - D/S Model FIM Informed Edge Cells get Freefall*.
 
 
 ![[DR-003 - FIG-001.png]]
@@ -279,17 +276,18 @@ Edge and outlet behavior is evaluated separately for regular versus terminal set
 
 
 ![Water leaving domain at non-outlet locations](Case-001_Fig-003.png)
-*Figure TBD. Decision #3, ALT-A which suggests freefall boundary condition at all edges, caused water to escape model domain at upstream reaches in Case #1, which is undesired.*
+*Figure TBD. Decision #3, Example from ALT-A (not selected) tested applying a freefall boundary condition at all edges. This approach caused water to escape the model domain at upstream reaches (reverse flow) in Case #1, which is undesired.*
 
 For lake and coastal reaches, the related decisions are **What should be an STL for lake and coastal reaches?** (Appendix D, Decision #8), selected alternative is *ALT-B - Intersection of Model Domain and Water Body Polygon Boundary* and **For lake and coastal reaches, where and what boundary conditions to apply along edge cells?** (Appendix D, Decision #6), selected alternative is *ALT-E - D/S Water Body Informed Edge Cells get Steep Slope*. Here, the alternatives ranged from broad all-edge open to selective downstream water body informed open boundary determination.
 
-![[DR-008-FIG-001.png]]
+![[placeholder.png]] 
 *Figure TBD. ALT-B of Decision #8 suggests a Stage Tranfer Line (STL) for a reach draining into a water body should be the edge of water body polygon. The WSEL values at this transfer line then can come from water body stage.*
+
 #### Initial Domain Development Decision
 After geometry and boundary frameworks are established, the next question is **What should be the initial model domain?** (Appendix D, Decision #11). The alternatives represented divide-based, centerline-based, and coarse-model-informed domain generation patterns. In early iterations, divide based setups were attractive for automation simplicity, but repeated testing (notably Case #4, Case #8, and Case #15) exposed floodplain truncation when domains remained too close to hydrofabric divides. The selected alternative now is *ALT-D - Bounding Box of Inflow BC, d/s STL, and Buffered Centerline*, chosen as the most practical and robust operational default.
 
 ![Example of domain truncation](Case-004_FIG-001.png)
-*Figure TBD. Model domain developed using ALT-A of Decision #11 for Case #4 exposed floodplain truncation when using reach divides for model development. The circle here highlights that domain is not capturing the full extent of floodplain as shown here by NFHL floodplain*
+*Figure TBD. Model domain developed using ALT-A of Decision #11 for Case #4 exposed floodplain truncation when using reach divides for model development. The circle here highlights that domain is not capturing the full extent of floodplain as shown here by NFHL floodplain* 
 
 #### Source and Derived Data Decisions
 Once geometry and initial domain are fixed, the design process moved to input data and its transformation for modeling purposes. The initial data sources and transformations steps were standardized through four decisions: **What horizontal resolution DEM should be used for modeling?** (Appendix D, Decision #17), selected as *ALT-A - 10 meters*; **What source DEM should be used for modeling?** (Appendix D, Decision #18), selected as *ALT-A - USGS 3DEP*; **What source surface roughness data should be used for modeling?** (Appendix D, Decision #19), selected as *ALT-A - National Land Cover Dataset converted to Manning's n*; and **What lookup table should be used for land-cover classes to Manning's n relationship?** (Appendix D, Decision #20), selected as *ALT-A - USACE Dictionary*.
@@ -301,15 +299,16 @@ Terrain conditioning related uncertainties are still unresolved but they are bei
 ![[culvert-issue.png]]
 *Figure TBD. Flow diverged around culvert midway at Reach 30704 due to unburned culverts in DEM in Case #3.*
 
-Similarly, **How should below water topobathy be accounted for?** (Appendix D, Decision #21) currently remains at *ALT-A - No handling*, despite testing that clearly showed sensitivity of FIM to topobathy in Case #15. This is another known limitation carried forward into prototype planning.
+Similarly, **How should channel bathymetry be accounted for?** (Appendix D, Decision #21) currently remains at *ALT-A - No handling*, despite testing that clearly showed sensitivity of FIM to topobathy in Case #15. This is another known limitation carried forward into prototype planning. See Limitations below for further discussion on this topic.
 
 #### Domain Expansion Decision
-A model is not fully developed until the domain bbox is been tested to be wide enough for all flood scenarios, hence a method is required determines whether the domain should expand, this is tracked through **What strategy to be used for determining if domain should be expanded?** (Appendix D, Decision #12). This decision has the clearest evolution path (ALT-A -> ALT-B -> ALT-F -> ALT-G). Case #7 and Case #8 were pivotal in this evolution because they exposed opposite failure modes: uncontrolled expansion versus  undesired truncation in very wide floodplains. The selected baseline is *ALT-G - Informed by Water-Surface Elevation with Regression Expansion Limit*.
+A model is not fully developed until the domain bbox is been tested to be wide enough for all flood scenarios, hence a method is required to determine whether the domain should expand, this is tracked through **What strategy to be used for determining if domain should be expanded?** (Appendix D, Decision #12). This decision has the clearest evolution path (ALT-A -> ALT-B -> ALT-F -> ALT-G). Case #7 and Case #8 were pivotal in this evolution because they exposed opposite failure modes: uncontrolled expansion versus  undesired truncation in very wide floodplains. The selected baseline is *ALT-G - Informed by Water-Surface Elevation with Regression Expansion Limit*.
+
 #### Model Execution Related Decisions
 Once the model is developed it need to be executed/run for different flow and stage scenarios. This will lead to decisions like **How to determine model quasi-steady state?** (Appendix D, Decision #22). This decision moved from flow balance checks to raster stabilization checks after KWSE boundary introduced flow of its own that made flow balance closure checks less reliable as a stopping criterion. The selected baseline now is *ALT-B - Check WSEL Raster has Stabilized Between Different Time Steps*.
 
 #### Scenario Combinations Development Decisions
-Executing KWSE scenario runs for a model is compute intensive and lead to large data storage requirements as well, hence it must be thought through that in which reaches KWSE runs are actually valuable. The core question is **Should KWSE scenario be modeled or not?** (Appendix D, Decision #1) for a reach. Case #1  showed under prediction of depths and extents when downstream stage transfer was excluded, which is why the selected baseline is *ALT-A - For All Reaches*. As a future work an alternative can be proposed that smartly manages selective execution of KWSE runs.
+Executing KWSE scenario runs for a model is compute intensive and lead to large data storage requirements as well, hence careful consideration should be give to select reaches where KWSE runs are required. The core question is **Should KWSE scenario be modeled or not?** (Appendix D, Decision #1) for a reach. Case #1  showed under prediction of depths and extents when downstream stage transfer was excluded, which is why the selected baseline is *ALT-A - For All Reaches*. As a future work an alternative can be proposed that smartly manages selective execution of KWSE runs.
 
 ![[FIG-002.png]]
 *Figure TBD. Under prediction of depth near tie-in when downstream stage transfer is not enforced for the selected reach in yellow in Case #1. The profile graph is for the selected yellow reach comparing depth rasters (meters) of kwse and nd (normal depth) runs.*
@@ -328,8 +327,9 @@ The second network decision is **What should be thresholds for merging short rea
 The third network decision is **How do deal with flat reaches?** (Appendix D, Decision #27). Alternatives were to keep default behavior (ALT-A) or add slope criteria to merging logic (ALT-B). This remains provisional while additional evidence is gathered, with the current baseline at 'ALT-A - Do Nothing'.
 
 The fourth network decision is **How to mark reaches as lake and coastal reaches?** (Appendix D, Decision #7). This decision is still open, and it remains a key dependency for fully automated pipeline.
+
 #### Decisions Summary
-Midway through methodology development, the team recognized that the methodology should be treated as a dynamic set of decisions and therefore be version-controlled. To enable version control of the methodology itself, a decision register was implemented to capture the methodology state at any point in time. As decisions evolve, the register is updated and version-controlled in the SDR implementation repository, and experiments and tests records the methodology version adopted. This creates a traceable chain from decision state to test evidence, improving reproducibility, auditability, and cross iteration comparison. The decision register state at the time of writing is presented in Table TBD below.
+During the middle phase of methodology development, the team recognized that the methodology should be treated as a dynamic set of decisions and therefore be version-controlled. To enable version control of the methodology itself, a decision register was implemented to capture the methodology state at any point in time. As decisions evolve, the register is updated and version-controlled in the SDR implementation repository, and experiments and tests records the methodology version adopted. This creates a traceable chain from decision state to test evidence, improving reproducibility, auditability, and cross iteration comparison. The decision register state at the time of writing is presented in Table TBD below.
 
 **Table TBD. Decision Register (Current Methods)**
 
@@ -527,7 +527,7 @@ A small area in Figure 29 shows deeper depths in the composite model FIM than th
 Figure 29. Area where models did not stabilize at the same depth (blue).
 
 ## Limitations and Challenges
-Even with the current decisions, several issues remain recurring or require special handling. These limitations inform both the current methodology and the open decisions to be resolved during prototype work in Phases 2 and 3.
+Beyond the current decisions, several issues remain recurring or require special handling. These limitations inform both the current methodology and the open decisions to be resolved during the prototype phase.
 
 ### Lack of Bathymetric Data
 Effects of bathymetric data absence/presence on 2D model results.
@@ -536,7 +536,7 @@ Here, we looked at the Ohio River near Evansville, IN. Bathymetric data came fro
 
 Results show that the “with bathymetry” model tracks closer to the observed USGS data, especially in lower‑magnitude floods. Notably, the “without bathymetry” model is above the minor flood stage for almost all discharges whereas the “with bathymetry” model only gets to minor flood stage at a ~2‑year event.
 
-In large‑scale implementations, a common workaround is to omit explicit bathymetry and represent river channels as **sub‑grid features** within each 2D cell. In practice, this means the grid cell stores an idealized 1D channel geometry (width, depth, roughness) so flow and storage can be approximated without resolving the channel in the terrain. This can reduce data requirements and improve runtime, but it also shifts accuracy to the quality of the sub‑grid parameterization. For our workflow, this highlights a tradeoff: either invest in bathymetric data where available, or adopt sub‑grid channel representations and quantify the resulting bias, especially for lower‑magnitude flows.
+In large‑scale implementations, a common workaround is to omit explicit bathymetry and represent river channels as **sub‑grid features** within each 2D cell. In practice, this means the grid cell stores an idealized 1D channel geometry (width, depth, roughness) so flow and storage can be approximated without resolving the channel in the terrain. This can reduce data requirements and improve runtime, but it also shifts accuracy to the quality of the sub‑grid parameterization. An alternative option would be to burn a simplified channel into the topography where the lack of bathymetry would significantly impact inundation extents. For our workflow, this highlights a tradeoff: either invest in bathymetric data where available, or adopt sub‑grid channel representations and quantify the resulting bias, especially for lower‑magnitude flows. 
 
 ![Bathymetry influence on stage accuracy](image28.png)
 *Figure TBD. Ohio River (Evansville) comparison of WSEL with and without bathymetry.*
@@ -554,10 +554,10 @@ Backwater effects and confluence geometry can produce narrower‑than‑expected
 Flat reaches and hydraulically coupled reaches challenge the reach‑based assumption, particularly where stage changes propagate across multiple reaches or where level‑pool behavior dominates.
 
 ### Compute and Cost
-Large rivers and wide floodplains can require large domains or reach eclipsing, which affects compute time, storage, and cost. This will need explicit optimization during Phase 2 prototyping.
+Large rivers and wide floodplains can require large domains, which affects compute time and storage cost. This will need explicit optimization in the prototype phase.
 
 ### Volume‑Driven Areas
-Some areas respond more to flood volume than peak discharge (e.g., lakes, reservoirs, and extensive floodplains). These settings require alternative handling beyond discharge‑only library selection.
+Some areas respond more to flood volume than peak discharge (e.g., lakes, reservoirs, and extensive floodplains). These settings require alternative handling beyond discharge‑only library selection. Future implementations could incoporate more refined volume informed FIM's, improving the quality and skill at locations including reservoirs, coastal locations, and communities located behind levees or non-levee embankments.
 
 Taken together, these limitations do not negate the approach. They clarify where automation needs guardrails and targeted exceptions so the system remains fit for rapid, decision‑support mapping.
 
@@ -1074,7 +1074,7 @@ Apply reach centerline slope normal depth boundary condition only along edge cel
 All edge cells get closed boundary and water has no place to escape. This alternate works in combination with DR-008 - What Should be an STL for Lake and Coastal Reaches.
 
 **ALT-E - D/S Water Body Informed Edge Cells get Steep Slope** `current`
-This is similar to ALT-A but only at edge cells that are intersecting with D/S Water Body get freefall boundary condition. A freefall is needed because we want water to escape without resistance and not elevate WSEL in the `transition zone`. ALT-C suggestion of centerline slope with normal depth is a crude approximation of flow conditions, and is often based on a slope value with limited accuracy. If the slope is flatter, it can lead to water being pooled in the transition zone..
+This is similar to ALT-A but only at edge cells that are intersecting with D/S Water Body get freefall boundary condition. A freefall is needed because we want water to escape without resistance and not elevate WSEL in the `transition zone`. ALT-C suggestion of centerline slope with normal depth is a crude approximation of flow conditions, and is often based on a slope value with limited accuracy. If the slope is flatter, it can lead to water being pooled in the transition zone..
 
 #### Decision #7 - How to Mark Reaches as Lake and Coastal Reaches
 
@@ -1192,16 +1192,16 @@ Once a model has been run, draft stage transfer lines would be developed. The fl
 The domain should be expanded until there are no flooding cells on the edges other than cells that have water-surface elevation lower than the water-surface elevation at the  `reach outlet` of the reach or water-surface elevation higher than the water-surface elevation at the `reach start`.
 
 **ALT-F - Informed by Water-Surface Elevation with 4,000 Meter Expansion Limit**
-The domain should be expanded until there are no flooding cells on the edges other than cells that have water-surface elevation lower than the water-surface elevation at the  `reach outlet` of the reach or water-surface elevation higher than the water-surface elevation at the `reach start`.
+The domain should be expanded until there are no flooding cells on the edges other than cells that have water-surface elevation lower than the water-surface elevation at the  `reach outlet` of the reach or water-surface elevation higher than the water-surface elevation at the `reach start`.
 
 If the domain would expand more than 4,000 meters from the initial domain, stop expansion.
 
 **ALT-G - Informed by Water-Surface Elevation with Regression Expansion Limit** `current`
-The domain should be expanded until there are no flooding cells on the edges other than cells that have water-surface elevation lower than the water-surface elevation at the  `reach outlet` of the reach or water-surface elevation higher than the water-surface elevation at the `reach start`.
+The domain should be expanded until there are no flooding cells on the edges other than cells that have water-surface elevation lower than the water-surface elevation at the  `reach outlet` of the reach or water-surface elevation higher than the water-surface elevation at the `reach start`.
 
 If the domain would expand more than 50 times bankfull width from the initial domain, stop expansion. Bankfull width may be obtained via regression from the source below.
 
-*Bieger, Katrin, Hendrik Rathjens, Peter M. Allen, and Jeffrey G. Arnold, 2015. Development and Evaluation of Bankfull Hydraulic Geometry Relationships for the Physiographic Regions of the United States. Journal of the American Water Resources Association (JAWRA) 51(3): 842-858. DOI: [10.1111/jawr.12282](https://doi.org/10.1111/jawr.12282 "Link to external resource: 10.1111/jawr.12282")*
+*Bieger, Katrin, Hendrik Rathjens, Peter M. Allen, and Jeffrey G. Arnold, 2015. Development and Evaluation of Bankfull Hydraulic Geometry Relationships for the Physiographic Regions of the United States. Journal of the American Water Resources Association (JAWRA) 51(3): 842-858. DOI: [10.1111/jawr.12282](https://doi.org/10.1111/jawr.12282 "Link to external resource: 10.1111/jawr.12282")*
 
 #### Decision #13 - What Should be Geometry and Location of Input  BC
 
@@ -1322,21 +1322,21 @@ Only relevant for DR-019 - What Source Surface Roughness Data Should be Used for
 The following lookup table was derived from the [Army Corps of Engineers HEC-RAS guidance](https://www.hec.usace.army.mil/confluence/rasdocs/r2dum/6.6/developing-a-terrain-model-and-geospatial-layers/creating-land-cover-mannings-n-values-and-impervious-layers#id-.CreatingLandCover,Manning%E2%80%99snvalues,and%ImperviousLayersv6.5.Beta-Manning'snCalibrationRegions).
 ```python
 MANNINGS_LC_LOOKUP = {
-    11: 0.04,
-    21: 0.04,
-    22: 0.1,
-    23: 0.08,
-    24: 0.15,
-    31: 0.025,
-    41: 0.16,
-    42: 0.16,
-    43: 0.16,
-    52: 0.1,
-    71: 0.035,
-    81: 0.03,
-    82: 0.035,
-    90: 0.12,
-    95: 0.07,
+    11: 0.04,
+    21: 0.04,
+    22: 0.1,
+    23: 0.08,
+    24: 0.15,
+    31: 0.025,
+    41: 0.16,
+    42: 0.16,
+    43: 0.16,
+    52: 0.1,
+    71: 0.035,
+    81: 0.03,
+    82: 0.035,
+    90: 0.12,
+    95: 0.07,
 }
 ```
 
@@ -1383,7 +1383,7 @@ Determine quasi-steady behavior using stabilization of WSEL rasters between diff
 **Description**
 In stream network there will be many reaches that will be very short relative to their floodplains and in terms of the flow additions between reaches. How to deal with these reaches.
 
-The figure below shows an analysis of hydrologic changes between reaches at different stream orders. Data was taken from the NWM retrospective design discharge dataset. Moving downstream between NWM reaches, the 100-year discharge shows a median increase of 1.2% across all reaches. However, this doesn't tell the full story. Second-order reaches have a 11% median increase, while fifth-order reaches remain nearly constant with a median increase of just 0.025%.  As stream order increases, the scale over which discharge changes increases.
+The figure below shows an analysis of hydrologic changes between reaches at different stream orders. Data was taken from the NWM retrospective design discharge dataset. Moving downstream between NWM reaches, the 100-year discharge shows a median increase of 1.2% across all reaches. However, this doesn't tell the full story. Second-order reaches have a 11% median increase, while fifth-order reaches remain nearly constant with a median increase of just 0.025%.  As stream order increases, the scale over which discharge changes increases.
 
 
 Striving to maintain short reach lengths in higher-order streams gives a sense of false precision. While it is tempting to keep the same reach length fidelity, larger rivers simply don't exhibit much discharge variability from reach to reach.
