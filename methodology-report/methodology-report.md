@@ -1108,7 +1108,7 @@ This decision decide if Stage transfer should take place at model domain BBOX, a
 **Alternatives**
 **ALT-A - At Model Domain Edge Cells that Inetersects D/S Reach FIM**
 At the intersection of model domain BBOX and D/S Reach FIM. This has benefit that there will be no transition zone.
-This would cause sudden floodplain width increase if there is a big flow increase from upstream to downstream. (See picture in description. We still need to back it by evidence.)
+This would cause sudden floodplain width increase if there is a big flow increase from upstream to downstream.
 
 **ALT-B - At *Reach Outlet*** `current`
 Apply stage transfer at the *reach outlet* as a Line, called *STL*. See DR-025 - What Should be the Geometry of STL for further specifications.
@@ -1413,7 +1413,7 @@ Determine quasi-steady behavior using stabilization of WSEL rasters between diff
 **Description**
 In stream network there will be many reaches that will be very short relative to their floodplains and in terms of the flow additions between reaches. How to deal with these reaches.
 
-The figure below shows an analysis of hydrologic changes between reaches at different stream orders. Data was taken from the NWM retrospective design discharge dataset. Moving downstream between NWM reaches, the 100-year discharge shows a median increase of 1.2% across all reaches. However, this doesn't tell the full story. Second-order reaches have a 11% median increase, while fifth-order reaches remain nearly constant with a median increase of just 0.025%.  As stream order increases, the scale over which discharge changes increases.
+An analysis of hydrologic changes between reaches at different stream orders was performed using the NWM retrospective design discharge dataset. Moving downstream between NWM reaches, the 100-year discharge shows a median increase of 1.2% across all reaches. However, this doesn't tell the full story. Second-order reaches have a 11% median increase, while fifth-order reaches remain nearly constant with a median increase of just 0.025%. As stream order increases, the scale over which discharge changes increases.
 
 
 Striving to maintain short reach lengths in higher-order streams gives a sense of false precision. While it is tempting to keep the same reach length fidelity, larger rivers simply don't exhibit much discharge variability from reach to reach.
@@ -1466,8 +1466,6 @@ This alternative suggest to draw STL from WSEL contour of the same reach FIM usi
 
 The motivation of this approach is that this contour line will be from downstream region of a FIM where inflow BC effects are minimal.
 
-In following picture, green is ND run, and blue is DS model, pink is KWSE run
-
 \newpage
 
 #### Decision #26 - Should There be 1 STL per Reach or 1 STL per Reach per RUN
@@ -1478,8 +1476,7 @@ Define what stage transfer line (STL) will be used for different runs of an upst
 **Alternatives**
 **ALT-A - 1 STL Per Reach From Largest Model Run** `current`
 The same STL, derived from largest run, will be used across all KWSE runs.
-
-Temp image showing that 1 STL for all runs mean the shape of STL is not perpendicular when d/s reach is not flowing at maximum discharge.
+Using one STL for all runs means the STL shape may be less perpendicular when the downstream reach is not flowing at maximum discharge.
 
 **ALT-B - STL Derived Separately during each run**
 Regenerate STL for each run so STL geometry adapts to run specific FIM, at the cost of indexing and automation complexity.
