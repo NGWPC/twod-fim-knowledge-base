@@ -497,7 +497,11 @@ Figure 22 shows a mock-up of what a FIM might look like if Flows2FIM was used to
 Figure 22. Merged 100-year FIM for the demo area.
 
 ## Comparison to a Composite Model
-To benchmark the accuracy of this Conceptual Modeling Framework as well as Proposed Automation Workflow, we compared the merged FIM developed in Step-by-Step Example subsection and shown in Figure 22 to a comparative FIM developed by a single composite model for this whole area. The geometries for this composite model is shown in Figure 23. For this model, the domain was developed by taking the bounding box of all reach-based model domains. The outflow line from model 30831 was used with a normal depth boundary condition equal to reach centerline slope. Upstream boundary conditions from reaches 30868, 30912, and 30913 were used as inflow lines. Discharges in the initial reach-based model were derived such that the outflow at reach 30831 is equal to the sum of inflows in reaches 30868, 30912, and 30913. The composite model was run until quasi-steady state conditions were reached. The resulting FIM is shown in Figure 24.
+To benchmark the accuracy of this Conceptual Modeling Framework as well as Proposed Automation Workflow, we compared the merged FIM developed in Step-by-Step Example subsection and shown in Figure 22 to a comparative FIM developed by a single composite model for this whole area.
+
+This benchmark is intentionally an apples-to-apples comparison to isolate errors from segmentation and mosaicing. Both of the approaches compared use the same 2D hydraulic model (LISFLOOD-FP) and the same input and forcing data; the primary difference is segmented reach-based modeling plus mosaicing versus a single composite-domain model. Comparisons to datasets such as FEMA BLE or other locally curated high-fidelity flood maps can still be informative for absolute accuracy, but those products may include manual improvements, surveyed bathymetry, and other model or data differences, so they are not suitable for isolating reach-based modeling errors. Efforts toward absolute accuracy, such as incorporating bathymetric data, should be considered future work (see Discussion and Next Steps).
+
+The geometries for this composite model is shown in Figure 23. For this model, the domain was developed by taking the bounding box of all reach-based model domains. The outflow line from model 30831 was used with a normal depth boundary condition equal to reach centerline slope. Upstream boundary conditions from reaches 30868, 30912, and 30913 were used as inflow lines. Discharges in the initial reach-based model were derived such that the outflow at reach 30831 is equal to the sum of inflows in reaches 30868, 30912, and 30913. The composite model was run until quasi-steady state conditions were reached. The resulting FIM is shown in Figure 24.
 
 ![](workflow-image23.jpeg)
 Figure 23. Generated geometries for reach 30913
@@ -574,16 +578,16 @@ Table TBD suggests a project roadmap with both currently planned and suggested p
 
 **Table TBD. Suggested Project Roadmap**
 
-| Phase                    | Duration | Primary Focus            | Key Outputs                                                                |
-| ------------------------ | -------- | ------------------------ | -------------------------------------------------------------------------- |
-| Phase 1 (current)        | 4 months | Methodology development  | - Draft methodology<br>- Pilot case studies<br>- Comparison with benchmark |
-| Review Phase (planned)   |          | Methodology review       |                                                                            |
-| Phase 2 (planned)        | 4 months | Software development     | - Prototype methodology<br>- Draft software                                |
-| Phase 3 (planned)        | 3 months | Automation hardening     | -  Prototype Software<br>-  Prototype Data/libraries                       |
-| Review Phase (suggested) |          | Broader community review |                                                                            |
-| Phase 4 (suggested)      |          | Cost optimization        | - Updated software                                                         |
+| Phase                    | Duration | Primary Focus                      | Key Outputs                                                                |
+| ------------------------ | -------- | ---------------------------------- | -------------------------------------------------------------------------- |
+| Phase 1 (current)        | 4 months | Methodology development            | - Draft methodology<br>- Pilot case studies<br>- Comparison with benchmark |
+| Review Phase (planned)   |          | Methodology review                 |                                                                            |
+| Phase 2 (planned)        | 4 months | Software development               | - Prototype methodology<br>- Draft software                                |
+| Phase 3 (planned)        | 3 months | Automation hardening               | -  Prototype Software<br>-  Prototype Data/libraries                       |
+| Review Phase (suggested) |          | Broader community review           |                                                                            |
+| Phase 4 (suggested)      |          | Cost optimization                  | - Updated software                                                         |
 | Phase 5 (suggested)      |          | Outstanding methodology challenges | - Updated methodology                                                      |
-| Phase 6 (suggested)      |          | Production               | - Nationwide FIM libraries                                                 |
+| Phase 6 (suggested)      |          | Production                         | - Nationwide FIM libraries                                                 |
 
 
 
