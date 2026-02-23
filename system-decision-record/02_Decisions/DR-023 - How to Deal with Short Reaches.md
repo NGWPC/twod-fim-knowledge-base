@@ -10,13 +10,15 @@ Striving to maintain short reach lengths in higher-order streams gives a sense o
 ## Alternatives
 
 ### ALT-A - No Special Treatment
+This alternate suggest to use hydrofabric as is. This is a default behaviour.
 
 ### ALT-B - Merge Continuous Reaches that have Negligible Drainage Area Difference Up to Some River Mile Length
-
-This will happen in network analysis step. Only higher stream order because there could be a case where mainstem with negligible DA difference is flowing dry and a tributary that had negligible DA is flowing full (a case need to be find to prove this can happen and reject ALT-B). At higher stream order we don't expect a mainstem to flow dry.
 #current 
 
+This will happen in network analysis step. Only higher stream order because there could be a case where mainstem with negligible DA difference is flowing dry and a tributary that had negligible DA is flowing full (a case need to be find to prove this can happen and reject ALT-B). At higher stream order we don't expect a mainstem to flow dry.
+
 ### ALT-C - Coarse Model Informed Analysis of FIM Width vs Reach Length
+This alternative suggest coarse model FIM informed analysis to determine which reaches are shorter in comparison to their FIM and hence should be merged to create reasonable models.
 
 ---
 ## Decision History

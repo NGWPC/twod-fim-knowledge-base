@@ -26,11 +26,8 @@ MANNINGS_LC_LOOKUP = {
 }
 ```
 
-### ALT-B - mannings_roughness_generator Dictionary
-
-This repository lists an alternative dictionary, although the source is unclear: https://github.com/mabdazzam/mannings_roughness_generator/tree/main/lookups
-
-
+### ALT-B - 'mannings_roughness_generator' Dictionary
+A QGIS plugin 'mannings_roughness_generator'  lists an alternative dictionary, although the source is unclear: https://github.com/mabdazzam/mannings_roughness_generator/tree/main/lookups
 
 ## Decision History
 - 2026-02-02: Retroactively document current approach (ALT-A)

@@ -1,5 +1,5 @@
 ## Description
-This DR applies to thresholds for different alternates of [[DR-023 - How to Deal with Short Reaches]]
+This decision defines thresholds for alternatives in [[DR-023 - How to Deal with Short Reaches]].
 
 ## Alternatives
 
