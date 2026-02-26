@@ -30,4 +30,4 @@ This is similar to ALT-A but only the edge cells that are intersecting with D/S 
 ## Decision History
 - Initially assumed started with Alt-A
 - Switched to Alt-C
-- 2026-02-16: Switched to ALT-D based as ALT-C overlooked original need of freefall
+- 2026-02-16: Switched to ALT-D as ALT-C overlooked original need of freefall

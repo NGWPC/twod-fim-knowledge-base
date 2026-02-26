@@ -18,7 +18,7 @@ location: Burlington, VT
 ---
 ## Description
 
- This site was selected because in the southern edge of the map, the Winooski River floodplain spills into a large overbank area.  This floodplain is relatively far from the stream centerline, adn thus, gets clipped off by some automated domain creation methods.
+ This site was selected because in the southern edge of the map, the Winooski River floodplain spills into a large overbank area.  This floodplain is relatively far from the stream centerline, and thus, gets clipped off by some automated domain creation methods.
 
 ![[01_Cases/Case-004/FIG-001.png]]
 

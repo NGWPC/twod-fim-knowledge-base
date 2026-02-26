@@ -19,3 +19,5 @@ Use following features of Obsidian for linking and traceability:
 ## GitHub
 Source markdown files are at
 https://github.com/NGWPC/twod-fim-knowledge-base/tree/main/system-decision-record
+
+![[README.png]]
