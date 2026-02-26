@@ -57,7 +57,7 @@ This results provide basis for rejecting the idea that we can ignore KWSE model 
 
 A combined 2D model was created for reach 3463058, 3463057, and 3463056 with domain hand drawn to what it should be for this area, this eliminated uncertainty about domain extent and allowed us to focus on edge boundary conditions.  When the model was executed with all edge cells at normal depth condition, the water was leaving the system at non outlet location [[ISU-003 - Water Leaving the Domain At Non Outlet Locations]].
 
-![[01_Cases/Case-001/Fig-003.png]]
+![[01_Cases/Case-001/FIG-003.png]]
 
 > [!Error] Reject
 >[[DR-003 - Where and What Boundary Conditions to Apply Along the Edge Cells]] > [[DR-003 - Where and What Boundary Conditions to Apply Along the Edge Cells#ALT-A - Normal Depth at all Edges with Uniform Steep Slope|ALT-A - Normal Depth at all Edges with Uniform Steep Slope]]
