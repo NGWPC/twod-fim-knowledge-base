@@ -6,7 +6,7 @@ date_observed: 2026-03-31
 coordinates_5070: 1285105,1998211
 coordinates_4326: 40.07164,-80.73459
 flows:
-  - 290k cfs 
+  - "8300"
 tags:
   - case
   - divergence
