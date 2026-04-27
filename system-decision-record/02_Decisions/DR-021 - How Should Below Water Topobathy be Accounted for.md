@@ -27,6 +27,19 @@ This approach was used by researchers at the University of Vermont.
 
 ![[DR-021 - FIG-001.png]]
 
+### ALT-D - FATHOM's Channel Solver
 
+*requires commercial purchase of this product*
+
+Fathom’s Channel Solver uses computational fluid dynamics to calculate how large a channel needs to be in order to convey a specified flow of water within its banks. The method calculates the appropriate cross sectional area for every point along the river network, solving for depth given that other variables such as width and slope can be observed. This calculation is necessary because the depth of rivers cannot be measured over very large areas using remote sensing techniques.
+
+1. Capture observed width from satellite data and slope from DEM
+![[DR-021 - FIG-002.png|515]]
+
+2. Calculate depth needed to convey the specified flow
+![[DR-021 - FIG-003.png|515]]
+![[DR-021 - FIG-004.png|512]]
+
+Research Paper: https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2020WR028301
 ## Decision History
 - 2026-02-02: Retroactively document current approach (ALT-A)
