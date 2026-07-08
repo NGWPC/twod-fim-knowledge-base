@@ -6,7 +6,7 @@ This DR establish what should be range of upper and lower bounds for KWSEs.
 
 ## Alternatives
 
-### ALT-A - Same as D/S Reach Max and Min STL WSEL Floored by Reach's Normal Depth WSEL at STL
+### ALT-A - Same as D/S Reach Max and Min STL WSEL but Lower Bound Floored by Reach's Normal Depth WSEL at STL
 
 For every reach's every discharge we model it with full range of D/S Reach U/S WSEL range, but we don't model any KWSE that is lower than the reach's normal depth WSEL at the STL.
 
@@ -29,6 +29,11 @@ In comparison to Alt-A, this makes more sense because for lower bound there coul
 For case 1, we were always going to floor by ND WSEL, so for case 1 ALT-C is same as ALT-A. For case 2, using the ND value will lead to a larger (and therefore more conservative) set of bounds.
 
 The biggest benefit of this is that it simplifies coding and now the range is solely determined by only one dependency (max KWSE) from downstream reach.
+
+### ALT-D - Same as D/S Reach Max and Min STL WSEL
+This is same as A but we do not floor by Reach's own ND WSEL, this is because the ND WSEL is dependent on normal depth slope used. The slope value is only an approximation for downstream conditions and does not fully represent the downstream conditions. Often time this slope value could vary depending on what methodology is used to drive this value.
+
+In Ohio Ripple1D case we learned that if slope value used is flatter than the actual downstream conditions, this would lead to an ND elevation for reach that is higher than the D/S reach's upstream/STL WSEL for same discharge. This would create an artificial bump in WSEL when the whole network is stitched together via Flows2FIM.
 
 ## Decision History
 - 2026-06-01: ALT-A selected for simplicity and to reduce initial study effort and complexity.
