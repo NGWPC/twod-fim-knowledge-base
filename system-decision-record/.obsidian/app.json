@@ -4,5 +4,6 @@
   "attachmentFolderPath": "./",
   "livePreview": true,
   "alwaysUpdateLinks": true,
-  "defaultViewMode": "preview"
+  "defaultViewMode": "preview",
+  "promptDelete": false
 }
