@@ -16,7 +16,7 @@ const config: QuartzConfig = {
       provider: "",
     },
     locale: "en-US",
-    baseUrl: "https://fictional-barnacle-437lwvo.pages.github.io/",
+    baseUrl: "https://ngwpc.github.io/twod-fim-knowledge-base/",
     ignorePatterns: ["private", "templates", ".obsidian"],
     defaultDateType: "modified",
      theme: {
