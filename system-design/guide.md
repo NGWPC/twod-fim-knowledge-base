@@ -58,12 +58,12 @@ This is conceptual model of different objects in modeling, this is not a working
 - is_headwater ??
 - geom
 
-### Model (id: model_id = identity_hash+domain_code)
+### Model (id: model_id = identity_hash+domain_code) # example: 5f14368c_N350S296E449W355
 - identity_hash
 - domain_code (grid-snapped N/S/E/W offsets from the reach anchor, in CRS units)
 - domain bbox geom
 
-#### Identity (identity_hash = hash of this content)
+#### Identity (identity_hash = hash of this content) # example: 5f14368c
 
 Overrides are applied upstream and arrive folded into reach_geom / sources / params below; the `build_model` job itself doesn't take an override_id.
 
@@ -75,20 +75,23 @@ Overrides are applied upstream and arrive folded into reach_geom / sources / par
 - grid_resolution
 - epsg_code
 
-### Run (id: )
+### Run (id: run_id = identity_hash+scenario_code) # example af1436r4_ND1.2e5Q200, af1436r4_KWSE200.2Q200 
 - scenario
 - model_id
 - execution time
-- `runner` job version
-- solver
-- hotstart raster  (optional)
-- STL (optional)
-- KWSE transfer raster (optional)
+- identity_hash
 
-#### Scenario (id:)
+#### Identity (identity_hash = hash of this content) # example af1436r4
+- sdr_commit (methodology version pin)
+- solver
+
+#### Scenario (id: KWSE200.2Q200+)
 - q
 - bc_type
 - bc_value
+- hotstart raster  (optional)
+- STL (optional)
+- KWSE transfer raster (optional)
 
 
 ## Storage Layout
@@ -114,9 +117,9 @@ s3://twod-fim/
     │
     └── results/                            
         └── reach=12345/
-            └── <identity>/  # runs file under identity, not under domain
-                └──	<hash(run_identity)>/    # solver; group/rollback by this
-                    └── z=283/f=200/      or .../z=nd/f=200/   # run realization: scenario point
+            └── <model identity hash>/  # runs file under identity, not under domain
+                └──	<run identity hash>/    # solver; group/rollback by this
+                    └── z=283.2/q=200/      or nd=1.2e5/q=200/   # run realization: scenario point
                     	├── depth.tif           COG, EPSG:5070; also the hot-start seed
                     	├── stl.geojson           Stage Transfer Line
                     	├── metadata.csv / parquet  metadata on artifacts
