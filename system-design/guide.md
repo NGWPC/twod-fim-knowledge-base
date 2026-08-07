@@ -29,77 +29,80 @@
 ## Key Design Decisions
 
 - STL is not part of model definition, but STL will inform model_domain desired state
-- Model = identity (reach + sources + grid/CRS + params) + realization (domain). The `build_model` software version is recorded as provenance (`current_state.build_model_version`), not folded into `identity_hash`, so a software bump can drive a selective rebuild without changing the content-addressed path.
-- Run = run_identity (engine + engine version) + realization (scenario: q, kwse)
 - Identity and realization are always separate component in hashes and separate DB columns so that group / roll back / delete by either is possible
-- Runs with same identity_hash stay valid even if a domain change updates the model_id
+- Runs with same model identity stay valid even if a domain change updates the model_id
 - The database has three main tables
 - Desired state = input to system = authored intent
 - Current state = what's actually been achieved = current state of the system
 - Runs = the per-run record (ledger)
-- Some desired_state fields are nullable — NULL means "use the default source", a value means it is authored. current_state always holds the effective value. This separation makes it clear that there is one place to author anything, one place place to read what's live.
-- Rollback = revert desired state; content-addressing reuses prior outputs if not yet aged out, else will be recomputed
+- Some desired_state fields are nullable. NULL means "use the default source", a value means it is authored. `current_state` table in database always holds the effective value. This separation makes it clear that there is one place to author anything, one place to read what exist.
+- Rollbacks = delete a model or run(s). System will recognise that and recreate it if needed
+- Before execution, jobs will check if results exist on the content-addressed path and return early.
+- Database will track staleness for example a downstream model is deleted, so the storage sensor will update the `current_state` that it doesn't exist.
+- Only those KWSE scenarios will be perfromed and stay valid for which downstream scenario exist, this is because flows2fim can only reach these scenarios.
 
 ![alt text](guide-diagrams/system-landscape.drawio.png)
 
 ## Versioning Model
 
 - When we store in S3 we store by repo version, (minor updates can live together, but major can not)
-- Each version is pinned to a commit in SDR
+- Each job version is pinned to a commit in SDR
+- Deployment is a distribution at anypoint it works with a specific combination of versions
 
 ## Conceptual Modeling Objects
 
-This is conceptual model of different objects in modeling, this is not a working database schema, neither these are Python data classes.
+This is conceptual model of different key objects in the system. Job contracts and object manifest schemas are stored separately and build from this conceptual model. See Manifest and Job Contract section below.
 
-### Reach (id: reach_id)
-- reach_to_id
-- is_terminal
-- is_lake ??
-- is_headwater ??
-- geom
+Every object (Model and Run) is defined in three key ways.
+
+|                 | Purpose                                            | How it is Built and Represented                                                                      | Usage                                                                                               |
+| --------------- | -------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| **Identity**    | What methodology produced this. (recipie)          | Information about the object that forms its identity is collected in an object whose hash is then taken. | Identity is used to group / rollback / delete / invalidate objects. Identity also is used for path. |
+| **Realization** | At what domain/point/axis was this recipe realized | The realization point/axis is converted to a human readable code.                                    | Appended to `identity_hash` to form the full `id` and path of the object.                           |
+| **Manifest**    | All information of the object. (packaging label)   | Job Inputs that created this object are recorded verbatim, plus the assets belonging to this object and all other information associated. | Complete representation of the object that database and other tools can query as needed.            |
+
+- What information from Manifest is promoted to identity is a judgement call, a rule of thumb is that if some information is critical enough that it invalidates the object if changed and force a recompute, it is considered part of identity because it needs to live at a different path.
+- Database can fetch information from provenance if it is needed to track what exists, what changed, what need to be created (reconciliation loop).
+- Manifest is the superset of all information, others like identity, database only posses information based on their function.
+
+### Reach
+
+Reach is the exception to earlier convention, it's an input to the system (from the hydrofabric), not something a job derives, so it has no Identity/Realization split. (id of a reach is already its identity per new hydrofabric Google Plus Codes?)
 
 ### Model (id: model_id = identity_hash+domain_code) # example: 5f14368c_N350S296E449W355
-- identity_hash
-- domain_code (grid-snapped N/S/E/W offsets from the reach anchor, in CRS units)
-- domain bbox geom
 
-#### Identity (identity_hash = hash of this content) # example: 5f14368c
+ Produced by `build_model`.
 
-Overrides are applied upstream and arrive folded into reach_geom / sources / params below; the `build_model` job itself doesn't take an override_id.
+#### Identity (id: = hash of this content) # example: 5f14368c
+
+Following information forms identity of a model
 
 - sdr_commit (methodology version pin)
 - reach_geom_hash
 - dem_source_inputs_hash (ex usgs url + version)
-- roughness_source_inputs_hash (ex nlcd url + version)
+- lulc_source_inputs_hash (ex nlcd url + version)
 - lulc_lookup_dict_hash
 - grid_resolution
 - epsg_code
 
-### Run (id: run_id = identity_hash+scenario_code) # example af1436r4_ND1.2e5Q200, af1436r4_KWSE200.2Q200 
-- scenario
-- model_id
-- execution time
-- identity_hash
+Overrides are applied upstream and arrive folded into reach_geom / sources / params below; the `build_model` job itself doesn't take an override_id.
 
-#### Identity (identity_hash = hash of this content) # example af1436r4
+### Run (id: run_id = identity_hash+scenario_identity) # example af1436r4_ND1.2e5Q200, af1436r4_KWSE200.2Q200
+
+#### Identity (id: = hash of this content) # example af1436r4
+
 - sdr_commit (methodology version pin)
-- solver
+- solver (engine name + version, e.g. `lisflood-fp@8.1`)
 
-#### Scenario (id: KWSE200.2Q200+)
-- q
-- bc_type
-- bc_value
-- hotstart raster  (optional)
-- STL (optional)
-- KWSE transfer raster (optional)
+#### Scenario - Run's realization (code: e.g. `ND1.2e5Q200`, `KWSE200.2Q200`)
 
+It is **not** a separate entity with its own Identity/Realization split because it is Run's realization, just like `domain_code` is Model's realization. It's a value, not a thing with an independent lifecycle; it never exists without a Run, hence not a first class object.
+
+- q (discharge)
+- bc_type (`ND` normal-depth | `KWSE` known water-surface elevation)
+- bc_value (normal-depth slope, or downstream stage value)
 
 ## Storage Layout
-
-Schemas:
-model.json (model definition + artifact inventory; see build_model-design.md / model.schema.json)
-metrics.parquet for qc analytics
-run.json
 
 ```bash
 s3://twod-fim/
@@ -115,16 +118,63 @@ s3://twod-fim/
     │              ├── {dem,roughness}.tif      derived; deletable after N days
     │              └── {cl,inflow,centroid,domain}.geojson
     │
-    └── results/                            
+    └── results/
         └── reach=12345/
-            └── <model identity hash>/  # runs file under identity, not under domain
-                └──	<run identity hash>/    # solver; group/rollback by this
+            └── <model identity hash>/  # runs file under identity, not under id which will have domain code
+                └──	<run identity>/    # group/rollback by this
                     └── z=283.2/q=200/      or nd=1.2e5/q=200/   # run realization: scenario point
                     	├── depth.tif           COG, EPSG:5070; also the hot-start seed
                     	├── stl.geojson           Stage Transfer Line
                     	├── metadata.csv / parquet  metadata on artifacts
                     	└── run.json            self-describing run record (records domain used)
 ```
+
+## Manifest
+
+A manifest is an object's full self-description, the identity object, the realization, the provenance `inputs`, and the output `assets`, properties, and other key information.
+
+The manifest's inputs object should match the job contract input specs. Manifest schmea should live in `twod-fim-jobs` repo.
+
+Manifest schema shape is fixed regardless of object:
+
+- `type`
+- `hash_algo`
+- `producer version`
+- `created_at`
+- `id`
+- `identity_hash`
+- `realization code`
+- `identity{}`
+- `realization{}`
+- `inputs{}`
+- `properties{}`
+- `assets{}`
+- `warnings[]`
+
+## Job Specs
+
+- A job's response is a small subset of information, not the manifest object.
+- Job specs live in twod-fim-jobs repo.
+
+Following template can be used to create job specs.
+
+| Section                      | Content                                                                           |
+| ---------------------------- | --------------------------------------------------------------------------------- |
+| Overview                     | One paragraph: what this job does, one sentence                                   |
+| Inputs — Required / Optional | Table: Name, Type, Description                                                    |
+| Processing Scope             | Bullet list of what the job actually does, in order                               |
+| Artifacts                    | Table: output path → description                                                  |
+| Response                     | What the job returns synchronously — see "thin pointer" rule below                |
+| Out of Scope                 | What this job explicitly does not do (prevents scope creep into neighboring jobs) |
+| Dependencies                 | Runtime/tooling dependencies                                                      |
+| Errors                       | Table or list: condition → exception raised                                       |
+| Checks                       | Non-fatal checks the job performs and the warning it emits                        |
+| Performance                  | Typical runtime, and where that pushes deployment (local vs. batch)               |
+
+## Cardinality between Jobs Objects and Manifests
+
+- One to One relationship between Conceptual Objects and Manifests
+- Many to One relationship between jobs and manifests. E.x. both runner jobs will peroform a run so they give run.json
 
 ## Repo Layout
 
@@ -141,5 +191,5 @@ s3://twod-fim/
 - Do we want more granular control over desired kwse state
 - How do we track nominal KWSE rasters
 - Does PSQL trigger orchestrator or orchestrator watches PSQL
-- How do AWS Batch runs DIND
+- How do AWS Batch runs D IND
 - Network traversal order
