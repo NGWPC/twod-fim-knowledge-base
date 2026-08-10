@@ -154,6 +154,7 @@ Manifest schema shape is fixed regardless of object:
 ## Job Specs
 
 - A job's response is a small subset of information, not the manifest object.
+- Jobs check whether their output already exists and skip those outputs. So running a job twice with same inputs means only a few checks.
 - Job specs live in twod-fim-jobs repo.
 
 Following template can be used to create job specs.
