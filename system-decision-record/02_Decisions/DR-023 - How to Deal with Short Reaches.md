@@ -1,3 +1,4 @@
+#network-modification
 ## Description
 In stream network there will be many reaches that will be very short relative to their floodplains and in terms of the flow additions between reaches. How to deal with these reaches.
 
@@ -12,7 +13,7 @@ Striving to maintain short reach lengths in higher-order streams gives a sense o
 ### ALT-A - No Special Treatment
 This alternate suggest to use hydrofabric as is. This is a default behaviour.
 
-### ALT-B - Merge Continuous Reaches that have Negligible Drainage Area Difference Up to Some River Mile Length
+### ALT-B - Merge Continuous Reaches (With No Junction) that have Negligible Drainage Area Difference Up to Some River Mile Length
 #current 
 
 This will happen in network analysis step. Only higher stream order because there could be a case where mainstem with negligible DA difference is flowing dry and a tributary that had negligible DA is flowing full (a case need to be find to prove this can happen and reject ALT-B). At higher stream order we don't expect a mainstem to flow dry.
