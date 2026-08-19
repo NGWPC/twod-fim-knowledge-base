@@ -28,7 +28,7 @@ For case 1, we were always going to floor by ND WSEL, so for case 1 ALT-C is sam
 
 The biggest benefit of this is that it simplifies coding and now the range is solely determined by only one dependency (max KWSE) from downstream reach.
 
-### ALT-D - Same as D/S Reach Max and Min STL WSEL for Nearest Discharge that is Below Reach's Own Discharge
+### ALT-D - Upper Bound Same as D/S Reach Max WSEL for all Discharges and Lower Bound Same as D/S Reach Min STL WSEL for Nearest Discharge that is Just Below Reach's Own Discharge
 #current
 
 This is same as A but we do not floor by Reach's own ND WSEL, this is because the ND WSEL is dependent on normal depth slope used. The slope value is only an approximation for downstream conditions and does not fully represent the downstream conditions. Often time this slope value could vary depending on what methodology is used to drive this value.
