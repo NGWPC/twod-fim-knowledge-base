@@ -131,21 +131,19 @@ Reasons for adopting this pattern:
 
 If a job cannot be found at all (the execution system has forgotten it, the container was reaped, the reference was lost) the marker is cleared anyway after a grace period and the work is submitted again because a job is idempotent.
 
-## Running Something Twice Is Always Safe
+On similar note, the reconciler or database does not limit how many reaches are worked on simultaneously, this is the scope of execution system.
 
-The whole design leans on this, so it is worth stating on its own rather than leaving it as a happy accident.
+## Reconciler Design is Based on Job Idempotency
 
-Outputs live at content addressed paths, and jobs return early when their output already exists. That means a duplicate submission wastes some compute and changes nothing else. Every approximate part of this design rests on that: the grace period can be wrong, a job status pass can be missed, a check can act on a snapshot that went stale a second later, and the worst case is repeated work rather than a wrong answer.
-
-If jobs ever stop being content addressed, this design breaks quietly, and a great deal else would have to become exact to compensate.
+The outputs of a job live at content addressed paths, and jobs return early when their output already exists. That means a duplicate submission wastes some compute and changes nothing else. Every approximate part of the reconciler design is baed on this assumption. The grace period can be wrong, a job status routine update can be missed, a check can act on a snapshot that went stale a second later, and the worst case is repeated work rather than a wrong answer.
 
 ## Retry Mechanism
 
-A job can fail in three ways, and all of them arrive at the same place. The execution system reports it finished badly. Or the job finished, and the next check looks at storage and finds nothing there. Or the job cannot be accounted for at all, and after a grace period it is presumed dead.
-
-Note what is missing from that list: nothing measures how long a job has been running and declares it too slow. The reconciler has no opinion on how long work should take, and it should not — with a real queue, wall time is queue time plus run time, and there is no honest number to guess. If a job should be killed after some duration, the execution system is told that when the job is defined, and the reconciler simply hears that it failed.
+A job can fail in three ways, and all of them arrive at the same place. The execution system reports it failed, orr the job finished, and the next check looks at storage and finds nothing there, or the job cannot be accounted for at all, and after a grace period it is presumed dead.
 
 The failure is recorded in database `reach_processing` table, at every failure a counter goes up, and the reach is left alone for a while, with wait time increasing each time (exponential backoff) up to a cap. After enough consecutive failures the reach is marked **halted** and stops being picked up at all. A human need to intervene to reattempt this reach.
+
+On similar note, the reconciler has no opinion on how long work should take (timeouts). With a real queue (AWS Batch or SEPEX), wall time is queue time plus run time, and there is no honest number to guess. If a job should be killed after some duration after its start, the execution system is told that when the job is defined (timeout lives in execution system).
 
 ## Reach Processing States
 
@@ -169,29 +167,25 @@ stateDiagram-v2
     Finished --> Due : desired_state changed, or a sweep comes round
 ```
 
-Only **Checking** is a state in which the reconciler is doing something. Every other state is the row sitting still, waiting for a reason to be looked at again. Note that a reach with a job in flight is not excluded from being checked — that is how a finished job gets noticed at all.
+Only **Checking** is a state in which the reconciler is doing something, every other state is doing nothing, waiting for a reason to be looked at that reach again. Note that a reach with a job in flight is not excluded from being checked, that is how a finished job gets noticed at all.
 
-Only **Halted** is written down. The rest are read off the row: whether a job is in flight, whether a retry time is in the future, whether it is waiting on a downstream reach, whether the satisfied revision matches the desired one. Storing them as well would mean keeping a second answer that is free to disagree with the first.
+Only **Halted** is written down, all other states are read off the db row; whether a job is in flight, whether a retry time is in the future, whether it is waiting on a downstream reach, whether the satisfied revision matches the desired one. Storing them as well would mean keeping a second answer that is free to disagree with the first.
 
 ## Tracking Storage Changes and Staleness
 
-Deleting files from storage is the supported way to undo something. There is no separate scanner to build: the observe step of a check is the scanner, and a full pass is that step run over every reach. A check looks at the address intent implies, finds nothing there, deletes the materialized row, and the gap it then calculates rebuilds whatever is still wanted. Nothing needs to be told that a deletion happened.
+Deleting files from storage is the supported way to undo something. The periodic complete sweep of all reaches will submit check on each reach, which will look at the address intent implies, it will find nothing there, and will delete the materialized row, and the gap it then calculates rebuilds whatever is still wanted. Nothing needs to be told that a deletion happened, but doing a check request immidiately on a reach will speed up the gap reconciling. This is basically same step as finding a model at the intent path and recording a row in materialized tables but just the opposite. This is important to note because it makes it clear that there is exactly one way that decides what it means for something to exist in materialized tables / reconciled.
 
-Recording a finished job uses that same step. Both cases are just "intent and materialization disagree" — in one, observe finds something at the implied address and writes a row; in the other it finds nothing and removes one. This matters because it leaves exactly one place that decides what it means for something to exist. Had a job's result been recorded by one piece of code and deletions noticed by another, the two would each carry their own answer to that question — one counting a model as present because the job exited cleanly, the other because the manifest is really there — and the two would disagree depending on which ran last.
-
-**Upstream staleness needs no stored provenance.** A KWSE library's bounds come from the downstream reach: the upper from its maximum WSEL, the lower from its minimum stage at the discharge just below each of this reach's own (DR-032 ALT-D). Those bounds are recomputed on every check from what the downstream reach currently materializes. If the downstream reach changes, the bounds move, the span check fails, the row is deleted and the work is requested. A pointer from an upstream run to the particular downstream run it consumed would only report what the recomputation already reports — and the dependency is not on particular runs anyway, but on the *range* being covered, which is what it means for the downstream scenarios to be reachable.
-
-The general rule: **store provenance only when the check cannot be recomputed from current state.** Here it can, cheaply, so it should be. The chain still stops on its own wherever nothing actually changed, and at headwaters; no code walks the network, and nothing needs resuming if the machine dies part way.
+**Upstream staleness needs no stored provenance.** A KWSE library's bounds come from the downstream reach. Those bounds are recomputed on every check from what the downstream reach currently materializes. If the downstream reach changes, the bounds move, the span check fails, the row is deleted and the work is requested. A pointer from an upstream run to the particular downstream run it consumed would only report what the recomputation already can answer, and the dependency is not on particular runs anyway, but on the *range* being covered with the density we desire (`q_set, kwse_*_bounds, ld_ds_z_delta`) which is what it means for the downstream scenarios to be reachable.
 
 ## Reconciler Owned DB Tables
 
-**`materialized_models`, `materialized_nd_runs`, `materialized_kwse_runs`**: whether each step's intent is satisfied, at which revision, as last confirmed. A cache of a storage lookup, so it is rebuildable by looking again. The revision lives here rather than with the reconciler's notes on purpose: co-located with its subject, deleting a materialization deletes the claim in the same statement, so a claim can never outlive the thing it was a claim about.
+**`materialized_models`, `materialized_nd_runs`, `materialized_kwse_runs`**: whether each step's intent is satisfied, at which revision, as last confirmed. This is basically a cache of a storage lookup for desired state, so it is rebuildable by looking again. The applied_revision lives here on purpose because it is a claim that desired state wach achived for this revision, by deleting a materialization row we also deletes the claim, that this revision is reconciled, at the same time.
 
-**`reach_processing`**: one row per reach, holding what job is in flight and since when, what it is waiting on, the retry counters and the last error. Work only — nothing about whether intent is satisfied. Changes constantly. Cannot be rebuilt from storage. Basically the reconciler's notes.
+**`reach_processing`**: one row per reach, holding what job is in flight and since when, what it is waiting on, the retry counters and the last error. Work related information only, nothing about whether intent is satisfied or not. This table changes constantly and cannot be rebuilt from storage. These are basically reconciler's notes.
 
-It stores no status beyond **halted**, because halted is the only one that is not derivable and the only one that changes what the loop does. Whether a reach has a job in flight, is resting before a retry, is waiting on a downstream reach, or is finished can all be read off the columns above and the materialized rows, so storing those as well would be keeping a second answer that is free to disagree with the first. A view assembles them for anyone who wants to look.
+It stores no status beyond **halted**, because halted is the only one that is not derivable and the only one that changes what the loop does. Whether a reach has a job in flight, is resting before a retry, is waiting on a downstream reach, or is finished can all be read off the other columns and the materialized tables. A view `reach_status` assembles them for something like a web UI (not implemented) or a person with DB access.
 
-**`reach_activity`**: append-only history. One row each time something happens to a reach: a step started, a step finished, results went stale, a reach finished. (for future: we can make a live view /dashboard out of it).
+**`reach_activity`**: append-only history of reconciler activity. One row each time something happens to a reach: a step started, a step finished, results went stale, a reach finished. (This will also be use for web UI in the future).
 
 ## Rules that must always hold
 
@@ -206,16 +200,10 @@ It stores no status beyond **halted**, because halted is the only one that is no
 9. Nothing is stored that a check could derive. Store provenance only when the check cannot be recomputed from current state.
 10. A claim lives with the thing it is a claim about, so removing the thing removes the claim in the same statement.
 
-## Decided
+## Important Revisions in Design
 
-**What `current_state` was**: it described "everything in storage", which made two models for one reach unrepresentable and left the loop picking the newest by the manifest's own timestamp. Replaced by the `materialized_*` tables, which answer the narrower and answerable question — is the thing intent asks for at the address intent implies. S3 stays the inventory and is not mirrored.
+- `current_state` was previously not defined tightly. It could mean many things, for example everything that is there in storage, only job outputs etc. Replaced by the `materialized_*` tables, which answer the narrower and answerable question: "Is the thing intent asks for at the address intent implies?".
+- Writing results of a job via callback through in process memory was dropped becaus it is not crash proof.
 
-**Holding a claim across a long job**: nothing is held, because nothing waits. A check submits, records the job as in flight, and ends. The job status pass asks the execution system what became of that job, and a later check observes storage and records what it finds.
 
-The reason is where knowledge lives. A check that waits keeps "work is happening" in one process's memory, and a crash loses it — recoverable only with a lease long enough to cover the job, which is a number nobody can pick honestly once jobs sit in a queue before they run. Not waiting puts that fact in the database and asks the execution system about liveness. Both survive a restart.
 
-**Marking a reach as taken while it is checked**: not done. There is one reconciler and one check at a time, so there is nothing to exclude, and `last_checked_at` already stops the same reach being picked up twice in quick succession. See the note under step 4 for what would bring this back.
-
-## Yet to decide
-
-- How much to run at once. Nothing yet limits how many reaches are worked on simultaneously.
