@@ -55,7 +55,7 @@ flowchart TD
 
 1. Every so often the reconciler asks the database which reaches need looking at (check request). The database coloumns store those information, not the reconciler process.
 2. Work out where this reach's artifacts *should* be per the desired state, and look there (materialization check), if they are there, they are recorded. This is the only way anything is ever recorded, so it is the same step that notices a finished job's output and that notices a file someone deleted.
-3. Calculate gap by building the list of everything that should exist per desired state, subtract what is proved (in previous step), and the remainder is the work. Walk the steps in dependency order and stop at the first one that is unmet (see *Work Flows Downstream-First* for what each step waits on):
+3. Calculate gap by building the list of everything that should exist per desired state, subtract what is proved (in previous step), and the remainder is the work. Walk the steps in dependency order and stop at the first one that is unmet (see *Work Flows Downstream to Upstream* for what each step waits on):
     1. Downstream model and nd runs do not exist.
     2. Model does not exist
     3. ND runs do not exist
@@ -93,11 +93,11 @@ Results transfer upstream along the network, so work has to be done from termina
 
 Terminal reaches have no downstream, so nothing blocks them from that perspective, a fresh network starts building at its outlets and the wave moves upstream. Terminal reaches also get no KWSE at all, there is no downstream reach to bound a stage library with (this will change in future with water body stages).
 
-Two properties of this are worth stating plainly, because they are easy to get backwards:
+Some important points to list here to have the picture correct:
 
-1. **The ladder gates starting work, never the proof.** A model that already exists at the address intent implies is adopted regardless of what the downstream reach looks like. Dependencies decide what may *begin*; they never decide what *counts*. This is what lets a wiped database re-adopt a whole populated bucket in one sweep, in any order.
-
-**A blocked reach stays a check candidate.** It is checked, the gap says it is waiting, and it records which reach it waits for — so a viewer can draw the wait graph without recomputing anything. Nothing polls: the downstream reach requests a check here when it finishes, and the periodic sweep would find it regardless.
+1. A model that already exists at the address intent implies is adopted regardless of what the downstream reach looks like. Dependencies decide when next step should be performed; they do not decide when a materialized row is added to the DB. This is what lets a wiped database re-adopt from a populated bucket in any order in one pass.
+2. A blocked reach stays a check candidate. When it is checked, the gap says it is waiting, and it records which reach it waits for, so a viewer can draw the wait graph without recomputing anything.
+3. The upstream reach does not poll downstream. The downstream reach requests a check here when it finishes, and the periodic sweep would find it eventually if that event is missed.
 
 ## No In Process Queue - DB is the Queue
 
@@ -107,31 +107,29 @@ There is no in process queue. Asking for a check is just setting `check_requeste
 
 Anything may request a check. One can be liberal about checks as checks don't affect correctness:
 
-| What asks for a check                        | When                                                |
-| -------------------------------------------- | --------------------------------------------------- |
-| Something changed `desired_state` (implicit) | Found by the query above (to be implemented later)  |
-| A job finished                               | The reconciler requests one on that reach           |
-| A neighbor nd or kwse finished               | The reconciler requests one on the upstream reaches |
-| **A complete sweep**                         | Every reach on a slow priodic schedule              |
-| A person                                     | "Look at this one now"                              |
+| What asks for a check                                         | and how                                                                     |
+| ------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| Any thing that change desired_state or desired_state_defaults | Immidiately through revision bump, which will be found by due reaches query |
+| A job finished                                                | The reconciler requests one on that reach                                   |
+| A neighbor nd or kwse finished                                | The reconciler requests one on the upstream reaches                         |
+| **A complete sweep**                                          | Every reach on a slow priodic schedule                                      |
+| A person                                                      | "Look at this one now"                                                      |
 
-Only the sweep matters. If every other request were lost, the sweep would still find every gap and close it eventually. All other check requests exists purely to make it faster, which means those parts can be built cheaply and are allowed to fail.
+Only the sweep matters here. If every other request were lost, the sweep would still find every gap and close it eventually. All other check requests exists purely to make it faster, which means those parts can be built cheaply and are allowed to fail.
 
 ## Watching Jobs - the DB is the Queue for Those Too
 
 Because a check submits a job and walks away, something has to notice when that job ends. That is a second sweep, and it needs no more state than the first one: the reaches with a job in flight are just the rows where `current_step` is set. Asking the database that question is the whole queue.
 
-The job status pass takes those rows, asks the execution system what happened to each one, and for any that have finished it clears the in-flight marker and requests a check. It writes nothing about what exists. That stays the check's job, so there is exactly one path by which materialization is ever recorded.
+The job status routine takes those rows, asks the execution system what happened to each one, and for any that have finished it clears the in-flight marker and requests a check. It writes nothing about what exists. That stays the check's job, so there is exactly one path by which materialization is ever recorded.
 
-Three things follow, and they are the reason this shape was chosen:
+Reasons for adopting this pattern:
 
-- **A crash costs nothing.** The set of jobs being waited on is in the database, not in a process. A reconciler that dies and restarts asks the same question and gets the same list.
-- **It batches.** One call can ask about many jobs at once, where a per-reach timer could only ask about one.
-- **It can be lost.** Like every check request, this pass is a speedup. Delete it entirely and the system is still correct, because the sweep will check those reaches anyway and observe whatever storage now holds. It only makes the answer arrive sooner.
+1. **A crash costs nothing.** The set of jobs being waited on is in the database, not in a process. A reconciler that dies and restarts asks the same question and gets the same list.
+2. **It batches.** One call can ask about many jobs at once, where a per-reach timer could only ask about one.
+3. **It can be lost.** Like every check request, this pass is a speedup. Losing any event here will only delay things, because the periodic complete check sweep will check those reaches anyway and observe whatever storage now holds.
 
-The marker is cleared by matching on the job reference that was polled, not just the reach, so a pass that is slow cannot wipe out a marker belonging to a newer job.
-
-If a job cannot be found at all — the execution system has forgotten it, the container was reaped, the reference was lost — the marker is cleared anyway after a grace period and the work is submitted again. This is safe, and the next section says why.
+If a job cannot be found at all (the execution system has forgotten it, the container was reaped, the reference was lost) the marker is cleared anyway after a grace period and the work is submitted again because a job is idempotent.
 
 ## Running Something Twice Is Always Safe
 
