@@ -53,7 +53,7 @@ flowchart TD
     H --> I["The check is over. A later check<br/>observes what the job produced."]
 ```
 
-1. Every so often the reconciler asks the database which reaches need looking at (check request). The database coloumns store those information, not the reconciler process.
+1. Every so often the reconciler asks the database which reaches need looking at (check request). The database columns store those information, not the reconciler process.
 2. Work out where this reach's artifacts *should* be per the desired state, and look there (materialization check), if they are there, they are recorded. This is the only way anything is ever recorded, so it is the same step that notices a finished job's output and that notices a file someone deleted.
 3. Calculate gap by building the list of everything that should exist per desired state, subtract what is proved (in previous step), and the remainder is the work. Walk the steps in dependency order and stop at the first one that is unmet (see *Work Flows Downstream to Upstream* for what each step waits on):
     1. Downstream model and nd runs do not exist.
@@ -112,7 +112,7 @@ Anything may request a check. One can be liberal about checks as checks don't af
 | Any thing that change desired_state or desired_state_defaults | Immidiately through revision bump, which will be found by due reaches query |
 | A job finished                                                | The reconciler requests one on that reach                                   |
 | A neighbor nd or kwse finished                                | The reconciler requests one on the upstream reaches                         |
-| **A complete sweep**                                          | Every reach on a slow priodic schedule                                      |
+| **A complete sweep**                                          | Every reach on a slow periodic schedule                                      |
 | A person                                                      | "Look at this one now"                                                      |
 
 Only the sweep matters here. If every other request were lost, the sweep would still find every gap and close it eventually. All other check requests exists purely to make it faster, which means those parts can be built cheaply and are allowed to fail.
@@ -135,11 +135,11 @@ On similar note, the reconciler or database does not limit how many reaches are 
 
 ## Reconciler Design is Based on Job Idempotency
 
-The outputs of a job live at content addressed paths, and jobs return early when their output already exists. That means a duplicate submission wastes some compute and changes nothing else. Every approximate part of the reconciler design is baed on this assumption. The grace period can be wrong, a job status routine update can be missed, a check can act on a snapshot that went stale a second later, and the worst case is repeated work rather than a wrong answer.
+The outputs of a job live at content addressed paths, and jobs return early when their output already exists. That means a duplicate submission wastes some compute and changes nothing else. Every approximate part of the reconciler design is based on this assumption. The grace period can be wrong, a job status routine update can be missed, a check can act on a snapshot that went stale a second later, and the worst case is repeated work rather than a wrong answer.
 
 ## Retry Mechanism
 
-A job can fail in three ways, and all of them arrive at the same place. The execution system reports it failed, orr the job finished, and the next check looks at storage and finds nothing there, or the job cannot be accounted for at all, and after a grace period it is presumed dead.
+A job can fail in three ways, and all of them arrive at the same place. The execution system reports it failed, or the job finished, and the next check looks at storage and finds nothing there, or the job cannot be accounted for at all, and after a grace period it is presumed dead.
 
 The failure is recorded in database `reach_processing` table, at every failure a counter goes up, and the reach is left alone for a while, with wait time increasing each time (exponential backoff) up to a cap. After enough consecutive failures the reach is marked **halted** and stops being picked up at all. A human need to intervene to reattempt this reach.
 
@@ -173,13 +173,13 @@ Only **Halted** is written down, all other states are read off the db row; wheth
 
 ## Tracking Storage Changes and Staleness
 
-Deleting files from storage is the supported way to undo something. The periodic complete sweep of all reaches will submit check on each reach, which will look at the address intent implies, it will find nothing there, and will delete the materialized row, and the gap it then calculates rebuilds whatever is still wanted. Nothing needs to be told that a deletion happened, but doing a check request immidiately on a reach will speed up the gap reconciling. This is basically same step as finding a model at the intent path and recording a row in materialized tables but just the opposite. This is important to note because it makes it clear that there is exactly one way that decides what it means for something to exist in materialized tables / reconciled.
+Deleting files from storage is the supported way to undo something. The periodic complete sweep of all reaches will submit check on each reach, which will look at the address intent implies, it will find nothing there, and will delete the materialized row, and the gap it then calculates rebuilds whatever is still wanted. Nothing needs to be told that a deletion happened, but doing a check request immediately on a reach will speed up the gap reconciling. This is basically same step as finding a model at the intent path and recording a row in materialized tables but just the opposite. This is important to note because it makes it clear that there is exactly one way that decides what it means for something to exist in materialized tables / reconciled.
 
 **Upstream staleness needs no stored provenance.** A KWSE library's bounds come from the downstream reach. Those bounds are recomputed on every check from what the downstream reach currently materializes. If the downstream reach changes, the bounds move, the span check fails, the row is deleted and the work is requested. A pointer from an upstream run to the particular downstream run it consumed would only report what the recomputation already can answer, and the dependency is not on particular runs anyway, but on the *range* being covered with the density we desire (`q_set, kwse_*_bounds, ld_ds_z_delta`) which is what it means for the downstream scenarios to be reachable.
 
 ## Reconciler Owned DB Tables
 
-**`materialized_models`, `materialized_nd_runs`, `materialized_kwse_runs`**: whether each step's intent is satisfied, at which revision, as last confirmed. This is basically a cache of a storage lookup for desired state, so it is rebuildable by looking again. The applied_revision lives here on purpose because it is a claim that desired state wach achived for this revision, by deleting a materialization row we also deletes the claim, that this revision is reconciled, at the same time.
+**`materialized_models`, `materialized_nd_runs`, `materialized_kwse_runs`**: whether each step's intent is satisfied, at which revision, as last confirmed. This is basically a cache of a storage lookup for desired state, so it is rebuildable by looking again. The applied_revision lives here on purpose because it is a claim that desired state was achieved for this revision, by deleting a materialization row we also deletes the claim, that this revision is reconciled, at the same time.
 
 **`reach_processing`**: one row per reach, holding what job is in flight and since when, what it is waiting on, the retry counters and the last error. Work related information only, nothing about whether intent is satisfied or not. This table changes constantly and cannot be rebuilt from storage. These are basically reconciler's notes.
 
@@ -203,7 +203,7 @@ It stores no status beyond **halted**, because halted is the only one that is no
 ## Important Revisions in Design
 
 - `current_state` was previously not defined tightly. It could mean many things, for example everything that is there in storage, only job outputs etc. Replaced by the `materialized_*` tables, which answer the narrower and answerable question: "Is the thing intent asks for at the address intent implies?".
-- Writing results of a job via callback through in process memory was dropped becaus it is not crash proof.
+- Writing results of a job via callback through in process memory was dropped because it is not crash proof.
 
 
 

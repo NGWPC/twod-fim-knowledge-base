@@ -35,12 +35,12 @@
 - The database holds intent, whether intent has been materialized, and the reconciler's own notes
 - Desired state = input to system = authored intent, with `desired_state_defaults` holding what every reach falls back to
 - Materialized state = for each thing intent asks for, whether it is there. One table per step, because model, ND and KWSE intent are satisfied independently
-- S3 is the inventory of everything that exists, which can and can not be materialized desired state
+- S3 is the inventory of everything that exists, some of which is materialized desired state and some of which is not.
 - Some desired_state fields are nullable. NULL means "use the default source", a value means it is authored. The default source is `desired_state_defaults`, a single row, so effective intent is `COALESCE(desired_state.x, desired_state_defaults.x)`
 - Rollbacks = delete a model or run(s). System will recognise that and recreate it if needed
 - Before execution, jobs will check if results exist on the content-addressed path and return early
 - Staleness needs no separate tracking. A check looks at the address intent implies; if nothing is there the materialized row goes and the gap reopens. Downstream changes are caught the same way, because a KWSE library's bounds are recomputed from what the downstream reach currently materialized
-- Only those KWSE scenarios will be perfromed and stay valid for which downstream scenario exist, this is because flows2fim can only reach these scenarios
+- Only those KWSE scenarios will be performed and stay valid for which downstream scenario exist, this is because flows2fim can only reach these scenarios
 
 ![alt text](guide-diagrams/system-landscape.drawio.png)
 
@@ -68,18 +68,18 @@ Every object (Model and Run) is defined in three key ways.
 
 ### Authored or Emergent Desired State
 
-From reconcilers perspective, every state attribute of an object comes from two sources and is treated differently baed on that.
+From reconcilers perspective, every state attribute of an object comes from two sources and is treated differently based on that.
 
 |                              | authored                                                             | emergent                                                    |
 | ---------------------------- | -------------------------------------------------------------------- | ----------------------------------------------------------- |
 | stated where                 | `desired_state`, or `desired_state_defaults`                         | computed by the job, reconciler read back from the manifest |
-| in the materialization check | participates, only results that pass this check are considered valid | ignored, whatever job respond is accepted                   |
+| in the materialization check | participates, only results that pass this check are considered valid | ignored, whatever job creates is accepted                   |
 | predictable in advance       | yes                                                                  | no                                                          |
 
-The same rule covers ambigous cases:
+The same rule covers ambiguous cases:
 
 - **`model_domain`** is unauthored in most cases, the job computes the model_domain and we accept it as is. In contrast, when it is authored, the  `model_domain` become part of materialization check.
-- **nd discharges `q_set`** are unauthored in most cases but `ld_q_*` and `q_*_bound` are authored, the nd job creates the `q_set` and we accept it in the materialization check as long is it satisfied the other authored intets i.e. the `q_*_bound` range, plus the `ld_q_*` deltas (the library must span the range and be dense enough).
+- **nd discharges `q_set`** are unauthored in most cases but `ld_q_*` and `q_*_bound` are authored, the nd job creates the `q_set` and we accept it in the materialization check as long is it satisfied the other authored intents i.e. the `q_*_bound` range, plus the `ld_q_*` deltas (the library must span the range and be dense enough).
 
 An emergent dimension can be **promoted** to authored later. For example STL findings inform `model_domain`, a job can propose a discharge set that is then written into intent. Promoting something to authored intent tightens the materialization check.
 
@@ -220,6 +220,4 @@ Following template can be used to create job specs.
 ## Open Questions
 
 - Do we want more granular control over desired kwse state
-
 - How do we track nominal KWSE rasters
-
