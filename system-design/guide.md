@@ -219,10 +219,7 @@ Following template can be used to create job specs.
 
 ## Open Questions
 
-- How does worker wait for last scenario of downstream reach to finish?
-  Possibly by waiting for `state_synced=true`
 - Do we want more granular control over desired kwse state
+
 - How do we track nominal KWSE rasters
-- Does PSQL trigger orchestrator or orchestrator watches PSQL
-- How do AWS Batch runs D IND
-- Network traversal order
+
