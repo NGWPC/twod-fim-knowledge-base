@@ -18,6 +18,8 @@ This alternate suggest to use hydrofabric as is. This is a default behaviour.
 
 This will happen in network analysis step. Only higher stream order because there could be a case where mainstem with negligible DA difference is flowing dry and a tributary that had negligible DA is flowing full (a case need to be find to prove this can happen and reject ALT-B). At higher stream order we don't expect a mainstem to flow dry.
 
+Resolved directly rather than waiting on a case to prove or disprove: a reach is only a merge candidate if it has exactly one upstream reach. A junction (confluence of two or more reaches) is never merged across, in either direction. This closes the mainstem/tributary risk above without needing to find the case — see [[DR-024 - What Should be Thresholds for Merging Short Reaches]] for the rest of the merge thresholds.
+
 ### ALT-C - Coarse Model Informed Analysis of FIM Width vs Reach Length
 This alternative suggest coarse model FIM informed analysis to determine which reaches are shorter in comparison to their FIM and hence should be merged to create reasonable models.
 
@@ -25,3 +27,4 @@ This alternative suggest coarse model FIM informed analysis to determine which r
 ## Decision History
 - 2025-10-02: Started with Alt-A
 - 2026-01-30: Switched to Alt-B when it was discovered that many large river reaches have FIM width larger than reach length
+- 2026-08-10: Added junction exclusion to ALT-B, closing the flagged mainstem/tributary risk
