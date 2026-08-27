@@ -54,7 +54,7 @@ flowchart TD
 ```
 
 1. Every so often the reconciler asks the database which reaches need looking at (check request). The database columns store those information, not the reconciler process.
-2. Work out where this reach's artifacts *should* be per the desired state, and look there (materialization check), if they are there, they are recorded. This is the only way anything is ever recorded, so it is the same step that notices a finished job's output and that notices a file someone deleted.
+2. Work out where this reach's artifacts *should* be per the desired state, and look there (materialization check), if they are there, they are recorded. This is the only way anything is ever recorded, it is the same step that notices a finished job's output and that notices a file someone deleted. If this changes the reach's nd or kwse proof, request a check on the upstream neighbours: that proof is their boundary condition, so a proof appearing unblocks them and a proof being retracted invalidates work they may already have started.
 3. Calculate gap by building the list of everything that should exist per desired state, subtract what is proved (in previous step), and the remainder is the work. Walk the steps in dependency order and stop at the first one that is unmet (see *Work Flows Downstream to Upstream* for what each step waits on):
     1. Downstream model and nd runs do not exist.
     2. Model does not exist
@@ -64,9 +64,11 @@ flowchart TD
 
 The prerequisite at every rung is that the downstream reach's corresponding steps are **proved**, which is stronger than "nothing is running there right now". A reach with no job in flight may still be due a check, resting before a retry, or waiting on its own downstream, none of which means its results are settled and safe to propagate processing upstream.
 
-The gap calculation has four possible answers: **no gap**, **waiting on the downstream reach**, **a job for this reach is already in flight**, or **next job should be executed**. The third exists because a check no longer spans the job it submitted, so a later check has to be able to tell "nothing has happened yet" apart from "nothing has been started".
+The gap calculation has five possible answers: **no gap**, **waiting on the downstream reach**, **a job for this reach is already in flight**, **awaiting inputs**, or **next job should be executed**. The third exists because a check no longer spans the job it submitted, so a later check has to be able to tell "nothing has happened yet" apart from "nothing has been started".
 
-4. Submit the job and write down that it is in flight, then request another check on this reach. The check does **not** wait for the job. Waiting would put the fact that work is happening inside one process's memory, where a crash will be detrimental. Writing it into the database keeps it crash proof and easier to code. If the job was an nd or kwse job, request a check on the upstream neighbours too, since their KWSE work may now be possible, or may have just gone stale.
+**Awaiting inputs** means the work is needed and no job can produce it, because something it requires has not been authored. It is deliberately kept apart from waiting on the downstream reach, and the difference is who resolves it: a reach waiting on its downstream resolves itself as the wave arrives, whereas one awaiting inputs resolves only when a person supplies the missing data.
+
+4. Submit the job and write down that it is in flight, then request another check on this reach. The check does **not** wait for the job. Waiting would put the fact that work is happening inside one process's memory, where a crash will be detrimental. Writing it into the database keeps it crash proof and easier to code.
 
 ## When Observations are Performed
 
@@ -112,7 +114,7 @@ Anything may request a check. One can be liberal about checks as checks don't af
 | Any thing that change desired_state or desired_state_defaults | Immidiately through revision bump, which will be found by due reaches query |
 | A job finished                                                | The reconciler requests one on that reach                                   |
 | A neighbor nd or kwse finished                                | The reconciler requests one on the upstream reaches                         |
-| **A complete sweep**                                          | Every reach on a slow periodic schedule                                      |
+| **A complete sweep**                                          | Every reach on a slow periodic schedule                                     |
 | A person                                                      | "Look at this one now"                                                      |
 
 Only the sweep matters here. If every other request were lost, the sweep would still find every gap and close it eventually. All other check requests exists purely to make it faster, which means those parts can be built cheaply and are allowed to fail.
@@ -157,11 +159,13 @@ stateDiagram-v2
     Checking --> Job_In_Flight : gap, job submitted
     Checking --> Finished : no gap
     Checking --> Waiting_on_Downstream : downstream results missing
+    Checking --> Awaiting_Inputs : needs data no job can produce
     Checking --> Wait_before_Retrying : job failed
     Checking --> Halted : failed too many times
     Job_In_Flight --> Due : job status pass sees it finished
     Job_In_Flight --> Due : check requested anyway
     Waiting_on_Downstream --> Due : downstream finishes and requests a check
+    Awaiting_Inputs --> Due : a person authors the data, request check
     Wait_before_Retrying --> Due : rest period over
     Halted --> Due : a person clears it, request check
     Finished --> Due : desired_state changed, or a sweep comes round
@@ -169,7 +173,7 @@ stateDiagram-v2
 
 Only **Checking** is a state in which the reconciler is doing something, every other state is doing nothing, waiting for a reason to be looked at that reach again. Note that a reach with a job in flight is not excluded from being checked, that is how a finished job gets noticed at all.
 
-Only **Halted** is written down, all other states are read off the db row; whether a job is in flight, whether a retry time is in the future, whether it is waiting on a downstream reach, whether the satisfied revision matches the desired one. Storing them as well would mean keeping a second answer that is free to disagree with the first.
+Only **Halted** is written down, all other states are read off the db row; whether a job is in flight, whether a retry time is in the future, whether it is waiting on a downstream reach, whether the inputs a step needs have been authored, whether the satisfied revision matches the desired one. Storing them as well would mean keeping a second answer that is free to disagree with the first.
 
 ## Tracking Storage Changes and Staleness
 
@@ -200,10 +204,14 @@ It stores no status beyond **halted**, because halted is the only one that is no
 9. Nothing is stored that a check could derive. Store provenance only when the check cannot be recomputed from current state.
 10. A claim lives with the thing it is a claim about, so removing the thing removes the claim in the same statement.
 
+## Open Questions
+
+- What will happen when a job successfully complete but does not create data at the addressed path. The reconciler will keep submitting work, there should be a halt mechanism here.
+
+
+
 ## Important Revisions in Design
 
 - `current_state` was previously not defined tightly. It could mean many things, for example everything that is there in storage, only job outputs etc. Replaced by the `materialized_*` tables, which answer the narrower and answerable question: "Is the thing intent asks for at the address intent implies?".
 - Writing results of a job via callback through in process memory was dropped because it is not crash proof.
-
-
 
