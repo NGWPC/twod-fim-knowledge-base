@@ -70,6 +70,22 @@ The gap calculation has five possible answers: **no gap**, **waiting on the down
 
 4. Submit the job and write down that it is in flight, then request another check on this reach. The check does **not** wait for the job. Waiting would put the fact that work is happening inside one process's memory, where a crash will be detrimental. Writing it into the database keeps it crash proof and easier to code.
 
+## What Counts as Proof
+
+Observing (to do: rename to Verification) is two separate questions, each of
+which is independent.
+
+**Is this artifact trustworthy?** the manifest names this reach, its identity object hashes to what it claims, and its realization code matches the folder it sits in. This is about the artifact being what it says it is, in the place it says it is. An artifact that fails is treated as absent.
+
+**Does what exists satisfy intent?** Per-step, and it is judged over the whole SET of artifacts, not one at a time. A library is proof when it **covers the range intent asks for**, at the density intent asks for — not when some scenarios happen to be present. This is the same rule whether it is read forwards (an ND library proves its own step by spanning `q_lower_bound..q_upper_bound`) or upstream (a downstream library is reachable when it covers the range the reach above needs, `q_set, kwse_*_bounds, ld_ds_z_delta`).
+
+A consequence worth stating, because the two halves of an address are not alike:
+
+- Where intent says nothing, the loop **discovers**. The normal-depth slope is derived by the job from the reach's own terrain; there is no authored slope to hold it to, so the loop finds where it landed and takes it.
+- Where intent says something, the loop **judges**. The discharges are chosen by the adaptive step algorithm, but intent authors the range, so the loop reads the set back and asks whether it covers what was asked for.
+
+Both are emergent in value. Only first is emergent in whether it is acceptable.
+
 ## When Observations are Performed
 
 Observation happens at two rates, and they answer different questions:
@@ -179,7 +195,7 @@ Only **Halted** is written down, all other states are read off the db row; wheth
 
 Deleting files from storage is the supported way to undo something. The periodic complete sweep of all reaches will submit check on each reach, which will look at the address intent implies, it will find nothing there, and will delete the materialized row, and the gap it then calculates rebuilds whatever is still wanted. Nothing needs to be told that a deletion happened, but doing a check request immediately on a reach will speed up the gap reconciling. This is basically same step as finding a model at the intent path and recording a row in materialized tables but just the opposite. This is important to note because it makes it clear that there is exactly one way that decides what it means for something to exist in materialized tables / reconciled.
 
-**Upstream staleness needs no stored provenance.** A KWSE library's bounds come from the downstream reach. Those bounds are recomputed on every check from what the downstream reach currently materializes. If the downstream reach changes, the bounds move, the span check fails, the row is deleted and the work is requested. A pointer from an upstream run to the particular downstream run it consumed would only report what the recomputation already can answer, and the dependency is not on particular runs anyway, but on the *range* being covered with the density we desire (`q_set, kwse_*_bounds, ld_ds_z_delta`) which is what it means for the downstream scenarios to be reachable.
+**Upstream staleness needs no stored provenance.** A KWSE library's bounds come from the downstream reach. Those bounds are recomputed on every check from what the downstream reach currently materializes. If the downstream reach changes, the bounds move, the span check fails, the row is deleted and the work is requested. A pointer from an upstream run to the particular downstream run it consumed would only report what the recomputation already can answer, and the dependency is not on particular runs anyway, but on the *range* being covered with the density we desire (`q_set, kwse_*_bounds, ld_ds_z_delta`) — which is the same thing proof means anywhere else in the loop (see *What Counts as Proof*), applied across a reach boundary.
 
 ## Reconciler Owned DB Tables
 
@@ -196,17 +212,29 @@ It stores no status beyond **halted**, because halted is the only one that is no
 1. A check works everything out from the tables as they are now. Check requests carry no instructions and may be lost.
 2. Running anything twice is safe. Jobs skip work whose output already exists, and checking a finished reach does nothing.
 3. Nothing is recorded that was not seen in storage. A job's return value is not evidence that anything exists.
-4. A reach is finished when the gap is empty not because a sequence of stages completed.
-5. Deleting from storage is a supported action, not damage. It is noticed at the next full pass, or sooner if someone requests a check.
-6. No step of the loop waits for a job. Anything that has to survive a crash is written down before the step that would have waited returns.
-7. The gap calculation gives the same answer every time for the same inputs.
-8. Correctness rests on rule 2 and on conditional writes, not on anything being exclusive. Speedups are allowed to be lost, duplicated, or arrive late.
-9. Nothing is stored that a check could derive. Store provenance only when the check cannot be recomputed from current state.
-10. A claim lives with the thing it is a claim about, so removing the thing removes the claim in the same statement.
+4. Being at an address is not the same as belonging there. Before a manifest is adopted it is checked against the place it was found: it names this reach, its identity object hashes to the identity hash it claims, and its **realization code** — `domain_code` for a model, `scenario_code` for a run — matches the folder it sits in. Anything unverifiable is refused to be trusted, including a realization code the loop cannot interpret. Both halves of an address are checked.
+5. A reach is finished when the gap is empty not because a sequence of stages completed.
+6. Deleting from storage is a supported action, not damage. It is noticed at the next full pass, or sooner if someone requests a check.
+7. No step of the loop waits for a job. Anything that has to survive a crash is written down before the step that would have waited returns.
+8. The gap calculation gives the same answer every time for the same inputs.
+9. Correctness rests on rule 2 and on conditional writes, not on anything being exclusive. Speedups are allowed to be lost, duplicated, or arrive late.
+10. Nothing is stored that a check could derive. Store provenance only when the check cannot be recomputed from current state.
+11. A claim lives with the thing it is a claim about, so removing the thing removes the claim in the same statement.
 
 ## Open Questions
 
 - What will happen when a job successfully complete but does not create data at the addressed path. The reconciler will keep submitting work, there should be a halt mechanism here.
+
+  (Caution: AI content, for future work.)
+  **Possible solution.** The signal that is missing is not "there is a gap" — the loop sees that correctly. It is "there is still a gap immediately after work that claimed to close it". Those are different facts, and the loop already holds both halves: the in-flight marker says which step was submitted, and the observation that follows the job says whether anything was adopted. A step that completed and adopted nothing is a distinct event from a step that has not run yet.
+
+  Treating that event as a failure needs no new machinery. It feeds the same counter, backoff, and halt that a job reporting failure already feeds. The reach is looked at less and less often, and after enough consecutive rounds it parks for a person — which is the wanted behaviour, because a job that keeps succeeding while producing nothing usable will not fix itself.
+
+  This covers both shapes of the problem: nothing written at the address, and something written that observation refuses (belongs to another reach, identity does not hash to what it claims, discharge not in the folder it sits in). From the loop's side they are the same event — a step ran and no proof followed.
+
+  It does not weaken rule 3. The job's success is still not evidence that anything exists. It is only evidence that this reach should not be asked to do the identical thing again immediately. Adoption stays the only thing that ends a failure streak, so a reach that starts producing usable output clears itself without intervention.
+
+  The cost of leaving it open is measured in whole job runs rather than wasted checks. A normal-depth library is one hydraulic simulation per discharge, so each round that ends in refusal is minutes to hours of compute, and without a brake it repeats for as long as the loop is running.
 
 
 
