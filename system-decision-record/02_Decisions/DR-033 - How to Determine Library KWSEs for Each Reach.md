@@ -1,6 +1,8 @@
 ## Description
 Per [[DR-031 - Should Downstream Stage be Uniform or Cell-Specific Along the STL]], downstream boundary conditions are drawn from completed downstream reach simulations. Per [[DR-032 - What Should be the Lower and Upper KWSE Bound for Each Reach for Each Discharge]] we will have a range for d/s KWSE to work with, but within that range multiple simulations will exist producing many KWSEs. Each such simulation is attributed a nominal water surface elevation.
 
+**Nominal water surface elevation** here means the elevation a simulation *achieved at its own reach's upstream end*, along that reach's `STL`.It is **not** the stage that was imposed on that simulation at its own downstream end.
+
 This decision addresses how to select the library values of downstream KWSEs to use as KWSE set for the current reach, so that the resulting library spans a useful range of downstream conditions without a large number of runs.
 
 A critical aspect of this methodology is determining a "reasonable" set of downstream conditions for each modeled discharge.  To that end, the supplementary analysis below was conducted.

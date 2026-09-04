@@ -120,9 +120,9 @@ Following information forms identity of a model
 
 Overrides are applied upstream and arrive folded into reach_geom / sources / params below; the `build_model` job itself doesn't take an override_id.
 
-### Run (id: run_id = identity_hash+scenario_identity) # example af1436r4_ND1.2e5Q200, af1436r4_KWSE200.2Q200
+### Run (id: run_id = identity_hash+scenario_identity) # example af1436b4_ND1.2e5Q200, af1436b4_KWSE200.2Q200
 
-#### Identity (id: = hash of this content) # example af1436r4
+#### Identity (id: = hash of this content) # example af1436b4
 
 - sdr_commit (methodology version pin)
 - solver (engine name + version, e.g. `lisflood-fp@8.1`)

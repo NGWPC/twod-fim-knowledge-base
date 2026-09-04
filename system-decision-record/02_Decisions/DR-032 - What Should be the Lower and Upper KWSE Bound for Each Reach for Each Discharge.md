@@ -21,7 +21,7 @@ The drainage area ratio strongly governs these bounds: near 1:1 ratios produce a
 ### ALT-C - Upper Bound Same as D/S Reach Max STL WSEL and Lower Bound Same as Reach's Normal Depth WSEL at STL
 
 In comparison to Alt-A, this makes more sense because for lower bound there could be two cases
-1. DS Reach Min WSEL is lower than ND WSEL 
+1. DS Reach Min WSEL is lower than ND WSEL
 2. DS Reach Min WSEL is higher than ND WSEL
 
 For case 1, we were always going to floor by ND WSEL, so for case 1 ALT-C is same as ALT-A. For case 2, using the ND value will lead to a larger (and therefore more conservative) set of bounds.
@@ -34,6 +34,8 @@ The biggest benefit of this is that it simplifies coding and now the range is so
 This is same as A but we do not floor by Reach's own ND WSEL, this is because the ND WSEL is dependent on normal depth slope used. The slope value is only an approximation for downstream conditions and does not fully represent the downstream conditions. Often time this slope value could vary depending on what methodology is used to drive this value.
 
 In Ohio Ripple1D case we learned that if slope value used is flatter than the actual downstream conditions, this would lead to an ND elevation for reach that is higher than the D/S reach's upstream/STL WSEL for same discharge. This would create an artificial bump in WSEL when the whole network is stitched together via Flows2FIM.
+
+**When no downstream discharge is at or below the reach's own.** The downstream reach drains this reach's area plus everything else feeding it, so its library can sit entirely above this one's. A small tributary at 5–70 cms joining a mainstem modeled at 400–4500 cms has no downstream discharge at or below any of its own. In that case the curve is clamped to the downstream reach's **lowest** discharge, which is that reach at its calmest and so the condition most likely to accompany a low flow here. It also agrees with the library structure the supplementary analysis in [[DR-033 - How to Determine Library KWSEs for Each Reach]] describes for extreme drainage-area ratios: all upstream discharges paired with a baseflow downstream condition. The choice is close to consequence-free in practice, because stage rises with discharge, so a reach's minimum across all discharges normally sits at its lowest discharge anyway.
 
 Runs (blue) are not floored by reach's normal depth , but they are floored by downstream reach u/s end min elevation curve (orange).
 ![[DR-032 - FIG-002.png]]
