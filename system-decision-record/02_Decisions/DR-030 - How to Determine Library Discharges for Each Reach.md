@@ -22,48 +22,55 @@ We want to establish our Qs by walking the reach's actual response curve, so tha
 
 #### Adaptive Step Algorithm for Establishing Initial Qs
 
-1. Create a set of observation/monitor points for the reach  (could be points at certain distance on reach centerline plus buffered lines).
+1. Measure each scenario over its **wet cells only**, across the whole model domain.
 2. Cold-start at the reach's minimum discharge of interest → save as snapshot 1.
-3. Propose `trial_q = q_current + Δq`. Run the model (hot-started from `q_current`).
+3. Propose the next discharge by reading the reach's measured response (below). Run the model, hot-started from `q_current`.
 4. Compare the trial's response to the **last accepted snapshot** on three criteria:
 
 The actual threshold for these values will be configurable per reach.
 
-| Criterion | Quantity | Target Δ | Acceptance band |
-| --- | --- | --- | --- |
-| max stage | max stage at monitor points | +1.0 m | +0.75 to +1.25 m |
-| median stage | median stage at monitor points | +0.5 m | +0.25 to +0.75 m |
-| extent | cells flooded in comparison to last accepted step* | +10 % | +7.5 to +12.5 % |
+| Criterion | Quantity | Acceptance band |
+| --- | --- | --- |
+| max depth | increase in maximum depth over wet cells | +0.75 to +1.25 m |
+| median depth | increase in median depth over wet cells | +0.25 to +0.5 m |
+| flooded area | percent increase in inundated area, **against the last accepted snapshot's own area** | +10 to +15 % |
 
-_* video has this incorrect_
+_* the video has the extent criterion incorrect_
 
-5. Combine the above three to create a combined criteria
-    - any criterion **above** band → `reject_high`: keep q_current, shrink Δq, retry
-    - else any criterion **in** band → **`accept`**: snapshot, advance q_current to trial, grow Δq slightly
-    - else (all three below band) → `reject_low`: advance q_current to trial, grow Δq
-6. Stop when `q_current` reaches the reach's max discharge of interest.
+The flooded-area denominator is the reference snapshot's area, so it grows as the sweep climbs while the two depth criteria stay absolute. One band therefore asks for different things at different discharges: low down, where the reach is spreading across its floodplain from a small wetted area, the window can be narrower than `min_delta_q`, so a step finer than the nominal minimum is needed to stay inside the band. High up, where the area has largely saturated, a step several hundred cms wide can fall short of +10 % and acceptance passes to the depth criteria instead.
 
-Two state variables evolve independently:
+Anchoring the denominator to the area at the reach's maximum discharge would make one band mean the same thing across the whole sweep, but it requires running the maximum first, cold-started, and renumbering the band. The scale dependence is accepted for now in favour of keeping the criterion simple and the hot-start chain intact.
 
-- `q_current` advances on accept and reject_low; holds on reject_high
-- `q_accepted` advances only on accept — it is the comparison reference for every trial
+No separate target values are carried. The bands themselves are the only thresholds, and the sweep aims at the middle of the window they jointly define, so nothing can drift away from the band it belongs to.
 
-This separation means the band measures _cumulative_ change since the last library entry, not incremental change between consecutive runs.
+5. Combine the three into one verdict, where `reject_high` takes priority:
+    - any criterion **above** its band → `reject_high`: publish nothing, but keep the trial as evidence
+    - else any criterion **in** its band → **`accept`**: publish, and advance the reference to the trial
+    - else (all three below their bands) → `reject_low`: publish nothing, but the trial becomes the hot-start source
+6. Stop once no further entry fits below the reach's maximum discharge of interest, which is always run and always published.
+
+The reference advances only on accept, so the bands measure _cumulative_ change since the last library entry rather than incremental change between consecutive runs.
+
+Every scenario the sweep runs, published or not, is retained with its three readings, and together they form the reach's measured response. The next discharge is chosen by reading that response for the range of discharges where a trial would be accepted, and aiming at the middle of it — so a rejected trial is not wasted, it is the evidence that moves the next proposal. The mechanics are the job's concern and are specified in `docs/jobs/run_scenarios/run_nd_scenarios.md`.
+
+Two consequences reach beyond the job. **A reach can change faster than the minimum step can follow**, in which case the library contains one step wider than the bands allow; any check of library resolution must exempt steps at the minimum Δq, or it would refuse a library the sweep cannot improve on. And **the maximum discharge is published whatever its verdict**, because the KWSE stage grid is built from the top of the envelope.
 
 #### Pros
 
 - Every accepted entry is, by construction, hydraulically distinct from the previous one — no near-duplicate maps in the library
-- Sharp transitions automatically attract a dense cluster of entries because Δq shrinks locally to fit the band
-- Flat regions get sparse sampling (Δq grows quickly through them)
+- Sharp transitions automatically attract a dense cluster of entries, because the curves steepen there and the window narrows to match
+- Flat regions get sparse sampling, because a flattening curve pushes the window further away
 - Library size becomes reach-specific: complex hydraulics → larger library, simple → smaller
 
 #### Cons
  - Given the complexity, edge cases will require extensive review and debugging/patching. Implementation and maintenance burden is substantially higher than ALT-A or ALT-B.
- - Method for dq determination is needed separately.
+ - An opening step is still needed before any curve exists, so the authored `delta_upstream_inflow` is required to bootstrap the sweep.
  - Strictly sequential hot-starts eliminate parallelism—each run must complete before the next is proposed.
  - Adds another step to the production pipeline, increasing pipeline complexity and computational cost.
- - Strong safeguards will be necessary to prevent runaway iterations.
+ - Termination is bounded by the curves rather than by tuning: a rejected discharge closes the window below itself, and the minimum step ends refinement, so the search cannot iterate indefinitely between two discharges.
  - The approach does not guarantee higher fidelity through floodplain spillover in all reaches. That transition depends on downstream boundary conditions which are absent from this normal depth analysis.
 
 ## Decision History
 - 2026-06-01: ALT-C selected because under ideal conditions it produces flow increments that directly track real floodplain variability signals.
+- 2026-09-05: ALT-C description refined during implementation, without changing the selection. Criteria are measured over wet cells across the domain rather than at monitor points; the step is sized from the measured response rather than by fixed grow and shrink factors; a rejected discharge bounds later proposals and is re-judged when the reference advances; and the consequence of a closed bracket is stated.
+- 2026-09-08: ALT-C reformulated around the reach's response curves, without changing the selection. The next discharge is now read off three piecewise-linear curves assembled from every simulated point, rather than reached by scaling a step and bisecting a bracket. The stored ceiling, the shrink and grow factors, the bracket and the separate flatness case all disappear as consequences of the window. The minimum step becomes the point at which refinement stops rather than a floor on the step itself, and the maximum discharge is judged rather than force-accepted. Measured on four reaches, the reformulation cut simulations by roughly a quarter while producing slightly larger libraries.
